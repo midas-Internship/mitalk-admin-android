@@ -14,6 +14,8 @@ object Version {
 
     const val CORE_KTX = "1.5.0"
     const val LIFECYCLE_KTX = "2.4.0-alpha01"
+    const val APP_COMPAT = "1.6.0"
+    const val PREFERENCE_KTX = "1.2.0"
 
     const val COMPOSE_ACTIVITY = "1.3.1"
     const val COMPOSE = "1.2.0-rc01"
@@ -35,4 +37,6 @@ object Version {
     const val ESPRESSO_CORE = "3.3.0"
 
     const val COIL = "0.10.0"
+
+    const val INJECT = "1"
 }

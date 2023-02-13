@@ -36,8 +36,6 @@ android {
 dependencies {
     implementation(project(":domain"))
 
-    implementation("javax.inject:javax.inject:1")
-
     implementation(Dependency.Room.ROOM)
     kapt(Dependency.Room.ROOM_COMPILER)
 
@@ -51,4 +49,6 @@ dependencies {
 
     androidTestImplementation(Dependency.AndroidTest.ANDROID_JUNIT)
     androidTestImplementation(Dependency.AndroidTest.ESPRESSO_CORE)
+
+    implementation(Dependency.JavaX.INJECT)
 }

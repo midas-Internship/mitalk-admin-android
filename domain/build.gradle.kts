@@ -35,11 +35,11 @@ android {
 
 dependencies {
 
-    implementation("javax.inject:javax.inject:1")
-
     testImplementation(Dependency.UnitTest.JUNIT)
     testImplementation(Dependency.UnitTest.MOCKITO_KOTLIN)
 
     androidTestImplementation(Dependency.AndroidTest.ANDROID_JUNIT)
     androidTestImplementation(Dependency.AndroidTest.ESPRESSO_CORE)
+
+    implementation(Dependency.JavaX.INJECT)
 }

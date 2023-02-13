@@ -13,7 +13,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "mitalk-admin-android"
-include ':app'
-include ':domain'
-include ':data'
-include ':di'
+include(":app")
+include(":domain")
+include(":data")
+include(":di")
