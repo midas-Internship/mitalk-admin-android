@@ -12,7 +12,7 @@ android {
     compileSdk = Version.COMPILE_SDK_VERSION
 
     defaultConfig {
-        applicationId = "com.example.mitalk"
+        applicationId = "com.example.mitalk_admin_android"
         minSdk = Version.MIN_SDK_VERSION
         targetSdk = Version.TARGET_SDK_VERSION
         versionCode = 1
