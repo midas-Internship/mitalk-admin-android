@@ -1,4 +1,4 @@
-package com.example.mitalk_admin_android.util
+package com.example.mitalk_admin_android.util.theme
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Stable

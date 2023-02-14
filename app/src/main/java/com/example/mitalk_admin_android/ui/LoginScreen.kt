@@ -10,22 +10,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.mitalk_admin_android.util.MiTalkIcon
+import com.example.mitalk_admin_android.util.theme.MiTalkIcon
 
 @Composable
 fun LoginScreen(
     navController: NavController,
 ) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
+        ,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.height(42.dp))
-
         Image(
             painter = painterResource(id = MiTalkIcon.Login_Img.drawableId),
             contentDescription = MiTalkIcon.Login_Img.contentDescription,
         )
+        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(62.dp))
+
     }
 }
 
