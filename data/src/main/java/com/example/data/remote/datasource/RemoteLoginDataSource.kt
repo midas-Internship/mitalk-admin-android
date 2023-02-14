@@ -1,4 +1,4 @@
-package com.example.data.remote
+package com.example.data.remote.datasource
 
 import com.example.domain.entity.SignInEntity
 

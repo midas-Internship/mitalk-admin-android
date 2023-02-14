@@ -10,7 +10,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.example.mitalk_admin_android.sample.ui.SampleScreen
+import com.example.mitalk_admin_android.ui.LoginScreen
 import com.example.mitalk_admin_android.util.theme.MitalkadminandroidTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,7 +22,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MitalkadminandroidTheme {
-                SampleScreen()
+                val navController = rememberNavController()
+                LoginScreen(navController)
             }
         }
     }

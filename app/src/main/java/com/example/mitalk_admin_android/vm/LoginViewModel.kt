@@ -26,7 +26,13 @@ class LoginViewModel @Inject constructor(
         certificationNumber: String,
     ) = intent {
        viewModelScope.launch {
+           loginUseCase(
+               certificationNumber = certificationNumber
+           ).onSuccess {
 
+           }.onFailure {
+
+           }
        }
     }
 }

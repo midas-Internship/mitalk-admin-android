@@ -65,7 +65,7 @@ fun LoginScreen(
             onValueChanged = { certificationNumber = it }
         )
         Spacer(modifier = Modifier.height(11.dp))
-        LoginBtn {  }
+        LoginBtn { vm.signIn(certificationNumber = certificationNumber) }
     }
 }
 
