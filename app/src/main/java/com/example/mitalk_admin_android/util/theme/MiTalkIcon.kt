@@ -17,5 +17,10 @@ class MiTalkIcon private constructor(
             drawableId = R.drawable.img_login,
             contentDescription = "login img",
         )
+        @Stable
+        val Comma = MiTalkIcon(
+            drawableId = R.drawable.comma,
+            contentDescription = "comma",
+        )
     }
 }
