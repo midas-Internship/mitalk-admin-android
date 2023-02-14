@@ -4,6 +4,7 @@ import android.content.pm.SigningInfo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.compose.DialogNavigator
+import com.example.domain.usecase.LoginUseCase
 import com.example.mitalk_admin_android.mvi.LoginSideEffect
 import com.example.mitalk_admin_android.mvi.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    
+    private val loginUseCase: LoginUseCase,
 ) : ContainerHost<LoginState, LoginSideEffect>, ViewModel(){
 
     override val container = container<LoginState, LoginSideEffect>(LoginState())
