@@ -28,6 +28,7 @@ object NetworkModule {
         httpLoggingInterceptor: HttpLoggingInterceptor,
         authorizationInterceptor: AuthorizationInterceptor,
     ): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(authorizationInterceptor)
         .addInterceptor(httpLoggingInterceptor)
         .build()
 
