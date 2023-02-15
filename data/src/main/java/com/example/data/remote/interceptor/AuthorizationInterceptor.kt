@@ -1,5 +1,6 @@
 package com.example.data.remote.interceptor
 
+import com.example.data.BuildConfig
 import com.example.data.local.AuthPreference
 import com.example.data.remote.response.SignInResponse
 import com.example.domain.exception.NeedLoginException
@@ -34,7 +35,7 @@ class AuthorizationInterceptor @Inject constructor(
             val refreshToken = runBlocking { authPreference.fetchRefreshToken() }
 
             val tokenRefreshRequest = Request.Builder()
-                .url("https://stag-ghsdfue.app/")
+                .url(BuildConfig.BASE_URL)
                 .put("".toRequestBody("application/json".toMediaTypeOrNull()))
                 .addHeader("Refresh-Token", "Bearer $refreshToken")
                 .build()
