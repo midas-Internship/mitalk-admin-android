@@ -19,16 +19,19 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.util.miClickable
 import com.example.mitalk_admin_android.util.theme.*
 import com.example.mitalk_admin_android.util.theme.base.MiTalkColor
+import com.example.mitalk_admin_android.vm.LoginViewModel
 
 @Composable
 fun LoginScreen(
     navController: NavController,
+    vm: LoginViewModel = hiltViewModel(),
 ) {
     var certificationNumber by remember { mutableStateOf("") }
 
@@ -62,7 +65,7 @@ fun LoginScreen(
             onValueChanged = { certificationNumber = it }
         )
         Spacer(modifier = Modifier.height(11.dp))
-        LoginBtn {  }
+        LoginBtn { vm.signIn(certificationNumber = certificationNumber) }
     }
 }
 
