@@ -12,7 +12,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.example.mitalk_admin_android.R
-import com.example.mitalk_admin_android.util.theme.base.MiTalkColor
 
 internal val notoSansKR = FontFamily(
     Font(R.font.noto_sans_kr_black, FontWeight.Black),
@@ -39,10 +38,31 @@ object MiTalkAdminTypography {
     )
 
     @Stable
+    val regular14NO = TextStyle(
+        fontFamily = notoSansKR,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    )
+
+    @Stable
+    val regular16NO = TextStyle(
+        fontFamily = notoSansKR,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp
+    )
+
+    @Stable
     val bold12NO = TextStyle(
         fontFamily = notoSansKR,
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp
+    )
+
+    @Stable
+    val bold20NO = TextStyle(
+        fontFamily = notoSansKR,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp
     )
 
     @Stable
@@ -70,6 +90,37 @@ fun Regular12NO(
 }
 
 @Composable
+fun Regular14NO(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MiTalkColor.Black,
+    textAlign: TextAlign = TextAlign.Start
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MiTalkAdminTypography.regular14NO,
+        color = color,
+        textAlign = textAlign,
+    )
+}
+
+@Composable
+fun Regular16NO(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MiTalkColor.Black,
+    textAlign: TextAlign = TextAlign.Start
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MiTalkAdminTypography.regular16NO,
+        color = color,
+        textAlign = textAlign,
+    )
+}
+@Composable
 fun Bold12NO(
     modifier: Modifier = Modifier,
     text: String,
@@ -82,6 +133,22 @@ fun Bold12NO(
         style = MiTalkAdminTypography.bold12NO,
         color = color,
         textAlign = textAlign,
+    )
+}
+
+@Composable
+fun Bold20NO(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MiTalkColor.Black,
+    textAlign: TextAlign = TextAlign.Start
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MiTalkAdminTypography.bold20NO,
+        color = color,
+        textAlign = textAlign
     )
 }
 
