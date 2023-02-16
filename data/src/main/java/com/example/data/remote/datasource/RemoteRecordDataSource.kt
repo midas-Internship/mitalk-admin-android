@@ -4,5 +4,5 @@ import com.example.domain.entity.RecordEntity
 
 interface RemoteRecordDataSource {
 
-    suspend fun getRecordList(): RecordEntity
+    suspend fun getRecordList(): List<RecordEntity>
 }
