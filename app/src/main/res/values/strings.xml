@@ -8,4 +8,5 @@
     <!-- 상담사 메인 화면-->
     <string name="can_counsel">현재 상담 가능 상태입니다.</string>
     <string name="can_not_counsel">현재 상담 기능이 꺼져있습니다.</string>
+    <string name="open_record">상담기록 열람</string>
 </resources>
