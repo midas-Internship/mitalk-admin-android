@@ -25,7 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.util.miClickable
 import com.example.mitalk_admin_android.util.theme.*
-import com.example.mitalk_admin_android.util.theme.base.MiTalkColor
+import com.example.mitalk_admin_android.util.theme.MiTalkColor
 import com.example.mitalk_admin_android.vm.LoginViewModel
 
 @Composable

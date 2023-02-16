@@ -22,5 +22,11 @@ class MiTalkIcon private constructor(
             drawableId = R.drawable.comma,
             contentDescription = "comma",
         )
+
+        @Stable
+        val Back = MiTalkIcon(
+            drawableId = R.drawable.back,
+            contentDescription = "back"
+        )
     }
 }

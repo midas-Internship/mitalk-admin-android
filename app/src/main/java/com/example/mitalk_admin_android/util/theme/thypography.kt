@@ -12,7 +12,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.example.mitalk_admin_android.R
-import com.example.mitalk_admin_android.util.theme.base.MiTalkColor
 
 internal val notoSansKR = FontFamily(
     Font(R.font.noto_sans_kr_black, FontWeight.Black),
@@ -36,6 +35,13 @@ object MiTalkAdminTypography {
         fontFamily = notoSansKR,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp
+    )
+
+    @Stable
+    val regular14NO = TextStyle(
+        fontFamily = notoSansKR,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
     )
 
     @Stable
@@ -64,6 +70,22 @@ fun Regular12NO(
         modifier = modifier,
         text = text,
         style = MiTalkAdminTypography.regular12NO,
+        color = color,
+        textAlign = textAlign,
+    )
+}
+
+@Composable
+fun Regular14NO(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MiTalkColor.Black,
+    textAlign: TextAlign = TextAlign.Start
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MiTalkAdminTypography.regular14NO,
         color = color,
         textAlign = textAlign,
     )
