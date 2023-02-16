@@ -23,11 +23,6 @@ android {
             "SOCKET_URL",
             gradleLocalProperties(rootDir).getProperty("SOCKET_URL")
         )
-        buildConfigField(
-            "String",
-            "CLIENT_ID",
-            gradleLocalProperties(rootDir).getProperty("CLIENT_ID")
-        )
     }
 
     buildTypes {
@@ -74,6 +69,8 @@ dependencies {
 
     implementation(Dependency.AndroidX.CORE_KTX)
     implementation(Dependency.AndroidX.LIFECYCLE)
+
+    implementation(Dependency.Retrofit.RETROFIT_CONVERTER_GSON)
 
     implementation(Dependency.Compose.Activity)
     implementation(Dependency.Compose.UI)
