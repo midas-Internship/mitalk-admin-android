@@ -1,5 +1,6 @@
 package com.example.mitalk_admin_android.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,16 +24,32 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mitalk_admin_android.R
+import com.example.mitalk_admin_android.mvi.LoginSideEffect
 import com.example.mitalk_admin_android.util.miClickable
+import com.example.mitalk_admin_android.util.observeWithLifecycle
 import com.example.mitalk_admin_android.util.theme.*
 import com.example.mitalk_admin_android.util.theme.base.MiTalkColor
 import com.example.mitalk_admin_android.vm.LoginViewModel
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@OptIn(InternalCoroutinesApi::class)
 @Composable
 fun LoginScreen(
     navController: NavController,
     vm: LoginViewModel = hiltViewModel(),
 ) {
+    val container = vm.container
+    val state = container.stateFlow.collectAsState().value
+    val sideEffect = container.sideEffectFlow
+
+    sideEffect.observeWithLifecycle {
+        when (it) {
+            LoginSideEffect.LoginSuccess -> {
+                Log.d("TAG", "success")
+            }
+        }
+    }
+
     var certificationNumber by remember { mutableStateOf("") }
 
     Column(

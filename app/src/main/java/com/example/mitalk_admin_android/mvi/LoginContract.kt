@@ -5,5 +5,5 @@ data class LoginState(
 )
 
 sealed class LoginSideEffect {
-
+    object LoginSuccess : LoginSideEffect()
 }
