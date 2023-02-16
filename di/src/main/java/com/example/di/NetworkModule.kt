@@ -1,6 +1,8 @@
 package com.example.di
 
+import android.icu.text.AlphabeticIndex.Record
 import android.util.Log
+import com.example.data.remote.api.RecordAPi
 import com.example.data.remote.api.SignInApi
 import com.example.data.remote.interceptor.AuthorizationInterceptor
 import dagger.Module
@@ -46,4 +48,10 @@ object NetworkModule {
         retrofit: Retrofit
     ): SignInApi =
         retrofit.create(SignInApi::class.java)
+
+    @Provides
+    fun provideRecordApi(
+        retrofit: Retrofit
+    ): RecordAPi =
+        retrofit.create(RecordAPi::class.java)
 }
