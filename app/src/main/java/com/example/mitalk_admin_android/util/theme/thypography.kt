@@ -45,6 +45,13 @@ object MiTalkAdminTypography {
     )
 
     @Stable
+    val regular16NO = TextStyle(
+        fontFamily = notoSansKR,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp
+    )
+
+    @Stable
     val bold12NO = TextStyle(
         fontFamily = notoSansKR,
         fontWeight = FontWeight.Bold,
@@ -98,6 +105,21 @@ fun Regular14NO(
     )
 }
 
+@Composable
+fun Regular16NO(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MiTalkColor.Black,
+    textAlign: TextAlign = TextAlign.Start
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MiTalkAdminTypography.regular16NO,
+        color = color,
+        textAlign = textAlign,
+    )
+}
 @Composable
 fun Bold12NO(
     modifier: Modifier = Modifier,
