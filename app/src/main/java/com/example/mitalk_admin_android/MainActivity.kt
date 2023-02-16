@@ -16,7 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mitalk_admin_android.sample.ui.SampleScreen
-import com.example.mitalk_admin_android.sample.ui.admin.AdminMainScreen
+import com.example.mitalk_admin_android.ui.admin.AdminMainScreen
 import com.example.mitalk_admin_android.ui.LoginScreen
 import com.example.mitalk_admin_android.util.theme.MitalkadminandroidTheme
 import dagger.hilt.android.AndroidEntryPoint
