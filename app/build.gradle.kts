@@ -23,11 +23,6 @@ android {
             "SOCKET_URL",
             gradleLocalProperties(rootDir).getProperty("SOCKET_URL")
         )
-        buildConfigField(
-            "String",
-            "CLIENT_ID",
-            gradleLocalProperties(rootDir).getProperty("CLIENT_ID")
-        )
     }
 
     buildTypes {
