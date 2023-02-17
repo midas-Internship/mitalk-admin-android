@@ -122,7 +122,7 @@ private fun AdminThirdList(navController: NavController) {
                 content = stringResource(id = R.string.admin_user_care_content),
                 icon = painterResource(id = MiTalkIcon.User_Icon.drawableId)
             ) {
-
+                navController.navigate(AppNavigationItem.AdminUserCare.route)
             }
             AdminListLine()
             AdminItem(
