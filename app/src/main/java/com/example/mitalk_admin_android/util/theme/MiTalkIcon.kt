@@ -57,5 +57,42 @@ class MiTalkIcon private constructor(
             drawableId = R.drawable.img_counsellor_open_record,
             contentDescription = "counsellor open record"
         )
+
+        @Stable
+        val Question_Icon = MiTalkIcon(
+            drawableId = R.drawable.icon_question,
+            contentDescription = "question icon"
+        )
+
+        @Stable
+        val Graph_Icon = MiTalkIcon(
+            drawableId = R.drawable.icon_graph,
+            contentDescription = "graph icon"
+        )
+
+        @Stable
+        val Issued_Icon = MiTalkIcon(
+            drawableId = R.drawable.icon_issued,
+            contentDescription = "issued icon"
+        )
+
+        @Stable
+        val User_Icon = MiTalkIcon(
+            drawableId = R.drawable.icon_user,
+            contentDescription = "use icon"
+        )
+
+        @Stable
+        val Message_Record_Icon = MiTalkIcon(
+            drawableId = R.drawable.icon_message_record,
+            contentDescription = "message record icon"
+        )
+
+        @Stable
+        val Logout_Icon = MiTalkIcon(
+            drawableId = R.drawable.icon_logout,
+            contentDescription = "logout icon"
+        )
+
     }
 }

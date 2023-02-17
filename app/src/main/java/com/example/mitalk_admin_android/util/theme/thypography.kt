@@ -31,6 +31,20 @@ internal val gmartketSans = FontFamily(
 object MiTalkAdminTypography {
 
     @Stable
+    val light20NO = TextStyle(
+        fontFamily = notoSansKR,
+        fontWeight = FontWeight.Light,
+        fontSize = 20.sp
+    )
+
+    @Stable
+    val regular10NO = TextStyle(
+        fontFamily = notoSansKR,
+        fontWeight = FontWeight.Normal,
+        fontSize = 10.sp
+    )
+
+    @Stable
     val regular12NO = TextStyle(
         fontFamily = notoSansKR,
         fontWeight = FontWeight.Normal,
@@ -52,6 +66,13 @@ object MiTalkAdminTypography {
     )
 
     @Stable
+    val regular25NO = TextStyle(
+        fontFamily = notoSansKR,
+        fontWeight = FontWeight.Normal,
+        fontSize = 25.sp
+    )
+
+    @Stable
     val bold12NO = TextStyle(
         fontFamily = notoSansKR,
         fontWeight = FontWeight.Bold,
@@ -70,6 +91,38 @@ object MiTalkAdminTypography {
         fontFamily = gmartketSans,
         fontWeight = FontWeight.Medium,
         fontSize = 21.sp,
+    )
+}
+
+@Composable
+fun Light20NO(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MiTalkColor.Black,
+    textAlign: TextAlign = TextAlign.Start
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MiTalkAdminTypography.light20NO,
+        color = color,
+        textAlign = textAlign
+    )
+}
+
+@Composable
+fun Regular10NO(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MiTalkColor.Black,
+    textAlign: TextAlign = TextAlign.Start,
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MiTalkAdminTypography.regular10NO,
+        color = color,
+        textAlign = textAlign,
     )
 }
 
@@ -116,6 +169,22 @@ fun Regular16NO(
         modifier = modifier,
         text = text,
         style = MiTalkAdminTypography.regular16NO,
+        color = color,
+        textAlign = textAlign,
+    )
+}
+
+@Composable
+fun Regular25NO(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MiTalkColor.Black,
+    textAlign: TextAlign = TextAlign.Start,
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MiTalkAdminTypography.regular25NO,
         color = color,
         textAlign = textAlign,
     )
