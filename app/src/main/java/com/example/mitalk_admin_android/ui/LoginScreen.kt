@@ -24,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mitalk_admin_android.AppNavigationItem
+import com.example.mitalk_admin_android.DeepLinkKey
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.mvi.LoginSideEffect
 import com.example.mitalk_admin_android.util.miClickable
@@ -50,6 +51,7 @@ fun LoginScreen(
                 if (it.role == "ADMIN") {
                     navController.navigate(
                         route = AppNavigationItem.AdminMain.route
+                                + DeepLinkKey.KEY + it.key
                     ) {
                         popUpTo(0)
                     }

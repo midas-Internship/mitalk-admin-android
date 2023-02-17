@@ -5,5 +5,5 @@ data class LoginState(
 )
 
 sealed class LoginSideEffect {
-    data class LoginSuccess(val role: String) : LoginSideEffect()
+    data class LoginSuccess(val role: String, val key: String) : LoginSideEffect()
 }

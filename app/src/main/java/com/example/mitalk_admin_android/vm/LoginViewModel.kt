@@ -36,7 +36,12 @@ class LoginViewModel @Inject constructor(
            loginUseCase(
                certificationNumber = certificationNumber
            ).onSuccess {
-               postSideEffect(LoginSideEffect.LoginSuccess(it.role))
+               postSideEffect(
+                   LoginSideEffect.LoginSuccess(
+                       role = it.role,
+                       key = certificationNumber,
+                   )
+               )
            }.onFailure {
                 when (it) {
                     is BadRequestException -> Log.d("TAG","BadRequest")
