@@ -2,6 +2,7 @@ package com.example.di
 
 import android.icu.text.AlphabeticIndex.Record
 import android.util.Log
+import com.example.data.remote.api.FileApi
 import com.example.data.remote.api.RecordAPi
 import com.example.data.remote.api.SignInApi
 import com.example.data.remote.interceptor.AuthorizationInterceptor
@@ -51,4 +52,10 @@ object NetworkModule {
         retrofit: Retrofit
     ): RecordAPi =
         retrofit.create(RecordAPi::class.java)
+
+    @Provides
+    fun provideFileApi(
+        retrofit: Retrofit
+    ): FileApi =
+        retrofit.create(FileApi::class.java)
 }
