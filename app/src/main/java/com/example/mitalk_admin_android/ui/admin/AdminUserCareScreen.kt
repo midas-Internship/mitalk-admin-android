@@ -57,13 +57,19 @@ fun AdminUserCareScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             itemsIndexed(state.userList) { index, item ->
-                AdminUserCareItem(
-                    id = item.id,
-                    name = item.name,
-                    email = item.email,
-                    session = item.session,
-                    index = index
-                )
+                if(
+                    item.id.contains(searchText)
+                    || item.name.contains(searchText)
+                    || item.email.contains(searchText)
+                ) {
+                    AdminUserCareItem(
+                        id = item.id,
+                        name = item.name,
+                        email = item.email,
+                        session = item.session,
+                        index = index
+                    )
+                }
             }
         }
     }
