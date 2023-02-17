@@ -1,5 +1,8 @@
 package com.example.mitalk_admin_android.ui.admin
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -7,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,6 +42,8 @@ fun AdminIssuedItem(
     state: String,
     deletePressed: (String) -> Unit
 ) {
+    val context = LocalContext.current
+
     val keyColor = when (state) {
         "on" -> Color(0xFF56A470)
         "off" -> Color(0xFFD43333)
@@ -78,7 +84,9 @@ fun AdminIssuedItem(
         )
         IconButton(
             onClick = {
-                
+                (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(
+                    ClipData.newPlainText("key:", key)
+                )
             },
             modifier = Modifier
                 .fillMaxWidth()
