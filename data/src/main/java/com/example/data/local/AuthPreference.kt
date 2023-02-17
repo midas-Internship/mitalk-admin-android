@@ -1,6 +1,6 @@
 package com.example.data.local
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 interface AuthPreference {
 
@@ -16,9 +16,9 @@ interface AuthPreference {
 
     suspend fun clearRefreshToken()
 
-    suspend fun saveExpirationAt(expiredAt: LocalDateTime)
+    suspend fun saveExpirationAt(expiredAt: ZonedDateTime)
 
-    suspend fun fetchExpirationAt(): LocalDateTime
+    suspend fun fetchExpirationAt(): ZonedDateTime
 
     suspend fun clearExpirationAt()
 }
