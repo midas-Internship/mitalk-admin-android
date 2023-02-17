@@ -71,12 +71,14 @@ suspend inline fun <T> miTalkApiCall(
         throw NoInternetException()
     } catch (e: NoConnectivityException) {
         throw NoConnectivityException()
+    } catch (e: IllegalArgumentException) {
+        throw BadRequestException(message = null)
     } catch (e: Exception) {
-        throw UnknownException(
-            message = e.message,
-        )
+            throw UnknownException(
+                message = e.message,
+            )
+        }
     }
-}
 
 private data class ErrorResponse(
     @field:SerializedName("status")
