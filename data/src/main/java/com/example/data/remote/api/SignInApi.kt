@@ -12,6 +12,6 @@ interface SignInApi {
 
     @POST("/auth/signin")
     suspend fun signIn(
-        @Body signInRequest: SignInRequest ,
+        @Body signInRequest: SignInRequest,
     ): SignInResponse
 }

@@ -16,6 +16,7 @@ import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
@@ -33,7 +34,7 @@ class LoginViewModel @Inject constructor(
            loginUseCase(
                certificationNumber = certificationNumber
            ).onSuccess {
-                postSideEffect(LoginSideEffect.LoginSuccess)
+                reduce { state.copy(role = it.role) }
            }.onFailure {
                 when (it) {
                     is BadRequestException -> Log.d("TAG","BadRequest")

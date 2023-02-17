@@ -49,9 +49,9 @@ class AuthorizationInterceptor @Inject constructor(
                 runBlocking {
                     authPreference.saveAccessToken(token.access_token)
                     authPreference.saveRefreshToken(token.refresh_token)
-                    authPreference.saveExpirationAt(LocalDateTime.parse(token.expiration_at))
+                    authPreference.saveExpirationAt(LocalDateTime.parse(token.access_exp))
                 }
-            }
+            } else throw NeedLoginException()
         }
 
         val accessToken = runBlocking { authPreference.fetchAccessToken() }

@@ -43,11 +43,12 @@ fun LoginScreen(
     val sideEffect = container.sideEffectFlow
 
     sideEffect.observeWithLifecycle {
-        when (it) {
-            LoginSideEffect.LoginSuccess -> {
-                Log.d("TAG", "success")
-            }
-        }
+    }
+
+    if (state.role == "COUNSELLOR") {
+        Log.d("TAG", "counsellor")
+    } else if (state.role == "ADMIN") {
+        Log.d("TAG", "admin")
     }
 
     var certificationNumber by remember { mutableStateOf("") }
