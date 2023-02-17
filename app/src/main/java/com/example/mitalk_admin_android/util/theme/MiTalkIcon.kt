@@ -30,6 +30,42 @@ class MiTalkIcon private constructor(
         )
 
         @Stable
+        val Plus = MiTalkIcon(
+            drawableId = R.drawable.ic_plus,
+            contentDescription = "plus"
+        )
+
+        @Stable
+        val Send = MiTalkIcon(
+            drawableId = R.drawable.ic_send,
+            contentDescription = "send"
+        )
+
+        @Stable
+        val Picture = MiTalkIcon(
+            drawableId = R.drawable.ic_picture,
+            contentDescription = "picture"
+        )
+
+        @Stable
+        val Video = MiTalkIcon(
+            drawableId = R.drawable.ic_video,
+            contentDescription = "video"
+        )
+
+        @Stable
+        val Document = MiTalkIcon(
+            drawableId = R.drawable.ic_document,
+            contentDescription = "document"
+        )
+
+        @Stable
+        val Client = MiTalkIcon(
+            drawableId = R.drawable.ic_client,
+            contentDescription = "client"
+        )
+
+        @Stable
         val Logo = MiTalkIcon(
             drawableId = R.drawable.img_logo,
             contentDescription = "logo"
