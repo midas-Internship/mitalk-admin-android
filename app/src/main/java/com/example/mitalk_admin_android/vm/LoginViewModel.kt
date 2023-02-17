@@ -11,6 +11,8 @@ import com.example.domain.usecase.LoginUseCase
 import com.example.mitalk_admin_android.mvi.LoginSideEffect
 import com.example.mitalk_admin_android.mvi.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -34,7 +36,7 @@ class LoginViewModel @Inject constructor(
            loginUseCase(
                certificationNumber = certificationNumber
            ).onSuccess {
-                reduce { state.copy(role = it.role) }
+               postSideEffect(LoginSideEffect.LoginSuccess(it.role))
            }.onFailure {
                 when (it) {
                     is BadRequestException -> Log.d("TAG","BadRequest")
@@ -43,5 +45,9 @@ class LoginViewModel @Inject constructor(
                 }
            }
        }
+    }
+
+    fun inputCertificationNumber(certificationNumber: String) = intent {
+        reduce { state.copy(certificationNumber = certificationNumber) }
     }
 }
