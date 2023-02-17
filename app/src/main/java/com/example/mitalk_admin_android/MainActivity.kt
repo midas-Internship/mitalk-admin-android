@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,8 +19,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mitalk_admin_android.sample.ui.SampleScreen
 import com.example.mitalk_admin_android.ui.admin.AdminMainScreen
 import com.example.mitalk_admin_android.ui.LoginScreen
+import com.example.mitalk_admin_android.ui.chat.ChatScreen
 import com.example.mitalk_admin_android.ui.counsellor.CounsellorMainScreen
 import com.example.mitalk_admin_android.util.theme.MitalkadminandroidTheme
+import com.example.mitalk_admin_android.vm.ChatViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,6 +40,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun BaseApp(navController: NavHostController) {
+    val viewModel = viewModel<ChatViewModel>()
 
     NavHost(navController = navController, startDestination = AppNavigationItem.Login.route) {
         composable(AppNavigationItem.Login.route) {
@@ -46,7 +50,10 @@ fun BaseApp(navController: NavHostController) {
             AdminMainScreen(navController = navController)
         }
         composable(AppNavigationItem.CounsellorMain.route) {
-            CounsellorMainScreen(navController = navController)
+            CounsellorMainScreen(navController = navController, vm = viewModel)
+        }
+        composable(AppNavigationItem.Chat.route) {
+            ChatScreen(navController = navController, vm = viewModel)
         }
     }
 }
@@ -57,4 +64,6 @@ sealed class AppNavigationItem(val route: String) {
     object AdminMain : AppNavigationItem("AdminMain")
 
     object CounsellorMain : AppNavigationItem("CounsellorMain")
+
+    object Chat : AppNavigationItem("Chat")
 }
