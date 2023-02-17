@@ -45,7 +45,7 @@ fun AdminHeader(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp)
+            .padding(end = 12.dp)
             .height(56.dp)
             .background(
                 color = MiTalkColor.Gray
