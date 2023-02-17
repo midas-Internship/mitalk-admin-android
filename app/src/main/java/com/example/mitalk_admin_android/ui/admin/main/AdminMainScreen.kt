@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.mitalk_admin_android.AppNavigationItem
 import com.example.mitalk_admin_android.util.miClickable
 import com.example.mitalk_admin_android.util.theme.*
 
@@ -113,7 +114,7 @@ private fun AdminThirdList(navController: NavController) {
                 content = stringResource(id = R.string.admin_account_issued_content),
                 icon = painterResource(id = MiTalkIcon.Issued_Icon.drawableId)
             ) {
-
+                navController.navigate(AppNavigationItem.AdminIssued.route)
             }
             AdminListLine()
             AdminItem(
