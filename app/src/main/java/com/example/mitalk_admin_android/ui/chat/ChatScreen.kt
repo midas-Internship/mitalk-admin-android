@@ -46,14 +46,15 @@ private val ClientChat =
 data class ChatData(
     val text: String,
     val isMe: Boolean,
-    val time: String
+    val time: String,
 )
 
 @OptIn(InternalCoroutinesApi::class)
 @Composable
 fun ChatScreen(
     navController: NavController,
-    vm: ChatViewModel = hiltViewModel()
+    roomId: String,
+    vm: ChatViewModel = hiltViewModel(),
 ) {
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
@@ -84,7 +85,7 @@ fun ChatScreen(
             ChatList(chatList = chatList, chatListState = chatListState)
         }
         ChatInput(sendAction = {
-            state.chatSocket.send("", it)
+            state.chatSocket.send(roomId, it)
             chatList.add(ChatData(text = it, isMe = true, time = LocalTime.now().toString()))
             MainScope().launch {
                 chatListState.scrollToItem(chatList.size - 1)
@@ -128,7 +129,7 @@ fun ChatList(chatList: List<ChatData>, chatListState: LazyListState = rememberLa
 
 @Composable
 fun ChatInput(
-    sendAction: (String) -> Unit
+    sendAction: (String) -> Unit,
 ) {
     var isExpand by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("") }
@@ -206,7 +207,7 @@ fun ChatEditText(value: String, onValueChange: (String) -> Unit, modifier: Modif
 
 @Composable
 fun CounselorChat(
-    item: ChatData
+    item: ChatData,
 ) {
     Row(
         verticalAlignment = Alignment.Bottom
@@ -240,7 +241,7 @@ fun CounselorChat(
 
 @Composable
 fun ClientChat(
-    item: ChatData
+    item: ChatData,
 ) {
     Row(
         verticalAlignment = Alignment.Bottom
@@ -264,7 +265,7 @@ fun ClientChat(
 fun IconButton(
     icon: MiTalkIcon,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(modifier = Modifier
         .width(20.dp)

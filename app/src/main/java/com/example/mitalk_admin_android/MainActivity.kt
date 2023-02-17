@@ -65,7 +65,7 @@ fun BaseApp(navController: NavHostController) {
             )
         ) {
             val roomId = it.arguments?.getString(DeepLinkKey.ROOM_ID) ?: ""
-            ChatScreen(navController = navController, vm = viewModel)
+            ChatScreen(navController = navController, roomId = roomId, vm = viewModel)
         }
     }
 }

@@ -5,8 +5,6 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import okhttp3.*
 import org.json.JSONObject
-import java.time.ZoneId
-import java.util.SimpleTimeZone
 import java.util.UUID
 
 data class SocketType(
@@ -32,7 +30,7 @@ data class ChatData(
 )
 
 class ChatSocket(
-    successAction: () -> Unit = {},
+    successAction: (String) -> Unit = {},
     receiveAction: (String) -> Unit = {},
 ) {
     private lateinit var webSocket: WebSocket
@@ -49,7 +47,7 @@ class ChatSocket(
                 when (gson.fromJson(text, SocketType::class.java).type) {
                     "SYSTEM_3_1" -> {
                         val result = gson.fromJson(text, SuccessRoom::class.java)
-                        successAction()
+                        successAction(result.roomId)
                     }
                     null -> {
                         val data = gson.fromJson(text, ChatData::class.java)

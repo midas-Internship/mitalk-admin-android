@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mitalk_admin_android.AppNavigationItem
+import com.example.mitalk_admin_android.DeepLinkKey
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.mvi.ChatSideEffect
 import com.example.mitalk_admin_android.socket.ChatSocket
@@ -32,7 +33,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @Composable
 fun CounsellorMainScreen(
     navController: NavController,
-    vm: ChatViewModel = hiltViewModel()
+    vm: ChatViewModel = hiltViewModel(),
 ) {
     var counselOnOFF by remember { mutableStateOf(false) }
     val counselorImage =
@@ -51,7 +52,7 @@ fun CounsellorMainScreen(
         vm.getAccessToken()
         vm.setChatSocket(ChatSocket(successAction = {
             waitChatDialog = false
-            vm.successRoom()
+            vm.successRoom(it)
         }, receiveAction = {
             vm.receiveChat(it)
         }))
@@ -59,8 +60,11 @@ fun CounsellorMainScreen(
 
     sideEffect.observeWithLifecycle {
         when (it) {
-            ChatSideEffect.SuccessRoom -> {
-                navController.navigate(AppNavigationItem.Chat.route)
+            is ChatSideEffect.SuccessRoom -> {
+                navController.navigate(
+                    route = AppNavigationItem.Chat.route
+                            + DeepLinkKey.ROOM_ID + it.roomId
+                )
             }
         }
     }
@@ -128,7 +132,7 @@ private val ContentShape = RoundedCornerShape(7.dp)
 private fun MainContent(
     text: String,
     painter: Painter,
-    onPressed: () -> Unit
+    onPressed: () -> Unit,
 ) {
     Row(
         modifier = Modifier
