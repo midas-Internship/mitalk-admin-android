@@ -9,8 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.mitalk_admin_android.util.theme.MiTalkColor
 import com.example.mitalk_admin_android.util.theme.MiTalkIcon
 
@@ -28,7 +30,7 @@ fun AdminMainScreen(
             ) {
 
                 Column {
-
+                    
                 }
                 
                Image(
@@ -50,13 +52,22 @@ private fun AdminContent(
 ) {
     Column(
         modifier = Modifier
+            .fillMaxWidth()
             .background(
                 color = MiTalkColor.White,
                 shape = RoundedCornerShape(18.dp)
             )
+            .padding(horizontal = 16.dp)
     ) {
         Spacer(modifier = Modifier.height(10.dp))
         item()
         Spacer(modifier = Modifier.height(10.dp))
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ShowAdminMainScreen() {
+    val navController = rememberNavController()
+    AdminMainScreen(navController = navController)
 }

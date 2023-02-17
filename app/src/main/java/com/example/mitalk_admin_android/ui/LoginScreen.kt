@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.mitalk_admin_android.AppNavigationItem
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.mvi.LoginSideEffect
 import com.example.mitalk_admin_android.util.miClickable
@@ -31,6 +32,7 @@ import com.example.mitalk_admin_android.util.theme.*
 import com.example.mitalk_admin_android.util.theme.MiTalkColor
 import com.example.mitalk_admin_android.vm.LoginViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 
 @OptIn(InternalCoroutinesApi::class)
 @Composable
@@ -43,15 +45,24 @@ fun LoginScreen(
     val sideEffect = container.sideEffectFlow
 
     sideEffect.observeWithLifecycle {
+        when (it) {
+            is LoginSideEffect.LoginSuccess -> {
+                if (it.role == "ADMIN") {
+                    navController.navigate(
+                        route = AppNavigationItem.AdminMain.route
+                    ) {
+                        popUpTo(0)
+                    }
+                } else if (it.role == "COUNSELLOR") {
+                    navController.navigate(
+                        route = AppNavigationItem.CounsellorMain.route
+                    ) {
+                        popUpTo(0)
+                    }
+                }
+            }
+        }
     }
-
-    if (state.role == "COUNSELLOR") {
-        Log.d("TAG", "counsellor")
-    } else if (state.role == "ADMIN") {
-        Log.d("TAG", "admin")
-    }
-
-    var certificationNumber by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -79,11 +90,11 @@ fun LoginScreen(
         }
         Spacer(modifier = Modifier.height(62.dp))
         LoginTextFiled(
-            value = certificationNumber,
-            onValueChanged = { certificationNumber = it }
+            value = state.certificationNumber,
+            onValueChanged = { vm.inputCertificationNumber(it) }
         )
         Spacer(modifier = Modifier.height(11.dp))
-        LoginBtn { vm.signIn(certificationNumber = certificationNumber) }
+        LoginBtn { vm.signIn(certificationNumber = state.certificationNumber) }
     }
 }
 

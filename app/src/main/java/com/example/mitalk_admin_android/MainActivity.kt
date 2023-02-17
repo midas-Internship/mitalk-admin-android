@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mitalk_admin_android.sample.ui.SampleScreen
 import com.example.mitalk_admin_android.ui.admin.AdminMainScreen
 import com.example.mitalk_admin_android.ui.LoginScreen
+import com.example.mitalk_admin_android.ui.counsellor.CounsellorMainScreen
 import com.example.mitalk_admin_android.util.theme.MitalkadminandroidTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,6 +45,9 @@ fun BaseApp(navController: NavHostController) {
         composable(AppNavigationItem.AdminMain.route) {
             AdminMainScreen(navController = navController)
         }
+        composable(AppNavigationItem.CounsellorMain.route) {
+            CounsellorMainScreen(navController = navController)
+        }
     }
 }
 
@@ -51,4 +55,6 @@ sealed class AppNavigationItem(val route: String) {
     object Login : AppNavigationItem("Login")
 
     object AdminMain : AppNavigationItem("AdminMain")
+
+    object CounsellorMain : AppNavigationItem("CounsellorMain")
 }
