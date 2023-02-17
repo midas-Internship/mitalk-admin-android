@@ -112,5 +112,11 @@ class MiTalkIcon private constructor(
             contentDescription = "copy icon"
         )
 
+        @Stable
+        val Add_Green_Icon = MiTalkIcon(
+            drawableId = R.drawable.icon_add_green,
+            contentDescription = "add icon"
+        )
+
     }
 }

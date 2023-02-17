@@ -4,35 +4,98 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.mitalk_admin_android.ui.admin.header.AdminHeader
 import com.example.mitalk_admin_android.ui.util.bottomBorder
-import com.example.mitalk_admin_android.util.theme.MiTalkColor
-import com.example.mitalk_admin_android.util.theme.MiTalkIcon
-import com.example.mitalk_admin_android.util.theme.Regular12NO
+import com.example.mitalk_admin_android.R
+import com.example.mitalk_admin_android.util.theme.*
+import com.example.mitalk_admin_android.vm.admin.AdminIssuedViewModel
 
 @Composable
 fun AdminIssuedScreen(
-    navController: NavController
+    navController: NavController,
+    vm: AdminIssuedViewModel = hiltViewModel()
 ) {
-    AdminIssuedItem(
-        name = "이름",
-        key = "f13981aa-adca-11ed-afa1-0242ac120002",
-        state = "on"
-    ) {
 
+    val container = vm.container
+    val state = container.stateFlow.collectAsState().value
+    val sideEffect = container.sideEffectFlow
+
+    var addCounsellorName by remember { mutableStateOf("") }
+
+    Column {
+        AdminHeader(
+            navController = navController,
+            title = stringResource(id = R.string.admin_account_issued_title)
+        )
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .bottomBorder(
+                        modifier = Modifier.fillMaxWidth(),
+                        strokeWidth = 1.dp,
+                        color = Color(0x80848484)
+                    ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(
+                    onClick = {  }
+                ) {
+                    Icon(
+                        painter = painterResource(id = MiTalkIcon.Add_Green_Icon.drawableId),
+                        contentDescription = MiTalkIcon.Add_Green_Icon.contentDescription,
+                    )
+                }
+                BasicTextField(
+                    value = addCounsellorName,
+                    onValueChange = { addCounsellorName = it },
+                    textStyle = MiTalkAdminTypography.regular14NO,
+                    decorationBox = @Composable {
+                        it()
+                        if (addCounsellorName.isEmpty()) {
+                            Regular14NO(
+                                text = stringResource(id = R.string.input_name),
+                                color = Color(0xFF959595)
+                            )
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            LazyColumn {
+                items(state.counsellorList) { item ->
+                    AdminIssuedItem(
+                        name = item.name,
+                        key = item.counsellorId,
+                        state = item.status,
+                        deletePressed = { vm.deleteCounsellor(item.counsellorId) }
+                    )
+                }
+            }
+        }
     }
+
 }
 
 @Composable
