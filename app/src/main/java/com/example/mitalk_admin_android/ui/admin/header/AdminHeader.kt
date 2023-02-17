@@ -3,6 +3,8 @@ package com.example.mitalk_admin_android.ui.admin.header
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.TextField
@@ -13,13 +15,17 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.mitalk_admin_android.util.theme.MiTalkAdminTypography
 import com.example.mitalk_admin_android.util.theme.MiTalkColor
 import com.example.mitalk_admin_android.util.theme.MiTalkIcon
 import com.example.mitalk_admin_android.util.theme.Regular14NO
@@ -57,9 +63,19 @@ fun AdminHeader(
         }
 
         if (findOn || findText.isNotEmpty()) {
-            TextField(
+            BasicTextField(
                 value = findText,
                 onValueChange = { findText = it },
+                textStyle = MiTalkAdminTypography.regular14NO,
+                decorationBox = @Composable {
+                    it()
+                    if (findText.isEmpty()) {
+                        Regular14NO(
+                            text = "검색어를 입력해주세요.",
+                            color = Color(0xFFA5A4A4)
+                        )
+                    }
+                }
             )
         } else {
             Regular14NO(text = title)
