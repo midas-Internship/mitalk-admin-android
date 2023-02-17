@@ -4,6 +4,7 @@ import com.example.mitalk_admin_android.BuildConfig
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import okhttp3.*
+import org.json.JSONObject
 import java.time.ZoneId
 import java.util.SimpleTimeZone
 import java.util.UUID
@@ -31,14 +32,13 @@ data class ChatData(
 )
 
 class ChatSocket(
-    failAction: () -> Unit = {},
-    waitingAction: (String) -> Unit = {},
-    successAction: (String) -> Unit = {},
+    successAction: () -> Unit = {},
     receiveAction: (String) -> Unit = {},
 ) {
     private lateinit var webSocket: WebSocket
     private lateinit var request: Request
     private lateinit var client: OkHttpClient
+    private lateinit var receiveAction: (String) -> Unit
     private val listener: WebSocketListener
 
     init {
@@ -49,7 +49,7 @@ class ChatSocket(
                 when (gson.fromJson(text, SocketType::class.java).type) {
                     "SYSTEM_3_1" -> {
                         val result = gson.fromJson(text, SuccessRoom::class.java)
-                        successAction(result.roomId)
+                        successAction()
                     }
                     null -> {
                         val data = gson.fromJson(text, ChatData::class.java)
@@ -60,7 +60,7 @@ class ChatSocket(
                             chatMessageType = data.chatMessageType,
                             message = data.message
                         )
-                        receiveAction(text)
+                        receiveAction(result.message)
                     }
                 }
             }
@@ -73,13 +73,14 @@ class ChatSocket(
     }
 
     fun send(roomId: String, text: String) {
-        val data = ChatData(
-            roomId = roomId,
-            messageId = UUID.randomUUID().toString(),
-            chatMessageType = "SEND",
-            role = "CUSTOMER",
-            message = text,
-        )
+        val data = JSONObject().apply {
+            put("room_id", roomId)
+            put("message_id", UUID.randomUUID())
+            put("chat_message_type", "SEND")
+            put("role", "COUNSELLOR")
+            put("message", text)
+        }
+
         webSocket.send(data.toString())
     }
 
