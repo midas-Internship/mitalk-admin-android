@@ -17,13 +17,18 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.mitalk_admin_android.AppNavigationItem
 import com.example.mitalk_admin_android.R
+import com.example.mitalk_admin_android.mvi.ChatSideEffect
 import com.example.mitalk_admin_android.socket.ChatSocket
 import com.example.mitalk_admin_android.ui.util.MiHeader
 import com.example.mitalk_admin_android.util.miClickable
+import com.example.mitalk_admin_android.util.observeWithLifecycle
 import com.example.mitalk_admin_android.util.theme.*
 import com.example.mitalk_admin_android.vm.ChatViewModel
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@OptIn(InternalCoroutinesApi::class)
 @Composable
 fun CounsellorMainScreen(
     navController: NavController,
@@ -36,6 +41,7 @@ fun CounsellorMainScreen(
     val counselorStateText =
         if (counselOnOFF) stringResource(id = R.string.can_counsel)
         else stringResource(id = R.string.can_not_counsel)
+    var waitChatDialog by remember { mutableStateOf(false) }
 
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
@@ -43,7 +49,20 @@ fun CounsellorMainScreen(
 
     LaunchedEffect(Unit) {
         vm.getAccessToken()
-        vm.setChatSocket(ChatSocket())
+        vm.setChatSocket(ChatSocket(successAction = {
+            waitChatDialog = false
+            vm.successRoom()
+        }, receiveAction = {
+            vm.receiveChat(it)
+        }))
+    }
+
+    sideEffect.observeWithLifecycle {
+        when (it) {
+            ChatSideEffect.SuccessRoom -> {
+                navController.navigate(AppNavigationItem.Chat.route)
+            }
+        }
     }
 
     Column(

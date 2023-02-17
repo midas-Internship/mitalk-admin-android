@@ -8,5 +8,6 @@ data class ChatState(
 )
 
 sealed class ChatSideEffect {
-
+    data class ReceiveChat(val chat: String): ChatSideEffect()
+    object SuccessRoom: ChatSideEffect()
 }
