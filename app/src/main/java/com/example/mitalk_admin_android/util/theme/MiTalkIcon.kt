@@ -94,5 +94,11 @@ class MiTalkIcon private constructor(
             contentDescription = "logout icon"
         )
 
+        @Stable
+        val Find_Icon = MiTalkIcon(
+            drawableId = R.drawable.icon_find,
+            contentDescription = "find icon"
+        )
+
     }
 }
