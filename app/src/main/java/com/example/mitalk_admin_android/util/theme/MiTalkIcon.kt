@@ -100,5 +100,17 @@ class MiTalkIcon private constructor(
             contentDescription = "find icon"
         )
 
+        @Stable
+        val Cancel_Icon = MiTalkIcon(
+            drawableId = R.drawable.icon_cancel,
+            contentDescription = "cancel icon"
+        )
+
+        @Stable
+        val Copy_Icon = MiTalkIcon(
+            drawableId = R.drawable.icon_copy,
+            contentDescription = "copy icon"
+        )
+
     }
 }

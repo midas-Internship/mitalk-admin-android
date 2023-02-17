@@ -36,8 +36,8 @@ fun AdminHeader(
     title: String,
     findOn: Boolean = false,
     findEnabled: Boolean = true,
-    findOnPressed: (String) -> Unit,
-    findOnRequest: () -> Unit
+    findOnPressed: (String) -> Unit = {},
+    findOnRequest: () -> Unit = {}
 ) {
     var findText by remember { mutableStateOf("") }
 
