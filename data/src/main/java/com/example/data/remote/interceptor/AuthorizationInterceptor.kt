@@ -14,6 +14,7 @@ import okhttp3.Response
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class AuthorizationInterceptor @Inject constructor(
@@ -28,7 +29,7 @@ class AuthorizationInterceptor @Inject constructor(
         if (ignorePath.contains(path)) return chain.proceed(request)
 
         val expiredAt = runBlocking { authPreference.fetchExpirationAt() }
-        val currentTime = LocalDateTime.now(ZoneId.systemDefault())
+        val currentTime = ZonedDateTime.now(ZoneId.systemDefault())
 
         if (expiredAt.isBefore(currentTime)) {
             val client = OkHttpClient()
@@ -49,7 +50,7 @@ class AuthorizationInterceptor @Inject constructor(
                 runBlocking {
                     authPreference.saveAccessToken(token.access_token)
                     authPreference.saveRefreshToken(token.refresh_token)
-                    authPreference.saveExpirationAt(LocalDateTime.parse(token.access_exp))
+                    authPreference.saveExpirationAt(ZonedDateTime.parse(token.access_exp))
                 }
             } else throw NeedLoginException()
         }

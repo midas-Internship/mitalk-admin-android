@@ -13,9 +13,9 @@ abstract class RemoteDataSourceModule {
 
     @Singleton
     @Binds
-    abstract fun provideLoginDataSource(
-        remoteLoginDataSourceImpl: RemoteLoginDataSourceImpl
-    ): RemoteLoginDataSource
+    abstract fun provideAuthDataSource(
+        remoteLoginDataSourceImpl: RemoteAuthDataSourceImpl
+    ): RemoteAuthDataSource
 
     @Singleton
     @Binds
