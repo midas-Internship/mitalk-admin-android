@@ -34,6 +34,7 @@ import com.example.mitalk_admin_android.util.theme.Regular14NO
 fun AdminHeader(
     navController: NavController,
     title: String,
+    hint: String = "",
     findOn: Boolean = false,
     findEnabled: Boolean = true,
     findOnPressed: (String) -> Unit = {},
@@ -65,13 +66,16 @@ fun AdminHeader(
         if (findOn || findText.isNotEmpty()) {
             BasicTextField(
                 value = findText,
-                onValueChange = { findText = it },
+                onValueChange = {
+                    findText = it
+                    findOnPressed(it)
+                },
                 textStyle = MiTalkAdminTypography.regular14NO,
                 decorationBox = @Composable {
                     it()
                     if (findText.isEmpty()) {
                         Regular14NO(
-                            text = "검색어를 입력해주세요.",
+                            text = hint,
                             color = Color(0xFFA5A4A4)
                         )
                     }
@@ -84,8 +88,7 @@ fun AdminHeader(
         if (findEnabled) {
             IconButton(
                 onClick = {
-                    if (findOn) { findOnPressed(findText) }
-                    else { findOnRequest() }
+                    findOnRequest()
                 },
                 modifier = Modifier
                     .fillMaxWidth()

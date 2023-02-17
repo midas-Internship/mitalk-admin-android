@@ -3,6 +3,7 @@
     <string name="main">메인</string>
     <string name="logout">로그아웃</string>
     <string name="input_name">이름을 입력하세요.</string>
+    <string name="input_search_name">검색할 이름을 입력해주세요.</string>
 
     <!--로그인 화면-->
     <string name="input_certification_number">인증번호를 입력해주세요.</string>
