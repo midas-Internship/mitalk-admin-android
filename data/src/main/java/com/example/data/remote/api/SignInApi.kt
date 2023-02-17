@@ -1,5 +1,6 @@
 package com.example.data.remote.api
 
+import com.example.data.remote.request.SignInRequest
 import com.example.data.remote.response.SignInResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -9,8 +10,8 @@ import retrofit2.http.Query
 
 interface SignInApi {
 
-    @GET("signIn")
+    @POST("/auth/signin")
     suspend fun signIn(
-        @Query("certification-number") certificationNumber: String,
+        @Body signInRequest: SignInRequest,
     ): SignInResponse
 }
