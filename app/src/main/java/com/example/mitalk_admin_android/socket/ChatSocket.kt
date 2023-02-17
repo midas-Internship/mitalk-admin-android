@@ -2,6 +2,7 @@ package com.example.mitalk_admin_android.socket
 
 import com.example.mitalk_admin_android.BuildConfig
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import okhttp3.*
 import java.time.ZoneId
 import java.util.SimpleTimeZone
@@ -11,26 +12,22 @@ data class SocketType(
     val type: String?
 )
 
-data class FailWaitingRoom(
-    val message: String
-)
-
-data class WaitingRoom(
-    val order: String,
-    val message: String
-)
-
 data class SuccessRoom(
+    @SerializedName("room_id")
     val roomId: String,
 )
 
 data class ChatData(
+    @SerializedName("room_id")
     val roomId: String,
+    @SerializedName("message_id")
     val messageId: String,
+    @SerializedName("role")
     val role: String,
+    @SerializedName("chat_message_type")
     val chatMessageType: String,
-    val message: String,
-    val sendTime: String
+    @SerializedName("message")
+    val message: String
 )
 
 class ChatSocket(
@@ -46,23 +43,10 @@ class ChatSocket(
 
     init {
         listener = object : WebSocketListener() {
-            override fun onOpen(webSocket: WebSocket, response: Response) {
-                super.onOpen(webSocket, response)
-                println("안녕 소켓 열림")
-            }
             override fun onMessage(webSocket: WebSocket, text: String) {
                 super.onMessage(webSocket, text)
-                println("안녕 $text")
                 val gson = Gson()
                 when (gson.fromJson(text, SocketType::class.java).type) {
-                    "SYSTEM_1_1_1", "SYSTEM_1_2" -> {
-                        val result = gson.fromJson(text, WaitingRoom::class.java)
-                        waitingAction(result.order)
-                    }
-                    "SYSTEM_1_1_2" -> {
-                        gson.fromJson(text, FailWaitingRoom::class.java)
-                        failAction()
-                    }
                     "SYSTEM_3_1" -> {
                         val result = gson.fromJson(text, SuccessRoom::class.java)
                         successAction(result.roomId)
@@ -74,8 +58,7 @@ class ChatSocket(
                             messageId = data.messageId,
                             role = data.role,
                             chatMessageType = data.chatMessageType,
-                            message = data.message,
-                            sendTime = "SimpleTimeZone.getTimeZone(ZoneId.from())"
+                            message = data.message
                         )
                         receiveAction(text)
                     }
@@ -85,11 +68,6 @@ class ChatSocket(
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 super.onFailure(webSocket, t, response)
                 println("안녕 소켓 연결 안됨 $t")
-            }
-
-            override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-                super.onClosed(webSocket, code, reason)
-                println("안녕 소켓 닫아짐")
             }
         }
     }
@@ -101,7 +79,6 @@ class ChatSocket(
             chatMessageType = "SEND",
             role = "CUSTOMER",
             message = text,
-            sendTime = ""
         )
         webSocket.send(data.toString())
     }
