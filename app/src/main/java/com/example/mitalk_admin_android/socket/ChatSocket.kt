@@ -46,8 +46,13 @@ class ChatSocket(
 
     init {
         listener = object : WebSocketListener() {
+            override fun onOpen(webSocket: WebSocket, response: Response) {
+                super.onOpen(webSocket, response)
+                println("안녕 소켓 열림")
+            }
             override fun onMessage(webSocket: WebSocket, text: String) {
                 super.onMessage(webSocket, text)
+                println("안녕 $text")
                 val gson = Gson()
                 when (gson.fromJson(text, SocketType::class.java).type) {
                     "SYSTEM_1_1_1", "SYSTEM_1_2" -> {
@@ -79,7 +84,12 @@ class ChatSocket(
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 super.onFailure(webSocket, t, response)
-                println("소켓 연결 안됨 $t")
+                println("안녕 소켓 연결 안됨 $t")
+            }
+
+            override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                super.onClosed(webSocket, code, reason)
+                println("안녕 소켓 닫아짐")
             }
         }
     }
@@ -96,11 +106,10 @@ class ChatSocket(
         webSocket.send(data.toString())
     }
 
-    fun startSocket(chatType: String, accessToken: String) {
+    fun startSocket(accessToken: String) {
         client = OkHttpClient()
         request = Request.Builder()
             .addHeader("Authorization", "Bearer $accessToken")
-            .addHeader("ChatType", chatType)
             .url(BuildConfig.SOCKET_URL)
             .build()
         webSocket = client.newWebSocket(request, listener)
