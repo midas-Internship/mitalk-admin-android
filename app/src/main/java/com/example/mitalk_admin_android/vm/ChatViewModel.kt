@@ -6,6 +6,7 @@ import com.example.domain.usecase.auth.GetAccessTokenUseCase
 import com.example.mitalk_admin_android.mvi.ChatSideEffect
 import com.example.mitalk_admin_android.mvi.ChatState
 import com.example.mitalk_admin_android.socket.ChatSocket
+import com.example.mitalk_admin_android.ui.chat.ChatData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -35,8 +36,16 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    fun receiveChat(text: String) = intent {
-        postSideEffect(ChatSideEffect.ReceiveChat(text))
+    fun receiveChat(chat: ChatData) = intent {
+        postSideEffect(ChatSideEffect.ReceiveChat(chat))
+    }
+
+    fun receiveChatUpdate(chat: ChatData) = intent {
+        postSideEffect(ChatSideEffect.ReceiveChatUpdate(chat))
+    }
+
+    fun receiveChatDelete(chatId: String) = intent {
+        postSideEffect(ChatSideEffect.ReceiveChatDelete(chatId))
     }
 
     fun successRoom(roomId: String) = intent {

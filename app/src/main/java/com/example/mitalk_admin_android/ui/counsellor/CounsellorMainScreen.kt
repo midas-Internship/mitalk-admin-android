@@ -55,6 +55,10 @@ fun CounsellorMainScreen(
             vm.successRoom(it)
         }, receiveAction = {
             vm.receiveChat(it)
+        }, receiveActionUpdate = {
+            vm.receiveChatUpdate(it)
+        }, receiveActionDelete = {
+            vm.receiveChatDelete(it)
         }))
     }
 
