@@ -101,4 +101,5 @@ dependencies {
 
     implementation(Dependency.Coil.COIL)
 
+    implementation(Dependency.ExoPlayer.EXO_PLAYER)
 }
