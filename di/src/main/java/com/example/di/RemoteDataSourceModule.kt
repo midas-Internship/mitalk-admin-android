@@ -1,6 +1,8 @@
 package com.example.di
 
 import com.example.data.remote.datasource.*
+import com.example.data.remote.datasource.admin.RemoteGetMessageRecordDataSource
+import com.example.data.remote.datasource.admin.RemoteGetMessageRecordDataSourceImpl
 import com.example.data.remote.datasource.admin.RemoteGetUserListDataSource
 import com.example.data.remote.datasource.admin.RemoteGetUserListDataSourceImpl
 import dagger.Binds
@@ -36,4 +38,9 @@ abstract class RemoteDataSourceModule {
     abstract fun provideGetUserListDataSource(
         remoteGetUserListDataSourceImpl: RemoteGetUserListDataSourceImpl
     ): RemoteGetUserListDataSource
+
+    @Binds
+    abstract fun provideGetMessageRecordDataSource(
+        remoteGetMessageRecordDataSourceImpl: RemoteGetMessageRecordDataSourceImpl
+    ): RemoteGetMessageRecordDataSource
 }

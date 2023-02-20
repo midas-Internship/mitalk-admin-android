@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.mitalk_admin_android.util.miClickable
 import com.example.mitalk_admin_android.util.theme.MiTalkAdminTypography
 import com.example.mitalk_admin_android.util.theme.MiTalkColor
 import com.example.mitalk_admin_android.util.theme.MiTalkIcon
@@ -55,7 +56,7 @@ fun AdminHeader(
         IconButton(
             onClick = {
                 navController.popBackStack()
-            }
+            },
         ) {
             Icon(
                 painter = painterResource(id = MiTalkIcon.Back.drawableId),
