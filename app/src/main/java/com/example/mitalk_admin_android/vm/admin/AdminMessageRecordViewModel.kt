@@ -1,5 +1,6 @@
 package com.example.mitalk_admin_android.vm.admin
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.admin.GetMessageRecordListUseCase
