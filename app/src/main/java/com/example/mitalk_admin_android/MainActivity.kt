@@ -18,7 +18,7 @@ import com.example.mitalk_admin_android.ui.admin.usercare.AdminUserCareScreen
 import com.example.mitalk_admin_android.ui.admin.messagerecord.AdminMessageRecordScreen
 import com.example.mitalk_admin_android.ui.chat.ChatScreen
 import com.example.mitalk_admin_android.ui.counsellor.CounsellorMainScreen
-import com.example.mitalk_admin_android.util.theme.MitalkadminandroidTheme
+import com.example.mitalk_admin_android.util.theme.base.MitalkadminandroidTheme
 import com.example.mitalk_admin_android.vm.ChatViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

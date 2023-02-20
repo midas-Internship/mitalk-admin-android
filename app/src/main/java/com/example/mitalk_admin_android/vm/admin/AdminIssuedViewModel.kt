@@ -1,8 +1,10 @@
 package com.example.mitalk_admin_android.vm.admin
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.admin.AddCounsellorUseCase
+import com.example.domain.usecase.admin.DeleteCounsellorUseCase
 import com.example.domain.usecase.admin.GetCounsellorListUseCase
 import com.example.mitalk_admin_android.mvi.admin.AdminIssuedSideEffect
 import com.example.mitalk_admin_android.mvi.admin.AdminIssuedState
@@ -19,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AdminIssuedViewModel @Inject constructor(
     private val getCounsellorListUseCase: GetCounsellorListUseCase,
-    private val addCounsellorUseCase: AddCounsellorUseCase
+    private val addCounsellorUseCase: AddCounsellorUseCase,
+    private val deleteCounsellorUseCase: DeleteCounsellorUseCase,
 ): ContainerHost<AdminIssuedState, AdminIssuedSideEffect>, ViewModel() {
 
     override val container = container<AdminIssuedState, AdminIssuedSideEffect>(AdminIssuedState())
@@ -29,6 +32,7 @@ class AdminIssuedViewModel @Inject constructor(
             getCounsellorListUseCase()
                 .onSuccess {
                     reduce { state.copy(counsellorList = it) }
+                    postSideEffect(AdminIssuedSideEffect.RefreshSuccess)
                 }
         }
     }
@@ -41,10 +45,24 @@ class AdminIssuedViewModel @Inject constructor(
                 .onSuccess {
                      postSideEffect(AdminIssuedSideEffect.StateRefresh)
                 }
+                .onFailure {
+                    postSideEffect(AdminIssuedSideEffect.Fail)
+                }
         }
     }
 
-    fun deleteCounsellor(key: String) {
-
+    fun deleteCounsellor(
+        id: String
+    ) = intent {
+        viewModelScope.launch {
+            deleteCounsellorUseCase(id = id)
+                .onSuccess {
+                    postSideEffect(AdminIssuedSideEffect.StateRefresh)
+                }
+                .onFailure {
+                    Log.d("TAG", "Error: ${it.message}")
+                    postSideEffect(AdminIssuedSideEffect.Fail)
+                }
+        }
     }
 }

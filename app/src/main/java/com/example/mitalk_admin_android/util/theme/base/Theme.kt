@@ -1,10 +1,11 @@
-package com.example.mitalk_admin_android.util.theme
+package com.example.mitalk_admin_android.util.theme.base
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import com.example.mitalk_admin_android.util.theme.*
 
 private val DarkColorPalette = darkColors(
     primary = Purple200,

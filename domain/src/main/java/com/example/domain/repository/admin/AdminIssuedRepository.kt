@@ -6,4 +6,6 @@ interface AdminIssuedRepository {
     suspend fun getCounsellorList(): List<GetAllCounsellorEntity>
 
     suspend fun addCounsellor(name: String)
+
+    suspend fun deleteCounsellor(id: String)
 }

@@ -13,4 +13,7 @@ class AdminIssuedRepositoryImpl @Inject constructor(
 
     override suspend fun addCounsellor(name: String) =
         remoteAdminIssuedDataSource.addCounsellor(name)
+
+    override suspend fun deleteCounsellor(id: String) =
+        remoteAdminIssuedDataSource.deleteCounsellor(id)
 }

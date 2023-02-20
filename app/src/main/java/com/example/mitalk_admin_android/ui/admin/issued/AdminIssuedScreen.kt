@@ -3,6 +3,7 @@ package com.example.mitalk_admin_android.ui.admin.issued
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -48,6 +49,12 @@ fun AdminIssuedScreen(
         when (it) {
             AdminIssuedSideEffect.StateRefresh -> {
                 vm.getCounsellorList()
+            }
+            AdminIssuedSideEffect.Fail -> {
+
+            }
+            AdminIssuedSideEffect.RefreshSuccess -> {
+
             }
         }
     }
