@@ -1,6 +1,7 @@
 package com.example.di
 
 import android.util.Log
+import com.example.data.remote.api.AdminApi
 import com.example.data.remote.api.FileApi
 import com.example.data.remote.api.RecordAPi
 import com.example.data.remote.api.AuthApi
@@ -13,6 +14,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -57,4 +59,10 @@ object NetworkModule {
         retrofit: Retrofit
     ): FileApi =
         retrofit.create(FileApi::class.java)
+
+    @Provides
+    fun provideAdminApi(
+        retrofit: Retrofit
+    ): AdminApi =
+        retrofit.create(AdminApi::class.java)
 }
