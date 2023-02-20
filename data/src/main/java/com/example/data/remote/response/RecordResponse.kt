@@ -6,15 +6,27 @@ import java.time.ZonedDateTime
 import java.util.UUID
 
 data class RecordResponse(
-    @SerializedName("type") val type: String,
-    @SerializedName("name") val name: String,
-    @SerializedName("time") val time: ZonedDateTime,
-    @SerializedName("room_id") val roomId: UUID,
-)
+    @SerializedName("records")
+    val records: List<Record>,
+) {
+    data class Record(
+        @SerializedName("record_id")
+        val recordId: String,
+        @SerializedName("type")
+        val type: String,
+        @SerializedName("counsellor_name")
+        val counsellorName: String,
+        @SerializedName("customer_name")
+        val customerName: String,
+        @SerializedName("start_at")
+        val startTime: String,
+    )
+}
 
-internal fun RecordResponse.toEntity() = RecordEntity(
+fun RecordResponse.Record.toEntity() = RecordEntity(
+    recordId = recordId,
     type = type,
-    name = name,
-    time = time,
-    roomId = roomId
+    counsellorName = counsellorName,
+    customerName = customerName,
+    time = startTime
 )

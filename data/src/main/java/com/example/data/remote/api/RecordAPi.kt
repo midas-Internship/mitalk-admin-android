@@ -6,5 +6,5 @@ import retrofit2.http.GET
 interface RecordAPi {
 
     @GET("/counsellor/record")
-    suspend fun getRecordList(): List<RecordResponse>
+    suspend fun getRecordList(): RecordResponse
 }

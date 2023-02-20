@@ -9,8 +9,8 @@ import javax.inject.Inject
 
 class RemoteRecordDataSourceImpl @Inject constructor(
     private val recordAPi: RecordAPi,
-): RemoteRecordDataSource {
+) : RemoteRecordDataSource {
     override suspend fun getRecordList(): List<RecordEntity> = miTalkApiCall {
-        recordAPi.getRecordList().map { it.toEntity() }
+        recordAPi.getRecordList().records.map { it.toEntity() }
     }
 }
