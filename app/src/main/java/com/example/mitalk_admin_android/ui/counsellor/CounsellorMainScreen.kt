@@ -14,24 +14,64 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.mitalk_admin_android.AppNavigationItem
+import com.example.mitalk_admin_android.DeepLinkKey
 import com.example.mitalk_admin_android.R
+import com.example.mitalk_admin_android.mvi.ChatSideEffect
+import com.example.mitalk_admin_android.socket.ChatSocket
 import com.example.mitalk_admin_android.ui.util.MiHeader
 import com.example.mitalk_admin_android.util.miClickable
+import com.example.mitalk_admin_android.util.observeWithLifecycle
 import com.example.mitalk_admin_android.util.theme.*
+import com.example.mitalk_admin_android.vm.ChatViewModel
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@OptIn(InternalCoroutinesApi::class)
 @Composable
 fun CounsellorMainScreen(
     navController: NavController,
+    vm: ChatViewModel = hiltViewModel(),
 ) {
     var counselOnOFF by remember { mutableStateOf(false) }
     val counselorImage =
         if (counselOnOFF) painterResource(id = MiTalkIcon.Counsellor_On_Img.drawableId)
         else painterResource(id = MiTalkIcon.Counsellor_Off_Img.drawableId)
     val counselorStateText =
-        if(counselOnOFF) stringResource(id = R.string.can_counsel)
+        if (counselOnOFF) stringResource(id = R.string.can_counsel)
         else stringResource(id = R.string.can_not_counsel)
+    var waitChatDialog by remember { mutableStateOf(false) }
+
+    val container = vm.container
+    val state = container.stateFlow.collectAsState().value
+    val sideEffect = container.sideEffectFlow
+
+    LaunchedEffect(Unit) {
+        vm.getAccessToken()
+        vm.setChatSocket(ChatSocket(successAction = {
+            waitChatDialog = false
+            vm.successRoom(it)
+        }, receiveAction = {
+            vm.receiveChat(it)
+        }, receiveActionUpdate = {
+            vm.receiveChatUpdate(it)
+        }, receiveActionDelete = {
+            vm.receiveChatDelete(it)
+        }))
+    }
+
+    sideEffect.observeWithLifecycle {
+        when (it) {
+            is ChatSideEffect.SuccessRoom -> {
+                navController.navigate(
+                    route = AppNavigationItem.Chat.route
+                            + DeepLinkKey.ROOM_ID + it.roomId
+                )
+            }
+        }
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -66,13 +106,18 @@ fun CounsellorMainScreen(
                     rippleEnabled = false
                 ) {
                     counselOnOFF = !counselOnOFF
+                    if (counselOnOFF) {
+                        state.chatSocket.startSocket(state.accessToken)
+                    } else {
+                        state.chatSocket.close()
+                    }
                 }
         )
-        
+
         Spacer(modifier = Modifier.height(12.dp))
 
         Regular14NO(text = counselorStateText)
-        
+
         Spacer(modifier = Modifier.height(40.dp))
 
         MainContent(
@@ -91,7 +136,7 @@ private val ContentShape = RoundedCornerShape(7.dp)
 private fun MainContent(
     text: String,
     painter: Painter,
-    onPressed: () -> Unit
+    onPressed: () -> Unit,
 ) {
     Row(
         modifier = Modifier
