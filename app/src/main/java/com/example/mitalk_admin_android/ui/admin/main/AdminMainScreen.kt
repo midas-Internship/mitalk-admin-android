@@ -1,6 +1,5 @@
-package com.example.mitalk_admin_android.ui.admin
+package com.example.mitalk_admin_android.ui.admin.main
 
-import android.hardware.lights.Light
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -130,7 +129,7 @@ private fun AdminThirdList(navController: NavController) {
                 content = stringResource(id = R.string.admin_message_record_content),
                 icon = painterResource(id = MiTalkIcon.Message_Record_Icon.drawableId)
             ) {
-
+                navController.navigate(AppNavigationItem.AdminMessageRecord.route)
             }
             AdminListLine()
             AdminItem(

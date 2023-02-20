@@ -24,7 +24,7 @@ import com.example.mitalk_admin_android.util.theme.Light13GM
 import com.example.mitalk_admin_android.vm.admin.AdminMessageRecordViewModel
 
 @Composable
-fun MessageRecordScreen(
+fun AdminMessageRecordScreen(
     navController: NavController,
     vm: AdminMessageRecordViewModel = hiltViewModel()
 ) {
@@ -140,5 +140,5 @@ private fun MessageRecordItem(
 fun ShowMessageRecordScreen() {
     val controller = rememberNavController()
 
-    MessageRecordScreen(navController = controller)
+    AdminMessageRecordScreen(navController = controller)
 }

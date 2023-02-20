@@ -11,10 +11,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.mitalk_admin_android.ui.admin.AdminMainScreen
+import com.example.mitalk_admin_android.ui.admin.main.AdminMainScreen
 import com.example.mitalk_admin_android.ui.LoginScreen
 import com.example.mitalk_admin_android.ui.admin.AdminIssuedScreen
 import com.example.mitalk_admin_android.ui.admin.AdminUserCareScreen
+import com.example.mitalk_admin_android.ui.admin.messagerecord.AdminMessageRecordScreen
 import com.example.mitalk_admin_android.ui.chat.ChatScreen
 import com.example.mitalk_admin_android.ui.counsellor.CounsellorMainScreen
 import com.example.mitalk_admin_android.util.theme.MitalkadminandroidTheme
@@ -64,6 +65,9 @@ fun BaseApp(navController: NavHostController) {
         composable(AppNavigationItem.AdminUserCare.route) {
             AdminUserCareScreen(navController = navController)
         }
+        composable(AppNavigationItem.AdminMessageRecord.route) {
+            AdminMessageRecordScreen(navController = navController)
+        }
         composable(
             route = AppNavigationItem.AdminMain.route
                     + DeepLinkKey.KEY + "{${DeepLinkKey.KEY}}",
@@ -90,6 +94,7 @@ sealed class AppNavigationItem(val route: String) {
     object AdminIssued : AppNavigationItem("AdminIssued")
 
     object AdminUserCare : AppNavigationItem("AdminUserCare")
+    object AdminMessageRecord : AppNavigationItem("AdminMessageRecord")
     object Chat : AppNavigationItem("Chat")
 }
 
