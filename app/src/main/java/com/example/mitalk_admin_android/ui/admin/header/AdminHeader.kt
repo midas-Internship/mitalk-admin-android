@@ -25,6 +25,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.mitalk_admin_android.ui.util.MiIconButton
+import com.example.mitalk_admin_android.util.MultipleEventsCutter
+import com.example.mitalk_admin_android.util.get
 import com.example.mitalk_admin_android.util.theme.MiTalkAdminTypography
 import com.example.mitalk_admin_android.util.theme.MiTalkColor
 import com.example.mitalk_admin_android.util.theme.MiTalkIcon
@@ -52,9 +55,13 @@ fun AdminHeader(
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        IconButton(
+        val multipleEventsCutter = remember { MultipleEventsCutter.get() }
+
+        MiIconButton(
             onClick = {
-                navController.popBackStack()
+                multipleEventsCutter.processEvent {
+                    navController.popBackStack()
+                }
             }
         ) {
             Icon(
@@ -87,7 +94,7 @@ fun AdminHeader(
         }
 
         if (findEnabled) {
-            IconButton(
+            MiIconButton(
                 onClick = {
                     findOnRequest()
                 },
