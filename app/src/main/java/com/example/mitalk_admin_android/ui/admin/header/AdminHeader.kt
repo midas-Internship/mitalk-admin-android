@@ -65,6 +65,7 @@ fun AdminHeader(
 
         if (findOn || findText.isNotEmpty()) {
             BasicTextField(
+                modifier = Modifier.fillMaxWidth(),
                 value = findText,
                 onValueChange = {
                     findText = it

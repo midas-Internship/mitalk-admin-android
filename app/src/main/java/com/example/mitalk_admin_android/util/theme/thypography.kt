@@ -94,10 +94,10 @@ object MiTalkAdminTypography {
     )
 
     @Stable
-    val light12GM = TextStyle(
+    val light13GM = TextStyle(
         fontFamily = gmartketSans,
         fontWeight = FontWeight.Light,
-        fontSize = 12.sp
+        fontSize = 13.sp
     )
 
     @Stable
@@ -253,7 +253,7 @@ fun Bold20NO(
 }
 
 @Composable
-fun Light12GM(
+fun Light13GM(
     modifier: Modifier = Modifier,
     text: String,
     color: Color = MiTalkColor.Black,
@@ -262,7 +262,7 @@ fun Light12GM(
     Text(
         modifier = modifier,
         text = text,
-        style = MiTalkAdminTypography.light12GM,
+        style = MiTalkAdminTypography.light13GM,
         color = color,
         textAlign = textAlign,
     )
