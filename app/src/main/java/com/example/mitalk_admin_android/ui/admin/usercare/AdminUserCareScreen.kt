@@ -1,4 +1,4 @@
-package com.example.mitalk_admin_android.ui.admin
+package com.example.mitalk_admin_android.ui.admin.usercare
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,6 +33,10 @@ fun AdminUserCareScreen(
     val focusManager = LocalFocusManager.current
     var findOn by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
+
+    LaunchedEffect(vm) {
+        vm.getUserList()
+    }
 
     Column(
         modifier = Modifier
