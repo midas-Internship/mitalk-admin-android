@@ -18,6 +18,7 @@ import com.example.mitalk_admin_android.ui.admin.usercare.AdminUserCareScreen
 import com.example.mitalk_admin_android.ui.admin.messagerecord.AdminMessageRecordScreen
 import com.example.mitalk_admin_android.ui.chat.ChatScreen
 import com.example.mitalk_admin_android.ui.counsellor.CounsellorMainScreen
+import com.example.mitalk_admin_android.ui.record.RecordScreen
 import com.example.mitalk_admin_android.util.theme.base.MitalkadminandroidTheme
 import com.example.mitalk_admin_android.vm.ChatViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -81,6 +82,9 @@ fun BaseApp(navController: NavHostController) {
             val key = it.arguments?.getString(DeepLinkKey.KEY) ?: ""
             AdminMainScreen(navController = navController, key)
         }
+        composable(AppNavigationItem.Record.route) {
+            RecordScreen(navController = navController)
+        }
     }
 }
 
@@ -96,10 +100,11 @@ sealed class AppNavigationItem(val route: String) {
     object AdminUserCare : AppNavigationItem("AdminUserCare")
     object AdminMessageRecord : AppNavigationItem("AdminMessageRecord")
     object Chat : AppNavigationItem("Chat")
+
+    object Record : AppNavigationItem("Record")
 }
 
 object DeepLinkKey {
     const val KEY = "KEY"
     const val ROOM_ID = "roomId"
-
 }

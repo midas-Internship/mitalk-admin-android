@@ -22,6 +22,7 @@ import com.example.mitalk_admin_android.DeepLinkKey
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.mvi.ChatSideEffect
 import com.example.mitalk_admin_android.socket.ChatSocket
+import com.example.mitalk_admin_android.ui.util.ContentShape
 import com.example.mitalk_admin_android.ui.util.MiHeader
 import com.example.mitalk_admin_android.util.miClickable
 import com.example.mitalk_admin_android.util.observeWithLifecycle
@@ -124,13 +125,10 @@ fun CounsellorMainScreen(
             text = stringResource(id = R.string.open_record),
             painter = painterResource(id = MiTalkIcon.Counsellor_Open_Record_Img.drawableId)
         ) {
-
+            navController.navigate(AppNavigationItem.Record.route)
         }
     }
 }
-
-@Stable
-private val ContentShape = RoundedCornerShape(7.dp)
 
 @Composable
 private fun MainContent(

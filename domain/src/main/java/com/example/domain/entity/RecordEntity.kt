@@ -4,8 +4,9 @@ import java.time.ZonedDateTime
 import java.util.*
 
 data class RecordEntity(
+    val recordId: String,
     val type: String,
-    val name: String,
-    val time: ZonedDateTime,
-    val roomId: UUID
+    val counsellorName: String,
+    val customerName: String,
+    val time: String,
 )

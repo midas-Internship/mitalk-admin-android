@@ -36,6 +36,8 @@ import androidx.navigation.NavController
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.mvi.ChatSideEffect
 import com.example.mitalk_admin_android.socket.toDeleteChatData
+import com.example.mitalk_admin_android.ui.util.ClientChatShape
+import com.example.mitalk_admin_android.ui.util.CounselorChatShape
 import com.example.mitalk_admin_android.ui.util.TriangleShape
 import com.example.mitalk_admin_android.util.miClickable
 import com.example.mitalk_admin_android.util.observeWithLifecycle
@@ -46,14 +48,6 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalTime
-
-@Stable
-private val CounselorChat =
-    RoundedCornerShape(topStart = 0.dp, topEnd = 5.dp, bottomEnd = 5.dp, bottomStart = 5.dp)
-
-@Stable
-private val ClientChat =
-    RoundedCornerShape(topStart = 5.dp, topEnd = 5.dp, bottomEnd = 0.dp, bottomStart = 5.dp)
 
 data class ChatData(
     val id: String,
@@ -327,7 +321,7 @@ fun ClientChat(
                 modifier = Modifier
                     .background(
                         color = Color.Blue,
-                        shape = CounselorChat
+                        shape = ClientChatShape
                     )
                     .widthIn(min = 0.dp, max = 180.dp)
                     .padding(horizontal = 7.dp, vertical = 5.dp)
@@ -410,7 +404,7 @@ fun CounselorChat(
                     }, onClick = null)
                     .background(
                         color = Color.White,
-                        shape = ClientChat
+                        shape = CounselorChatShape
                     )
                     .widthIn(min = 0.dp, max = 200.dp)
                     .padding(horizontal = 7.dp, vertical = 5.dp)
