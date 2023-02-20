@@ -53,11 +53,15 @@ fun AdminDialog(
                     .padding(horizontal = 30.dp, vertical = 2.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Regular12NO(text = name)
-                Regular10NO(
-                    text = id,
-                    color = Color(0xFF707070)
-                )
+                if (name.isNotEmpty()) {
+                    Regular12NO(text = name)
+                }
+                if (id.isNotEmpty()) {
+                    Regular10NO(
+                        text = id,
+                        color = Color(0xFF707070)
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(28.dp))
             Regular10NO(

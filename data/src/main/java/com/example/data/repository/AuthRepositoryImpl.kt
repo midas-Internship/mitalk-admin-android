@@ -23,4 +23,6 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun getAccessToken(): String =
         localAuthDataSource.fetchToken().accessToken
+
+    override suspend fun logout() = localAuthDataSource.clearToken()
 }
