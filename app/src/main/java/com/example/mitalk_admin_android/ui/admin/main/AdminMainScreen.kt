@@ -19,20 +19,41 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mitalk_admin_android.AppNavigationItem
+import com.example.mitalk_admin_android.mvi.admin.AdminMainSideEffect
 import com.example.mitalk_admin_android.ui.admin.dialog.AdminDialog
 import com.example.mitalk_admin_android.util.miClickable
+import com.example.mitalk_admin_android.util.observeWithLifecycle
 import com.example.mitalk_admin_android.util.rememberToast
 import com.example.mitalk_admin_android.util.theme.*
+import com.example.mitalk_admin_android.vm.admin.AdminMainViewModel
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@OptIn(InternalCoroutinesApi::class)
 @Composable
 fun AdminMainScreen(
     navController: NavController,
     key: String,
+    vm: AdminMainViewModel = hiltViewModel(),
 ) {
     var dialogVisible by remember { mutableStateOf(false) }
+
+    val container = vm.container
+    val state = container.sideEffectFlow
+    
+    state.observeWithLifecycle {
+        when (it) {
+            AdminMainSideEffect.LogoutSuccess -> {
+                dialogVisible = false
+                navController.navigate(AppNavigationItem.Login.route) {
+                    popUpTo(0)
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -42,7 +63,7 @@ fun AdminMainScreen(
         if (dialogVisible) {
             AdminDialog(
                 onCheck = {
-                    TODO("로그아웃")
+                    vm.logout()
                 },
                 onCancel = {
                     dialogVisible = false
