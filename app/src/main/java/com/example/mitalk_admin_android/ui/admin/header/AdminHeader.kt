@@ -47,7 +47,6 @@ fun AdminHeader(
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        val multipleEventsCutter = remember { MultipleEventsCutter.get() }
 
         MiIconButton(
             onClick = {

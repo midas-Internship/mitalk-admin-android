@@ -13,7 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.mitalk_admin_android.ui.admin.main.AdminMainScreen
 import com.example.mitalk_admin_android.ui.LoginScreen
-import com.example.mitalk_admin_android.ui.admin.AdminIssuedScreen
+import com.example.mitalk_admin_android.ui.admin.issued.AdminIssuedScreen
 import com.example.mitalk_admin_android.ui.admin.usercare.AdminUserCareScreen
 import com.example.mitalk_admin_android.ui.admin.messagerecord.AdminMessageRecordScreen
 import com.example.mitalk_admin_android.ui.chat.ChatScreen

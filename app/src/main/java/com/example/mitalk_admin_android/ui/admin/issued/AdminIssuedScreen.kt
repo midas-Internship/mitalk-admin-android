@@ -1,4 +1,4 @@
-package com.example.mitalk_admin_android.ui.admin
+package com.example.mitalk_admin_android.ui.admin.issued
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -27,6 +27,7 @@ import com.example.mitalk_admin_android.ui.admin.header.AdminHeader
 import com.example.mitalk_admin_android.ui.util.bottomBorder
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.ui.admin.header.addFocusCleaner
+import com.example.mitalk_admin_android.ui.util.MiIconButton
 import com.example.mitalk_admin_android.util.theme.*
 import com.example.mitalk_admin_android.vm.admin.AdminIssuedViewModel
 
@@ -38,6 +39,10 @@ fun AdminIssuedScreen(
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
     val sideEffect = container.sideEffectFlow
+
+    LaunchedEffect(vm) {
+        vm.getCounsellorList()
+    }
 
     val focusManager = LocalFocusManager.current
     var findOn by remember { mutableStateOf(false) }
@@ -78,7 +83,7 @@ fun AdminIssuedScreen(
                     ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(
+                MiIconButton(
                     onClick = {  }
                 ) {
                     Icon(
@@ -144,7 +149,7 @@ fun AdminIssuedItem(
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(
+        MiIconButton(
             onClick = {
                 deletePressed(key)
             }
@@ -166,7 +171,7 @@ fun AdminIssuedItem(
             text = key,
             color = keyColor
         )
-        IconButton(
+        MiIconButton(
             onClick = {
                 (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(
                     ClipData.newPlainText("key:", key)
