@@ -19,6 +19,7 @@ import com.example.mitalk_admin_android.ui.admin.messagerecord.AdminMessageRecor
 import com.example.mitalk_admin_android.ui.chat.ChatScreen
 import com.example.mitalk_admin_android.ui.counsellor.CounsellorMainScreen
 import com.example.mitalk_admin_android.ui.record.RecordScreen
+import com.example.mitalk_admin_android.ui.record.RecordDetailScreen
 import com.example.mitalk_admin_android.util.theme.base.MitalkadminandroidTheme
 import com.example.mitalk_admin_android.vm.ChatViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -85,6 +86,30 @@ fun BaseApp(navController: NavHostController) {
         composable(AppNavigationItem.Record.route) {
             RecordScreen(navController = navController)
         }
+        composable(
+            route = AppNavigationItem.RecordDetail.route
+                    + DeepLinkKey.HEADER_ID + "{${DeepLinkKey.HEADER_ID}}"
+                    + DeepLinkKey.RECORD_ID + "{${DeepLinkKey.RECORD_ID}}",
+            arguments = listOf(
+                navArgument(DeepLinkKey.HEADER_ID) {
+                    type = NavType.IntType
+                    defaultValue = 0
+                },
+                navArgument(DeepLinkKey.RECORD_ID) {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )
+        ) {
+            val headerId = it.arguments?.getInt(DeepLinkKey.HEADER_ID) ?: R.string.feature_question
+            val recordId = it.arguments?.getString(DeepLinkKey.RECORD_ID) ?: ""
+
+            RecordDetailScreen(
+                navController = navController,
+                headerId = headerId,
+                recordId = recordId
+            )
+        }
     }
 }
 
@@ -102,9 +127,13 @@ sealed class AppNavigationItem(val route: String) {
     object Chat : AppNavigationItem("Chat")
 
     object Record : AppNavigationItem("Record")
+
+    object RecordDetail : AppNavigationItem("RecordDetail")
 }
 
 object DeepLinkKey {
     const val KEY = "KEY"
     const val ROOM_ID = "roomId"
+    const val HEADER_ID = "headerId"
+    const val RECORD_ID = "recordId"
 }
