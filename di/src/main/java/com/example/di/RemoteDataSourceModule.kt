@@ -1,6 +1,8 @@
 package com.example.di
 
 import com.example.data.remote.datasource.*
+import com.example.data.remote.datasource.admin.RemoteGetUserListDataSource
+import com.example.data.remote.datasource.admin.RemoteGetUserListDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -28,4 +30,10 @@ abstract class RemoteDataSourceModule {
     abstract fun provideFileDataSource(
         remoteFileDataSourceImpl: RemoteFileDataSourceImpl
     ): RemoteFileDataSource
+
+    @Singleton
+    @Binds
+    abstract fun provideGetUserListDataSource(
+        remoteGetUserListDataSourceImpl: RemoteGetUserListDataSourceImpl
+    ): RemoteGetUserListDataSource
 }
