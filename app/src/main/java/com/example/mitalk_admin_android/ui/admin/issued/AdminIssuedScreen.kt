@@ -26,11 +26,15 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mitalk_admin_android.ui.admin.header.AdminHeader
 import com.example.mitalk_admin_android.ui.util.bottomBorder
 import com.example.mitalk_admin_android.R
+import com.example.mitalk_admin_android.mvi.admin.AdminIssuedSideEffect
 import com.example.mitalk_admin_android.ui.admin.header.addFocusCleaner
 import com.example.mitalk_admin_android.ui.util.MiIconButton
+import com.example.mitalk_admin_android.util.observeWithLifecycle
 import com.example.mitalk_admin_android.util.theme.*
 import com.example.mitalk_admin_android.vm.admin.AdminIssuedViewModel
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@OptIn(InternalCoroutinesApi::class)
 @Composable
 fun AdminIssuedScreen(
     navController: NavController,
@@ -39,6 +43,14 @@ fun AdminIssuedScreen(
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
     val sideEffect = container.sideEffectFlow
+
+    sideEffect.observeWithLifecycle {
+        when (it) {
+            AdminIssuedSideEffect.StateRefresh -> {
+                vm.getCounsellorList()
+            }
+        }
+    }
 
     LaunchedEffect(vm) {
         vm.getCounsellorList()
@@ -84,7 +96,12 @@ fun AdminIssuedScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 MiIconButton(
-                    onClick = {  }
+                    onClick = {
+                        if (addCounsellorName.isNotEmpty()) {
+                            vm.addCounsellor(name = addCounsellorName)
+                            addCounsellorName = ""
+                        }
+                    }
                 ) {
                     Icon(
                         painter = painterResource(id = MiTalkIcon.Add_Green_Icon.drawableId),

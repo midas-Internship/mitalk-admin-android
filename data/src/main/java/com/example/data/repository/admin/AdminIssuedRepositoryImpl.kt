@@ -10,4 +10,7 @@ class AdminIssuedRepositoryImpl @Inject constructor(
 ): AdminIssuedRepository {
     override suspend fun getCounsellorList(): List<GetAllCounsellorEntity> =
         remoteAdminIssuedDataSource.getCounsellorList()
+
+    override suspend fun addCounsellor(name: String) =
+        remoteAdminIssuedDataSource.addCounsellor(name)
 }
