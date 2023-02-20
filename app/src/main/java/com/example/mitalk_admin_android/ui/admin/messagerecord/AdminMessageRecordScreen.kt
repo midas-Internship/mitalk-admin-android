@@ -32,6 +32,10 @@ fun AdminMessageRecordScreen(
     val state = container.stateFlow.collectAsState().value
     val sideEffect = container.sideEffectFlow
 
+    LaunchedEffect(vm) {
+        vm.getMessageRecordList()
+    }
+
     val focusManager = LocalFocusManager.current
     var findOn by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
