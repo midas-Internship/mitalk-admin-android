@@ -71,7 +71,7 @@ fun AdminIssuedScreen(
         )
         Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 12.dp)
         ) {
             Row(
                 modifier = Modifier
@@ -134,9 +134,9 @@ fun AdminIssuedItem(
     val context = LocalContext.current
 
     val keyColor = when (state) {
-        "on" -> Color(0xFF56A470)
-        "off" -> Color(0xFFD43333)
-        "counselling" -> Color(0xFF6F72B0)
+        "ONLINE" -> Color(0xFF56A470)
+        "OFFLINE" -> Color(0xFFD43333)
+        "COUNSELLING" -> Color(0xFF6F72B0)
         else -> MiTalkColor.Black
     }
     Row(
