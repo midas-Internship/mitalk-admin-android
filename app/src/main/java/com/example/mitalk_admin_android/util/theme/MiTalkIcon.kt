@@ -30,6 +30,12 @@ class MiTalkIcon private constructor(
         )
 
         @Stable
+        val Cancel = MiTalkIcon(
+            drawableId = R.drawable.ic_cancel,
+            contentDescription = "cancel"
+        )
+
+        @Stable
         val Plus = MiTalkIcon(
             drawableId = R.drawable.ic_plus,
             contentDescription = "plus"
@@ -63,6 +69,24 @@ class MiTalkIcon private constructor(
         val Client = MiTalkIcon(
             drawableId = R.drawable.ic_client,
             contentDescription = "client"
+        )
+
+        @Stable
+        val Search = MiTalkIcon(
+            drawableId = R.drawable.ic_search,
+            contentDescription = "search"
+        )
+
+        @Stable
+        val Up = MiTalkIcon(
+            drawableId = R.drawable.ic_up,
+            contentDescription = "up"
+        )
+
+        @Stable
+        val Down = MiTalkIcon(
+            drawableId = R.drawable.ic_down,
+            contentDescription = "down"
         )
 
         @Stable
