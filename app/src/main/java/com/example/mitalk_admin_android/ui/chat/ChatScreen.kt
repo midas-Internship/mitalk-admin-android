@@ -1,5 +1,6 @@
 package com.example.mitalk_admin_android.ui.chat
 
+import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -8,6 +9,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -41,6 +43,8 @@ import com.example.mitalk_admin_android.ui.util.CounselorChatShape
 import com.example.mitalk_admin_android.ui.util.TriangleShape
 import com.example.mitalk_admin_android.util.miClickable
 import com.example.mitalk_admin_android.util.observeWithLifecycle
+import com.example.mitalk_admin_android.util.theme.Bold12NO
+import com.example.mitalk_admin_android.util.theme.MiTalkColor
 import com.example.mitalk_admin_android.util.theme.MiTalkIcon
 import com.example.mitalk_admin_android.vm.ChatViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -415,6 +419,32 @@ fun CounselorChat(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun ChatItem(item: String, isMe: Boolean = true, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    if (item.contains("https://mitalk-s3.s3.ap-northeast-2.amazonaws.com/")) {
+        when (item.split(".").last().lowercase()) {
+            "jpg", "jpeg", "gif", "png", "bmp", "svg" -> {
+//                AsyncImage(model = item, contentDescription = "Chat Image")
+            }
+            "mp4", "mov", "wmv", "avi", "mkv", "mpeg-2" -> {
+//                VideoPlayer(url = item)
+            }
+            "hwp", "txt", "doc", "pdf", "csv", "xls", "ppt", "pptx" -> {
+                Bold12NO(text = "File Download", modifier = Modifier.clickable {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item)))
+                })
+            }
+        }
+    } else {
+        Bold12NO(
+            text = item,
+            modifier = modifier,
+            color = if (isMe) MiTalkColor.Black else MiTalkColor.White
+        )
     }
 }
 
