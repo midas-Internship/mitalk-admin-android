@@ -7,6 +7,8 @@
     <string name="input_search">검색어를 입력해주세요.</string>
     <string name="open_detail">상세열람</string>
     <string name="etc">기타</string>
+    <string name="yes">예</string>
+    <string name="no">아니요</string>
 
     <!--로그인 화면-->
     <string name="input_certification_number">인증번호를 입력해주세요.</string>

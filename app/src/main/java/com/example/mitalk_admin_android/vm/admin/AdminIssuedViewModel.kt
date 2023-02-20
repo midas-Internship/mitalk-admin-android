@@ -60,7 +60,6 @@ class AdminIssuedViewModel @Inject constructor(
                     postSideEffect(AdminIssuedSideEffect.StateRefresh)
                 }
                 .onFailure {
-                    Log.d("TAG", "Error: ${it.message}")
                     postSideEffect(AdminIssuedSideEffect.Fail)
                 }
         }
