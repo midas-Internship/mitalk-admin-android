@@ -7,6 +7,8 @@
     <string name="input_search">검색어를 입력해주세요.</string>
     <string name="open_detail">상세열람</string>
     <string name="etc">기타</string>
+    <string name="yes">예</string>
+    <string name="no">아니요</string>
 
     <!--로그인 화면-->
     <string name="input_certification_number">인증번호를 입력해주세요.</string>
@@ -37,4 +39,11 @@
     <string name="bug_report">버그 제보</string>
     <string name="feature_proposal">기능 제안</string>
     <string name="purchase">제휴 문의</string>
+
+    <!--dialog-->
+    <string name="real_delete">정말 삭제하시겠습니까?</string>
+    <string name="cannot_restore">삭제시 복구가 불가능합니다.</string>
+    <string name="delete_fail">삭제를 실패했습니다.</string>
+    <string name="real_logout">정말 로그아웃하시겠습니까?</string>
+    <string name="do_not_forget_id">관리자 인증번호를 까먹지 않게 주의해주세요</string>
 </resources>

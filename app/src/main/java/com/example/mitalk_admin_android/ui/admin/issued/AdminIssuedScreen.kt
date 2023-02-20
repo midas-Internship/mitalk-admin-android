@@ -1,8 +1,9 @@
-package com.example.mitalk_admin_android.ui.admin
+package com.example.mitalk_admin_android.ui.admin.issued
 
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,18 +27,51 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mitalk_admin_android.ui.admin.header.AdminHeader
 import com.example.mitalk_admin_android.ui.util.bottomBorder
 import com.example.mitalk_admin_android.R
+import com.example.mitalk_admin_android.mvi.admin.AdminIssuedSideEffect
+import com.example.mitalk_admin_android.ui.admin.dialog.AdminDialog
 import com.example.mitalk_admin_android.ui.admin.header.addFocusCleaner
+import com.example.mitalk_admin_android.ui.util.MiIconButton
+import com.example.mitalk_admin_android.util.observeWithLifecycle
+import com.example.mitalk_admin_android.util.rememberToast
 import com.example.mitalk_admin_android.util.theme.*
 import com.example.mitalk_admin_android.vm.admin.AdminIssuedViewModel
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@OptIn(InternalCoroutinesApi::class)
 @Composable
 fun AdminIssuedScreen(
     navController: NavController,
     vm: AdminIssuedViewModel = hiltViewModel()
 ) {
+    val toast = rememberToast()
+    val failToast = stringResource(id = R.string.delete_fail)
+
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
     val sideEffect = container.sideEffectFlow
+
+    var dialogVisible by remember { mutableStateOf(false) }
+    var deleteId by remember { mutableStateOf("") }
+    var deleteName by remember { mutableStateOf("") }
+
+    sideEffect.observeWithLifecycle {
+        when (it) {
+            AdminIssuedSideEffect.StateRefresh -> {
+                vm.getCounsellorList()
+            }
+            AdminIssuedSideEffect.DeleteSuccess -> {
+                vm.getCounsellorList()
+                dialogVisible = false
+            }
+            AdminIssuedSideEffect.DeleteFail -> {
+                toast(message = failToast)
+            }
+        }
+    }
+
+    LaunchedEffect(vm) {
+        vm.getCounsellorList()
+    }
 
     val focusManager = LocalFocusManager.current
     var findOn by remember { mutableStateOf(false) }
@@ -64,9 +98,26 @@ fun AdminIssuedScreen(
                 findOn = true
             }
         )
+        if (dialogVisible) {
+            AdminDialog(
+                onCheck = {
+                    vm.deleteCounsellor(deleteId)
+                },
+                onCancel = {
+                    dialogVisible = false
+                },
+                title = stringResource(id = R.string.real_delete),
+                name = deleteName,
+                id = deleteId,
+                hint = stringResource(id = R.string.can_not_counsel)
+            ) {
+                dialogVisible = false
+            }
+        }
+
         Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 12.dp)
         ) {
             Row(
                 modifier = Modifier
@@ -78,8 +129,13 @@ fun AdminIssuedScreen(
                     ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(
-                    onClick = {  }
+                MiIconButton(
+                    onClick = {
+                        if (addCounsellorName.isNotEmpty()) {
+                            vm.addCounsellor(name = addCounsellorName)
+                            addCounsellorName = ""
+                        }
+                    }
                 ) {
                     Icon(
                         painter = painterResource(id = MiTalkIcon.Add_Green_Icon.drawableId),
@@ -109,7 +165,11 @@ fun AdminIssuedScreen(
                             name = item.name,
                             key = item.counsellorId,
                             state = item.status,
-                            deletePressed = { vm.deleteCounsellor(item.counsellorId) }
+                            deletePressed = { name, id ->
+                                deleteName = name
+                                deleteId = id
+                                dialogVisible = true
+                            }
                         )
                     }
                 }
@@ -124,14 +184,14 @@ fun AdminIssuedItem(
     name: String,
     key: String,
     state: String,
-    deletePressed: (String) -> Unit
+    deletePressed: (String, String) -> Unit
 ) {
     val context = LocalContext.current
 
     val keyColor = when (state) {
-        "on" -> Color(0xFF56A470)
-        "off" -> Color(0xFFD43333)
-        "counselling" -> Color(0xFF6F72B0)
+        "ONLINE" -> Color(0xFF56A470)
+        "OFFLINE" -> Color(0xFFD43333)
+        "COUNSELLING" -> Color(0xFF6F72B0)
         else -> MiTalkColor.Black
     }
     Row(
@@ -144,9 +204,9 @@ fun AdminIssuedItem(
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(
+        MiIconButton(
             onClick = {
-                deletePressed(key)
+                deletePressed(name, key)
             }
         ) {
             Icon(
@@ -166,7 +226,7 @@ fun AdminIssuedItem(
             text = key,
             color = keyColor
         )
-        IconButton(
+        MiIconButton(
             onClick = {
                 (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(
                     ClipData.newPlainText("key:", key)

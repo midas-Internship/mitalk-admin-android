@@ -7,8 +7,7 @@ import androidx.compose.foundation.layout.*
 import com.example.mitalk_admin_android.R
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,7 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mitalk_admin_android.AppNavigationItem
+import com.example.mitalk_admin_android.ui.admin.dialog.AdminDialog
 import com.example.mitalk_admin_android.util.miClickable
+import com.example.mitalk_admin_android.util.rememberToast
 import com.example.mitalk_admin_android.util.theme.*
 
 @Composable
@@ -31,11 +32,29 @@ fun AdminMainScreen(
     navController: NavController,
     key: String,
 ) {
+    var dialogVisible by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MiTalkColor.Gray),
     ) {
+        if (dialogVisible) {
+            AdminDialog(
+                onCheck = {
+                    TODO("로그아웃")
+                },
+                onCancel = {
+                    dialogVisible = false
+                },
+                title = stringResource(id = R.string.real_logout),
+                name = "",
+                id = key,
+                hint = stringResource(id = R.string.do_not_forget_id)
+            ) {
+                dialogVisible = false
+            }
+        }
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -76,7 +95,12 @@ fun AdminMainScreen(
             Spacer(modifier = Modifier.height(11.dp))
             AdminSecondList(navController)
             Spacer(modifier = Modifier.height(11.dp))
-            AdminThirdList(navController)
+            AdminThirdList(
+                navController = navController,
+                logout = {
+                    dialogVisible = true
+                }
+            )
         }
     }
 }
@@ -105,7 +129,10 @@ private fun AdminSecondList(navController: NavController) {
 }
 
 @Composable
-private fun AdminThirdList(navController: NavController) {
+private fun AdminThirdList(
+    navController: NavController,
+    logout: () -> Unit
+) {
     AdminContent {
         Column {
             AdminItem(
@@ -137,7 +164,7 @@ private fun AdminThirdList(navController: NavController) {
                 content = stringResource(id = R.string.logout),
                 icon = painterResource(id = MiTalkIcon.Logout_Icon.drawableId)
             ) {
-
+                logout()
             }
         }
     }
