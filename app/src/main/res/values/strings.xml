@@ -9,6 +9,7 @@
     <string name="etc">기타</string>
     <string name="yes">예</string>
     <string name="no">아니요</string>
+    <string name="consulting_record">상담 기록</string>
 
     <!--로그인 화면-->
     <string name="input_certification_number">인증번호를 입력해주세요.</string>
