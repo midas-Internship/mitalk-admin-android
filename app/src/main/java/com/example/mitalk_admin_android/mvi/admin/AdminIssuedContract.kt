@@ -9,7 +9,6 @@ data class AdminIssuedState(
 sealed class AdminIssuedSideEffect {
     object StateRefresh : AdminIssuedSideEffect()
 
-    object RefreshSuccess : AdminIssuedSideEffect()
-
-    object Fail : AdminIssuedSideEffect()
+    object DeleteSuccess : AdminIssuedSideEffect()
+    object DeleteFail : AdminIssuedSideEffect()
 }

@@ -32,7 +32,6 @@ class AdminIssuedViewModel @Inject constructor(
             getCounsellorListUseCase()
                 .onSuccess {
                     reduce { state.copy(counsellorList = it) }
-                    postSideEffect(AdminIssuedSideEffect.RefreshSuccess)
                 }
         }
     }
@@ -45,9 +44,6 @@ class AdminIssuedViewModel @Inject constructor(
                 .onSuccess {
                      postSideEffect(AdminIssuedSideEffect.StateRefresh)
                 }
-                .onFailure {
-                    postSideEffect(AdminIssuedSideEffect.Fail)
-                }
         }
     }
 
@@ -57,10 +53,10 @@ class AdminIssuedViewModel @Inject constructor(
         viewModelScope.launch {
             deleteCounsellorUseCase(id = id)
                 .onSuccess {
-                    postSideEffect(AdminIssuedSideEffect.StateRefresh)
+                    postSideEffect(AdminIssuedSideEffect.DeleteSuccess)
                 }
                 .onFailure {
-                    postSideEffect(AdminIssuedSideEffect.Fail)
+                    postSideEffect(AdminIssuedSideEffect.DeleteFail)
                 }
         }
     }
