@@ -14,4 +14,5 @@ sealed class ChatSideEffect {
     data class ReceiveChatDelete(val chatId: String) : ChatSideEffect()
     data class SuccessRoom(val roomId: String) : ChatSideEffect()
     data class SuccessUpload(val url: String) : ChatSideEffect()
+    object FinishRoom : ChatSideEffect()
 }

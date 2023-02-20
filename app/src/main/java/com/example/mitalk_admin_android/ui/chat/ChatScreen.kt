@@ -84,6 +84,9 @@ fun ChatScreen(
 
     sideEffect.observeWithLifecycle { effect ->
         when (effect) {
+            ChatSideEffect.FinishRoom -> {
+                navController.popBackStack()
+            }
             is ChatSideEffect.ReceiveChat -> {
                 chatList.add(effect.chat)
                 MainScope().launch {

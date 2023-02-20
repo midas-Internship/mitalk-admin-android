@@ -54,6 +54,8 @@ fun CounsellorMainScreen(
         vm.setChatSocket(ChatSocket(successAction = {
             waitChatDialog = false
             vm.successRoom(it)
+        }, finishAction = {
+            vm.finishRoom()
         }, receiveAction = {
             vm.receiveChat(it)
         }, receiveActionUpdate = {
