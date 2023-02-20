@@ -1,6 +1,6 @@
 package com.example.domain.entity.admin
 
-data class GetAdminMessageRecord(
+data class GetMessageRecordEntity(
     val id: String,
     val startAt: String,
     val counsellorName: String,

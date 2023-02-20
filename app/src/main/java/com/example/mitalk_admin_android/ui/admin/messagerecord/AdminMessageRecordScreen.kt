@@ -1,5 +1,7 @@
 package com.example.mitalk_admin_android.ui.admin.messagerecord
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -32,6 +34,10 @@ fun AdminMessageRecordScreen(
     val state = container.stateFlow.collectAsState().value
     val sideEffect = container.sideEffectFlow
 
+    LaunchedEffect(vm) {
+        vm.getMessageRecordList()
+    }
+
     val focusManager = LocalFocusManager.current
     var findOn by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
@@ -62,14 +68,15 @@ fun AdminMessageRecordScreen(
                     || it.counsellorName.contains(searchText)
                     || it.customerName.contains(searchText)
                     || it.type.contains(searchText)
-                )
-                MessageRecordItem(
-                    date = it.startAt,
-                    counsellorName = it.counsellorName,
-                    userName = it.customerName,
-                    state = it.type
                 ) {
-                    vm.openAdminMessageRecordDetail(id = it.id)
+                    MessageRecordItem(
+                        date = it.startAt,
+                        counsellorName = it.counsellorName,
+                        userName = it.customerName,
+                        state = it.type
+                    ) {
+                        vm.openAdminMessageRecordDetail(id = it.id)
+                    }
                 }
             }
         }
@@ -95,7 +102,7 @@ private fun MessageRecordItem(
     }
     Row(
         modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 5.dp)
+            .padding(horizontal = 12.dp, vertical = 5.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {

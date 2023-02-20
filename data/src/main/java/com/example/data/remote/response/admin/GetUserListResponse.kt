@@ -1,4 +1,4 @@
-package com.example.data.remote.response
+package com.example.data.remote.response.admin
 
 import com.example.domain.entity.admin.GetAdminUserCareEntity
 import com.google.gson.annotations.SerializedName
