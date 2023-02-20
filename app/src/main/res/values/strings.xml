@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">mitalk-admin-android</string>
     <string name="main">메인</string>
+    <string name="logout">로그아웃</string>
+    <string name="input_name">이름을 입력하세요.</string>
+    <string name="input_search_name">검색할 이름을 입력해주세요.</string>
+    <string name="input_search">검색어를 입력해주세요.</string>
+    <string name="open_detail">상세열람</string>
+    <string name="etc">기타</string>
 
     <!--로그인 화면-->
     <string name="input_certification_number">인증번호를 입력해주세요.</string>
@@ -9,4 +15,26 @@
     <string name="can_counsel">현재 상담 가능 상태입니다.</string>
     <string name="can_not_counsel">현재 상담 기능이 꺼져있습니다.</string>
     <string name="open_record">상담기록 열람</string>
+    
+    <!--관리자 메인 화면-->
+    <string name="admin">관리자</string>
+    <string name="admin_option">관리자 옵션</string>
+    <string name="admin_key">관리자 식별키</string>
+    <string name="admin_question_title">자주 묻는 질문</string>
+    <string name="admin_question_content">자주 묻는 질문 조회 및 수정</string>
+    <string name="admin_graph_title">통계 보기</string>
+    <string name="admin_graph_content">상담 평점 통계 조회</string>
+    <string name="admin_account_issued_title">상담원 계정 발급</string>
+    <string name="admin_account_issued_content">계정 생성 및 아이디 발급</string>
+    <string name="admin_user_care_title">사용자 관리</string>
+    <string name="admin_user_care_content">정보 조회 및 탈퇴</string>
+    <string name="admin_message_record_title">메시지 기록보기</string>
+    <string name="admin_message_record_content">상담 기록 열람</string>
+
+    <!--메시지 기록 보기-->
+    <string name="feature_question">기능 질문</string>
+    <string name="product_feedback">제품 피드백</string>
+    <string name="bug_report">버그 제보</string>
+    <string name="feature_proposal">기능 제안</string>
+    <string name="purchase">제휴 문의</string>
 </resources>

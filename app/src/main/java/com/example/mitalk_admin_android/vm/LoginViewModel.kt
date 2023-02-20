@@ -27,11 +27,17 @@ class LoginViewModel @Inject constructor(
     fun signIn(
         certificationNumber: String,
     ) = intent {
+
         viewModelScope.launch {
             loginUseCase(
                 certificationNumber = certificationNumber
             ).onSuccess {
-                postSideEffect(LoginSideEffect.LoginSuccess(it))
+                postSideEffect(
+                    LoginSideEffect.LoginSuccess(
+                        role = it,
+                        key = certificationNumber,
+                    )
+                )
             }.onFailure {
                 when (it) {
                     is BadRequestException -> Log.d("TAG", "BadRequest")

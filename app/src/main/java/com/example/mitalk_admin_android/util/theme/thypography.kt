@@ -31,6 +31,20 @@ internal val gmartketSans = FontFamily(
 object MiTalkAdminTypography {
 
     @Stable
+    val light20NO = TextStyle(
+        fontFamily = notoSansKR,
+        fontWeight = FontWeight.Light,
+        fontSize = 20.sp
+    )
+
+    @Stable
+    val regular10NO = TextStyle(
+        fontFamily = notoSansKR,
+        fontWeight = FontWeight.Normal,
+        fontSize = 10.sp
+    )
+
+    @Stable
     val regular12NO = TextStyle(
         fontFamily = notoSansKR,
         fontWeight = FontWeight.Normal,
@@ -52,6 +66,20 @@ object MiTalkAdminTypography {
     )
 
     @Stable
+    val regular25NO = TextStyle(
+        fontFamily = notoSansKR,
+        fontWeight = FontWeight.Normal,
+        fontSize = 25.sp
+    )
+
+    @Stable
+    val medium12NO = TextStyle(
+        fontFamily = notoSansKR,
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp
+    )
+
+    @Stable
     val bold12NO = TextStyle(
         fontFamily = notoSansKR,
         fontWeight = FontWeight.Bold,
@@ -66,10 +94,49 @@ object MiTalkAdminTypography {
     )
 
     @Stable
+    val light13GM = TextStyle(
+        fontFamily = gmartketSans,
+        fontWeight = FontWeight.Light,
+        fontSize = 13.sp
+    )
+
+    @Stable
     val medium21GM = TextStyle(
         fontFamily = gmartketSans,
         fontWeight = FontWeight.Medium,
         fontSize = 21.sp,
+    )
+}
+
+@Composable
+fun Light20NO(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MiTalkColor.Black,
+    textAlign: TextAlign = TextAlign.Start
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MiTalkAdminTypography.light20NO,
+        color = color,
+        textAlign = textAlign
+    )
+}
+
+@Composable
+fun Regular10NO(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MiTalkColor.Black,
+    textAlign: TextAlign = TextAlign.Start,
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MiTalkAdminTypography.regular10NO,
+        color = color,
+        textAlign = textAlign,
     )
 }
 
@@ -120,6 +187,39 @@ fun Regular16NO(
         textAlign = textAlign,
     )
 }
+
+@Composable
+fun Regular25NO(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MiTalkColor.Black,
+    textAlign: TextAlign = TextAlign.Start,
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MiTalkAdminTypography.regular25NO,
+        color = color,
+        textAlign = textAlign,
+    )
+}
+
+@Composable
+fun Medium12NO(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MiTalkColor.Black,
+    textAlign: TextAlign = TextAlign.Start
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MiTalkAdminTypography.medium12NO,
+        color = color,
+        textAlign = textAlign,
+    )
+}
+
 @Composable
 fun Bold12NO(
     modifier: Modifier = Modifier,
@@ -152,6 +252,21 @@ fun Bold20NO(
     )
 }
 
+@Composable
+fun Light13GM(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MiTalkColor.Black,
+    textAlign: TextAlign = TextAlign.Start
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MiTalkAdminTypography.light13GM,
+        color = color,
+        textAlign = textAlign,
+    )
+}
 @Composable
 fun Medium21GM(
     modifier: Modifier = Modifier,
