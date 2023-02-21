@@ -48,4 +48,15 @@
     <string name="hint_answer">Please write the answer to the question.</string>
     <string name="registration">registration</string>
     <string name="refactor">edit</string>
+    <string name="editing_message">Text is being edited.</string>
+    <string name="cancel">cancel</string>
+    <string name="okay">okay</string>
+    <string name="edit">edit</string>
+    <string name="delete">delete</string>
+    <string name="not_allowed_file">File not supported</string>
+    <string name="not_allowed_file_comment">This file is not supported.</string>
+    <string name="big_size_file">Files over 100MB</string>
+    <string name="big_size_file_comment">Would you like to transfer the file?</string>
+    <string name="over_size_file">File capacity exceeded</string>
+    <string name="over_size_file_comment">The file is too large to transfer.</string>
 </resources>
