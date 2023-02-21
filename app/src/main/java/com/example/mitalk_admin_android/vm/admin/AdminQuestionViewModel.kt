@@ -3,8 +3,10 @@ package com.example.mitalk_admin_android.vm.admin
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.param.AddQuestionParam
+import com.example.domain.param.PatchQuestionParam
 import com.example.domain.usecase.admin.AddQuestionUseCase
 import com.example.domain.usecase.admin.GetQuestionListUseCase
+import com.example.domain.usecase.admin.PatchQuestionUseCase
 import com.example.mitalk_admin_android.mvi.admin.AdminQuestionSideEffect
 import com.example.mitalk_admin_android.mvi.admin.AdminQuestionState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AdminQuestionViewModel @Inject constructor(
     private val getQuestionListUseCase: GetQuestionListUseCase,
+    private val patchQuestionUseCase: PatchQuestionUseCase,
     private val addQuestionUseCase: AddQuestionUseCase,
 ) : ContainerHost<AdminQuestionState, AdminQuestionSideEffect>, ViewModel() {
 
@@ -31,6 +34,16 @@ class AdminQuestionViewModel @Inject constructor(
                 .onSuccess {
                     reduce { state.copy(questionList = it) }
                 }
+        }
+    }
+
+    fun patchAdminQuestion(
+        patchQuestionParam: PatchQuestionParam,
+    ) = intent {
+        viewModelScope.launch {
+            patchQuestionUseCase(
+                patchQuestionParam = patchQuestionParam,
+            ).onSuccess { postSideEffect(AdminQuestionSideEffect.ListChanged) }
         }
     }
 
