@@ -53,6 +53,7 @@ fun RecordDetailScreen(
     val focusManager = LocalFocusManager.current
     val chatListState = rememberLazyListState()
     var text by remember { mutableStateOf("") }
+    var findText by remember { mutableStateOf("") }
 
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
@@ -87,6 +88,7 @@ fun RecordDetailScreen(
             totalResult = state.totalFindResultList,
             onTextChange = { text = it },
             onFindAction = {
+                findText = text
                 val list = state.messageRecords.mapIndexed { index, data ->
                     if (!data.isDeleted && data.dataMap.last().message.contains(text)) index else null
                 }.filterNotNull().toMutableList()
@@ -99,17 +101,22 @@ fun RecordDetailScreen(
             }, onCancelAction = {
                 vm.clearFindResult()
                 text = ""
+                findText = ""
             }, upFindAction = {
-                if (state.currentFindPosition < state.totalFindResultList.size - 1) {
-                    vm.plusCurrentFindPosition()
-                }
-            }, downFindAction = {
                 if (state.currentFindPosition > 0) {
                     vm.minusCurrentFindPosition()
                 }
+            }, downFindAction = {
+                if (state.currentFindPosition < state.totalFindResultList.size - 1) {
+                    vm.plusCurrentFindPosition()
+                }
             })
         Box(modifier = Modifier.weight(1f)) {
-            ChatList(chatList = state.messageRecords, chatListState = chatListState)
+            ChatList(
+                chatList = state.messageRecords,
+                chatListState = chatListState,
+                findText = findText
+            )
         }
     }
 }
@@ -207,6 +214,7 @@ fun FindInput(
 fun ChatList(
     chatList: List<RecordDetailState.MessageRecordData>,
     chatListState: LazyListState = rememberLazyListState(),
+    findText: String
 ) {
     LazyColumn(
         modifier = Modifier
@@ -227,10 +235,11 @@ fun ChatList(
             ) {
                 if (item.sender == "COUNSELLOR") {
                     CounselorChat(
-                        item = item
+                        item = item,
+                        findText = findText
                     )
                 } else {
-                    ClientChat(item = item)
+                    ClientChat(item = item, findText = findText)
                 }
             }
         }
@@ -243,6 +252,7 @@ fun ChatList(
 @Composable
 fun ClientChat(
     item: RecordDetailState.MessageRecordData,
+    findText: String
 ) {
     Row(
         verticalAlignment = Alignment.Bottom
@@ -267,7 +277,8 @@ fun ClientChat(
                             shape = ClientChatShape
                         )
                         .widthIn(min = 0.dp, max = 180.dp)
-                        .padding(horizontal = 7.dp, vertical = 5.dp)
+                        .padding(horizontal = 7.dp, vertical = 5.dp),
+                    findText = findText
                 )
             }
         }
@@ -279,6 +290,7 @@ fun ClientChat(
 @Composable
 fun CounselorChat(
     item: RecordDetailState.MessageRecordData,
+    findText: String
 ) {
     Box {
         Row(
@@ -296,7 +308,7 @@ fun CounselorChat(
                     .padding(horizontal = 7.dp, vertical = 5.dp)
             ) {
                 if (item.isDeleted) Bold12NO(text = stringResource(id = R.string.delete_message)) else {
-                    ChatItem(item = item.dataMap.last().message)
+                    ChatItem(item = item.dataMap.last().message, findText = findText)
                 }
             }
         }
