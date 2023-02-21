@@ -31,7 +31,7 @@ fun ChatData.toUseData() = com.example.mitalk_admin_android.ui.counsellor.chat.C
     id = messageId,
     text = message ?: "",
     isMe = role == "COUNSELLOR",
-    time = LocalTime.now().toChatTime()
+    time = LocalTime.now()
 )
 
 fun com.example.mitalk_admin_android.ui.counsellor.chat.ChatData.toDeleteChatData(deleteMsg: String) =

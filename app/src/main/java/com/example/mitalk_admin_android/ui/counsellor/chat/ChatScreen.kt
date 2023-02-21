@@ -43,20 +43,19 @@ import com.example.mitalk_admin_android.ui.util.CounselorChatShape
 import com.example.mitalk_admin_android.ui.util.MiHeader
 import com.example.mitalk_admin_android.ui.util.TriangleShape
 import com.example.mitalk_admin_android.util.*
-import com.example.mitalk_admin_android.util.theme.Bold12NO
-import com.example.mitalk_admin_android.util.theme.MiTalkColor
-import com.example.mitalk_admin_android.util.theme.MiTalkIcon
+import com.example.mitalk_admin_android.util.theme.*
 import com.example.mitalk_admin_android.video.VideoPlayer
 import com.example.mitalk_admin_android.vm.ChatViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import java.time.LocalTime
 
 data class ChatData(
     val id: String,
     val text: String,
     val isMe: Boolean,
-    val time: String,
+    val time: LocalTime,
 )
 
 @OptIn(InternalCoroutinesApi::class)
@@ -143,8 +142,12 @@ fun ChatScreen(
                 uploadList = state.uploadList,
                 chatListState = chatListState,
                 selectItemUUID = selectItemUUID,
-                changeSelectItemUUID = {
-                    selectItemUUID = it
+                longClickAction = { uuid, time ->
+                    selectItemUUID = if (time.plusMinutes(1) >= LocalTime.now()) {
+                        uuid
+                    } else {
+                        null
+                    }
                 },
                 editAction = { id, msg ->
                     text = msg
@@ -174,6 +177,9 @@ fun ChatScreen(
                 }
             }, fileSendAction = {
                 vm.postFile(it, context)
+            }, editCancelAction = {
+                editMsgId = null
+                text = ""
             }, isEditable = (editMsgId != null)
         )
         Spacer(modifier = Modifier.height(18.dp))
@@ -193,7 +199,7 @@ fun ChatList(
     uploadList: List<Uri>,
     chatListState: LazyListState = rememberLazyListState(),
     selectItemUUID: String?,
-    changeSelectItemUUID: (String?) -> Unit,
+    longClickAction: (String?, LocalTime) -> Unit,
     editAction: (String, String) -> Unit,
     deleteAction: (String) -> Unit,
 ) {
@@ -217,7 +223,8 @@ fun ChatList(
                 if (item.isMe) {
                     CounselorChat(
                         item = item,
-                        longClickAction = changeSelectItemUUID,
+                        longClickAction = longClickAction,
+                        isFile = item.text.contains("https://mitalk-s3.s3.ap-northeast-2.amazonaws.com/"),
                         itemVisible = selectItemUUID == item.id,
                         editAction = editAction,
                         deleteAction = {
@@ -262,6 +269,7 @@ fun ChatInput(
     sendAction: (String) -> Unit,
     fileSendAction: (Uri) -> Unit,
     isEditable: Boolean,
+    editCancelAction: () -> Unit
 ) {
     var isExpand by remember { mutableStateOf(false) }
     var targetValue by remember { mutableStateOf(0F) }
@@ -276,13 +284,28 @@ fun ChatInput(
     )
     Column {
         if (isEditable) {
-            Text(
-                text = stringResource(id = R.string.editing_message),
-                modifier = Modifier.background(
-                    color = Color(0xFFF3F3F3),
-                    shape = RoundedCornerShape(5.dp)
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 30.dp, vertical = 5.dp)
+                    .fillMaxWidth()
+                    .background(
+                        color = Color.LightGray,
+                        shape = RoundedCornerShape(5.dp)
+                    ),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Regular14NO(
+                    text = stringResource(id = R.string.editing_message),
+                    modifier = Modifier.padding(start = 5.dp, top = 5.dp, bottom = 5.dp)
                 )
-            )
+                Icon(
+                    painter = painterResource(id = MiTalkIcon.Cancel.drawableId),
+                    contentDescription = MiTalkIcon.Cancel.contentDescription,
+                    modifier = Modifier
+                        .padding(end = 5.dp, top = 5.dp, bottom = 5.dp)
+                        .miClickable(rippleEnabled = false) { editCancelAction() }
+                )
+            }
         }
         Row(
             modifier = Modifier
@@ -390,14 +413,15 @@ fun ClientChat(
             )
         }
         Spacer(modifier = Modifier.width(3.dp))
-        Text(text = item.time)
+        Regular10NO(text = item.time.toChatTime())
     }
 }
 
 @Composable
 fun CounselorChat(
     item: ChatData,
-    longClickAction: (String) -> Unit,
+    isFile: Boolean,
+    longClickAction: (String?, LocalTime) -> Unit,
     editAction: (String, String) -> Unit,
     deleteAction: (String) -> Unit,
     itemVisible: Boolean,
@@ -421,21 +445,23 @@ fun CounselorChat(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = stringResource(id = R.string.edit),
-                            color = Color(0xFF4200FF),
-                            modifier = Modifier
-                                .padding(end = 3.dp)
-                                .miClickable {
-                                    editAction(item.id, item.text)
-                                })
-                        Spacer(
-                            modifier = Modifier
-                                .background(Color(0x66C9C6C6))
-                                .width((0.5).dp)
-                                .fillMaxHeight(0.7f)
-                        )
-                        Text(
+                        if (!isFile) {
+                            Regular10NO(
+                                text = stringResource(id = R.string.edit),
+                                color = Color(0xFF4200FF),
+                                modifier = Modifier
+                                    .padding(end = 3.dp)
+                                    .miClickable {
+                                        editAction(item.id, item.text)
+                                    })
+                            Spacer(
+                                modifier = Modifier
+                                    .background(Color(0x66C9C6C6))
+                                    .width((0.5).dp)
+                                    .fillMaxHeight(0.7f)
+                            )
+                        }
+                        Regular10NO(
                             text = stringResource(id = R.string.delete),
                             color = Color(0xFFFF0000),
                             modifier = Modifier
@@ -457,13 +483,10 @@ fun CounselorChat(
         Row(
             verticalAlignment = Alignment.Bottom
         ) {
-            Text(text = item.time)
+            Regular10NO(text = item.time.toChatTime())
             Spacer(modifier = Modifier.width(3.dp))
             Box(
                 modifier = Modifier
-                    .miClickable(onLongClick = {
-                        longClickAction(item.id)
-                    }, onClick = null)
                     .background(
                         color = Color.White,
                         shape = CounselorChatShape
@@ -474,8 +497,8 @@ fun CounselorChat(
                 ChatItem(
                     item.text,
                     modifier = Modifier.miClickable(rippleEnabled = false, onLongClick = {
-                        longClickAction(item.id)
-                    }) { })
+                        longClickAction(item.id, item.time)
+                    }) { longClickAction(null, item.time) })
             }
         }
     }
@@ -492,13 +515,23 @@ fun ChatItem(
     if (item.contains("https://mitalk-s3.s3.ap-northeast-2.amazonaws.com/")) {
         val fileExt = item.split(".").last().lowercase()
         if (ImageAllowedList.contains(fileExt)) {
-            AsyncImage(model = item, contentDescription = "Chat Image")
+            AsyncImage(model = item, contentDescription = "Chat Image", modifier = modifier)
         } else if (VideoAllowedList.contains(fileExt)) {
-            VideoPlayer(url = item)
+            VideoPlayer(url = item, modifier = modifier)
         } else if (DocumentAllowedList.contains(fileExt)) {
-            Bold12NO(text = "File Download", modifier = Modifier.clickable {
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item)))
-            })
+            Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(id = MiTalkIcon.Download.drawableId),
+                    contentDescription = MiTalkIcon.Download.contentDescription,
+                    modifier = Modifier
+                        .background(color = Color.LightGray, shape = RoundedCornerShape(5.dp))
+                        .clickable {
+                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item)))
+                        }
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Regular12NO(text = "Download")
+            }
         }
     } else {
         Bold12NO(
