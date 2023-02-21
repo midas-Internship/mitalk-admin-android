@@ -16,7 +16,7 @@ import com.example.mitalk_admin_android.ui.LoginScreen
 import com.example.mitalk_admin_android.ui.admin.issued.AdminIssuedScreen
 import com.example.mitalk_admin_android.ui.admin.usercare.AdminUserCareScreen
 import com.example.mitalk_admin_android.ui.admin.messagerecord.AdminMessageRecordScreen
-import com.example.mitalk_admin_android.ui.chat.ChatScreen
+import com.example.mitalk_admin_android.ui.counsellor.chat.ChatScreen
 import com.example.mitalk_admin_android.ui.counsellor.CounsellorMainScreen
 import com.example.mitalk_admin_android.ui.record.RecordScreen
 import com.example.mitalk_admin_android.ui.record.RecordDetailScreen

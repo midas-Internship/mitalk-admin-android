@@ -9,8 +9,8 @@ import java.util.UUID
 class ChatSocket(
     successAction: (String) -> Unit = {},
     finishAction: () -> Unit = {},
-    receiveAction: (com.example.mitalk_admin_android.ui.chat.ChatData) -> Unit = {},
-    receiveActionUpdate: (com.example.mitalk_admin_android.ui.chat.ChatData) -> Unit = {},
+    receiveAction: (com.example.mitalk_admin_android.ui.counsellor.chat.ChatData) -> Unit = {},
+    receiveActionUpdate: (com.example.mitalk_admin_android.ui.counsellor.chat.ChatData) -> Unit = {},
     receiveActionDelete: (String) -> Unit = {},
 ) {
     private lateinit var webSocket: WebSocket
