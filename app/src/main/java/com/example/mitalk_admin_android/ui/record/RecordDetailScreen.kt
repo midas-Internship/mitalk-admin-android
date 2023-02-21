@@ -47,6 +47,7 @@ fun RecordDetailScreen(
     navController: NavController,
     headerId: Int,
     recordId: String,
+    role: String,
     vm: RecordDetailViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -215,7 +216,7 @@ fun FindInput(
 fun ChatList(
     chatList: List<RecordDetailState.MessageRecordData>,
     chatListState: LazyListState = rememberLazyListState(),
-    findText: String
+    findText: String,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -253,7 +254,7 @@ fun ChatList(
 @Composable
 fun ClientChat(
     item: RecordDetailState.MessageRecordData,
-    findText: String
+    findText: String,
 ) {
     Row(
         verticalAlignment = Alignment.Bottom
@@ -291,7 +292,7 @@ fun ClientChat(
 @Composable
 fun CounselorChat(
     item: RecordDetailState.MessageRecordData,
-    findText: String
+    findText: String,
 ) {
     Box {
         Row(
@@ -320,5 +321,5 @@ fun CounselorChat(
 @Preview
 fun showRecordDetailScreen() {
     val navController = rememberNavController()
-    RecordDetailScreen(navController = navController, 0, "헤더")
+    RecordDetailScreen(navController = navController, 0, "헤더", "")
 }
