@@ -90,6 +90,12 @@ class MiTalkIcon private constructor(
         )
 
         @Stable
+        val Download = MiTalkIcon(
+            drawableId = R.drawable.ic_download,
+            contentDescription = "download"
+        )
+
+        @Stable
         val Profile = MiTalkIcon(
             drawableId = R.drawable.icon_profile,
             contentDescription = "profile"
