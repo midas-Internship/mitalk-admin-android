@@ -1,5 +1,6 @@
 package com.example.mitalk_admin_android.vm.admin
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.param.AddQuestionParam
@@ -54,6 +55,7 @@ class AdminQuestionViewModel @Inject constructor(
             addQuestionUseCase(
                 addQuestionParam = addQuestionParam,
             ).onSuccess { postSideEffect(AdminQuestionSideEffect.ListChanged) }
+                .onFailure { Log.d("TAG", "addQuestion: "+it) }
         }
     }
 }

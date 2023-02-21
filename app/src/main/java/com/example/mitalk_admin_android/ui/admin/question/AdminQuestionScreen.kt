@@ -1,7 +1,9 @@
 package com.example.mitalk_admin_android.ui.admin.question
 
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -9,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +26,7 @@ import com.example.domain.param.AddQuestionParam
 import com.example.domain.param.PatchQuestionParam
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.mvi.admin.AdminQuestionSideEffect
+import com.example.mitalk_admin_android.mvi.admin.AdminQuestionState
 import com.example.mitalk_admin_android.ui.admin.header.AdminHeader
 import com.example.mitalk_admin_android.ui.util.MiIconButton
 import com.example.mitalk_admin_android.util.miClickable
@@ -91,25 +95,47 @@ fun AdminQuestionScreen(
         }
     }
     
-    Column {
-        AdminHeader(
-            navController = navController,
-            title = stringResource(id = R.string.admin_question_title),
-            findEnabled = false,
-        )
-        Spacer(modifier = Modifier.height(19.dp))
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column {
+            AdminHeader(
+                navController = navController,
+                title = stringResource(id = R.string.admin_question_title),
+                findEnabled = false,
+            )
+            Spacer(modifier = Modifier.height(19.dp))
 
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(13.dp)
-        ) {
-            items(state.questionList) {
-                QuestionContent(
-                    id = it.id,
-                    question = it.question,
-                    answer = it.answer,
-                    onIconClick = { data -> dialogVisible = data }
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(13.dp)
+            ) {
+                items(state.questionList) {
+                    QuestionContent(
+                        id = it.id,
+                        question = it.question,
+                        answer = it.answer,
+                        onIconClick = { data -> dialogVisible = data }
+                    )
+                }
+            }
+        }
+        MiIconButton(
+            modifier = Modifier
+                .padding(bottom = 50.dp)
+                .fillMaxSize()
+                .wrapContentWidth(align = Alignment.CenterHorizontally)
+                .wrapContentHeight(align = Alignment.Bottom),
+            onClick =  {
+                dialogVisible = AdminQuestionSimpleData(
+                    state = DialogState.ADD,
+                    id = -1,
+                    question = "",
+                    answer = "",
                 )
             }
+        ) {
+            Image(
+                painter = painterResource(id = MiTalkIcon.Add_Green_Icon.drawableId),
+                contentDescription = MiTalkIcon.Add_Green_Icon.contentDescription,
+            )
         }
     }
 }

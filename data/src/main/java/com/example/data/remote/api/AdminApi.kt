@@ -40,7 +40,9 @@ interface AdminApi {
     suspend fun getQuestionList(): List<GetQuestionResponse>
 
     @POST("$Admin/question")
-    suspend fun addQuestion(addQuestionRequest: AddQuestionRequest)
+    suspend fun addQuestion(
+        @Body addQuestionRequest: AddQuestionRequest
+    )
 
     @PATCH("$Admin/question/{question-id}")
     suspend fun patchQuestion(
