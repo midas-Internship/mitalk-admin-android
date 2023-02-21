@@ -7,6 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +18,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.ui.admin.header.AdminHeader
@@ -25,6 +28,8 @@ import com.example.mitalk_admin_android.util.theme.Medium07NO
 import com.example.mitalk_admin_android.util.theme.Medium12NO
 import com.example.mitalk_admin_android.util.theme.MiTalkColor
 import com.example.mitalk_admin_android.util.theme.MiTalkIcon
+import com.example.mitalk_admin_android.vm.admin.AdminStatisticsViewModel
+import kotlin.math.round
 
 @Stable
 private val ItemMainColor = Color(0xFF5F5677)
@@ -32,7 +37,11 @@ private val ItemMainColor = Color(0xFF5F5677)
 @Composable
 fun AdminStatisticsScreen(
     navController: NavController,
+    vm: AdminStatisticsViewModel = hiltViewModel(),
 ) {
+    val container = vm.container
+    val state = container.stateFlow.collectAsState().value
+
     val focusManager = LocalFocusManager.current
     var findOn by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
@@ -57,16 +66,22 @@ fun AdminStatisticsScreen(
                 findOn = true
             }
         )
+         
+         Spacer(modifier = Modifier.height(20.dp))
 
          LazyColumn(
              modifier = Modifier
-                 .padding(32.dp)
+                 .padding(horizontal = 32.dp)
                  .fillMaxWidth()
          ) {
-
+            items(state.listStatistics) {
+                it.run {
+                    if (name.contains(searchText) || id.contains(searchText)) {
+                        StatisticsItem(name = name, id = id, star = star)
+                    }
+                }
+            }
          }
-         StatisticsItem(name = "홍길동", id = "ㄹ2ㅑㅓ랴ㅗ펼댜럭퍼더ㅜㅈ댈ㅊ", star = 1)
-
     }
 }
 
@@ -74,7 +89,7 @@ fun AdminStatisticsScreen(
 private fun StatisticsItem(
     name: String,
     id: String,
-    star: Int,
+    star: Float,
 ) {
     var open by remember { mutableStateOf(false) }
     var targetValue by remember { mutableStateOf(0F) }
@@ -84,7 +99,6 @@ private fun StatisticsItem(
     )
 
     Column(modifier = Modifier
-        .padding(horizontal = 32.dp)
         .fillMaxWidth()
         .background(color = MiTalkColor.Gray)
         .border(
@@ -105,11 +119,15 @@ private fun StatisticsItem(
             Spacer(modifier = Modifier.width(12.dp))
             Column {
                 Spacer(modifier = Modifier.height(6.dp))
-                Row {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
                     Medium12NO(
                         text = name,
                         color = Color(0xFF736B88)
                     )
+                    Spacer(modifier = Modifier.width(18.dp))
+                    StartList(star = star)
                 }
                 Spacer(modifier = Modifier.height(2.dp))
                 Medium07NO(
@@ -129,5 +147,22 @@ private fun StatisticsItem(
             )
         }
     }
+}
 
+@Composable
+private fun StartList(
+    star: Float,
+) {
+    LazyRow {
+        items(listOf(1,2,3,4,5)) {
+            val painter =
+                if (round(star) >= it) painterResource(id = MiTalkIcon.Star_On.drawableId)
+                else painterResource(id = MiTalkIcon.Star_Off.drawableId)
+            Image(
+                painter = painter,
+                contentDescription = "star list image",
+                modifier = Modifier.size(13.dp)
+            )
+        }
+    }
 }
