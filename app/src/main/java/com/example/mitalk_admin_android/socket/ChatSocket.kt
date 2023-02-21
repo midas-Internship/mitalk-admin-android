@@ -4,7 +4,6 @@ import com.example.mitalk_admin_android.BuildConfig
 import com.google.gson.Gson
 import okhttp3.*
 import org.json.JSONObject
-import java.util.UUID
 
 class ChatSocket(
     successAction: (String) -> Unit = {},
@@ -28,9 +27,6 @@ class ChatSocket(
                         val result = gson.fromJson(text, SuccessRoom::class.java)
                         successAction(result.roomId)
                     }
-                    "SYSTEM_3_2" -> {
-                        finishAction()
-                    }
                     null -> {
                         val result = gson.fromJson(text, ChatData::class.java)
                         when (result.chatMessageType) {
@@ -42,6 +38,9 @@ class ChatSocket(
                             }
                             "DELETE" -> {
                                 receiveActionDelete(result.messageId)
+                            }
+                            "END" -> {
+                                finishAction()
                             }
                         }
                     }
@@ -83,7 +82,7 @@ class ChatSocket(
     }
 
     fun close() {
-        webSocket?.close(1000, "Close")
+        webSocket.close(1000, "Close")
         client.dispatcher.executorService.shutdown()
     }
 }
