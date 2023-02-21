@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.domain.param.AddQuestionParam
 import com.example.domain.param.PatchQuestionParam
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.mvi.admin.AdminQuestionSideEffect
@@ -30,12 +31,20 @@ import com.example.mitalk_admin_android.util.theme.*
 import com.example.mitalk_admin_android.vm.admin.AdminQuestionViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 
+data class AdminQuestionSimpleData(
+    val state: DialogState,
+    val id: Long,
+    val question: String,
+    val answer: String,
+)
 @OptIn(InternalCoroutinesApi::class)
 @Composable
 fun AdminQuestionScreen(
     navController: NavController,
     vm: AdminQuestionViewModel = hiltViewModel()
 ) {
+    var dialogVisible by remember { mutableStateOf<AdminQuestionSimpleData?>(null) }
+
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
     val sideEffect = container.sideEffectFlow
@@ -46,7 +55,39 @@ fun AdminQuestionScreen(
     
     sideEffect.observeWithLifecycle {
         when (it) {
-            AdminQuestionSideEffect.ListChanged -> vm.getAdminQuestionList()
+            AdminQuestionSideEffect.ListChanged -> {
+                dialogVisible = null
+                vm.getAdminQuestionList()
+            }
+        }
+    }
+
+    if (dialogVisible != null) {
+        AdminQuestionDialog(
+            id = dialogVisible!!.id,
+            question = dialogVisible!!.question,
+            answer = dialogVisible!!.answer,
+            onDismissRequest = {
+                dialogVisible = null
+            },
+            state = dialogVisible!!.state
+        ) { id, question, answer ->
+           if (dialogVisible!!.state == DialogState.ADD) {
+               vm.addQuestion(
+                   addQuestionParam = AddQuestionParam(
+                       question = question,
+                       answer = answer,
+                   )
+               )
+           } else {
+               vm.patchAdminQuestion(
+                   patchQuestionParam = PatchQuestionParam(
+                       id = id,
+                       question = question,
+                       answer = answer,
+                   )
+               )
+           }
         }
     }
     
@@ -66,9 +107,8 @@ fun AdminQuestionScreen(
                     id = it.id,
                     question = it.question,
                     answer = it.answer,
-                ) { param ->
-                    vm.patchAdminQuestion(param)
-                }
+                    onIconClick = { data -> dialogVisible = data }
+                )
             }
         }
     }
@@ -82,7 +122,7 @@ private fun QuestionContent(
     id: Long,
     question: String,
     answer: String,
-    onPatchClick: (PatchQuestionParam) -> Unit
+    onIconClick: (AdminQuestionSimpleData) -> Unit,
 ) {
 
     var open by remember { mutableStateOf(false) }
@@ -138,11 +178,21 @@ private fun QuestionContent(
             Icon(
                 painter = painterResource(id = MiTalkIcon.Refactor_Icon.drawableId),
                 contentDescription = MiTalkIcon.Refactor_Icon.contentDescription,
-                modifier = Modifier.miClickable(rippleEnabled = false) {  }
+                modifier = Modifier
+                    .miClickable(
+                        rippleEnabled = false
+                    ) {
+                        onIconClick(
+                            AdminQuestionSimpleData(
+                                state = DialogState.FIX,
+                                id = id,
+                                question = question,
+                                answer = answer,
+                            )
+                        )
+                    }
             )
-
             SeeAnswerIcon(rotateValue = rotateValue)
-
         }
 
         if (open) {
