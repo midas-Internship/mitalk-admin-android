@@ -77,7 +77,7 @@ fun ChatScreen(
     var fileExceptionTitleId by remember { mutableStateOf(R.string.big_size_file) }
     var fileExceptionContentId by remember { mutableStateOf(R.string.big_size_file_comment) }
     var text by remember { mutableStateOf("") }
-    val deleteMsg = stringResource(id = R.string.main)
+    val deleteMsg = stringResource(id = R.string.delete_message)
 
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
@@ -277,7 +277,7 @@ fun ChatInput(
     Column {
         if (isEditable) {
             Text(
-                text = "문자를 수정 중 입니다.",
+                text = stringResource(id = R.string.editing_message),
                 modifier = Modifier.background(
                     color = Color(0xFFF3F3F3),
                     shape = RoundedCornerShape(5.dp)
@@ -422,7 +422,7 @@ fun CounselorChat(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "수정",
+                            text = stringResource(id = R.string.edit),
                             color = Color(0xFF4200FF),
                             modifier = Modifier
                                 .padding(end = 3.dp)
@@ -436,7 +436,7 @@ fun CounselorChat(
                                 .fillMaxHeight(0.7f)
                         )
                         Text(
-                            text = "삭제",
+                            text = stringResource(id = R.string.delete),
                             color = Color(0xFFFF0000),
                             modifier = Modifier
                                 .padding(start = 3.dp)
