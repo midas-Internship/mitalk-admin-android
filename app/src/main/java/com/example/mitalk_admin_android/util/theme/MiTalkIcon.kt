@@ -213,5 +213,11 @@ class MiTalkIcon private constructor(
             drawableId = R.drawable.icon_refactor,
             contentDescription = "icon refactor"
         )
+
+        @Stable
+        val Navi_Arrow_Icon = MiTalkIcon(
+            drawableId = R.drawable.ic_navi_arrow,
+            contentDescription = "icon navi arrow"
+        )
     }
 }
