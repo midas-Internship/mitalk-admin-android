@@ -5,15 +5,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.ui.admin.header.AdminHeader
-import com.example.mitalk_admin_android.ui.util.MiHeader
 
 @Composable
-fun QuestionScreen(
+fun AdminQuestionScreen(
     navController: NavController,
 ) {
     AdminHeader(
         navController = navController,
-        title = stringResource(id = R.string.admin_question_title) ,
+        title = stringResource(id = R.string.admin_question_title),
+        findEnabled = false,
     )
-    
+
 }
