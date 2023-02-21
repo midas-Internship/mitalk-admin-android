@@ -28,7 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatViewModel @Inject constructor(
     private val getAccessTokenUseCase: GetAccessTokenUseCase,
-    private val postFileUseCase: PostFileUseCase
+    private val postFileUseCase: PostFileUseCase,
 ) : ContainerHost<ChatState, ChatSideEffect>, ViewModel() {
     override val container = container<ChatState, ChatSideEffect>(ChatState())
     fun setChatSocket(
@@ -111,6 +111,7 @@ class ChatViewModel @Inject constructor(
 
     fun finishRoom() = intent {
         state.chatSocket.close()
+        reduce { state.copy(chatList = listOf(), uploadList = listOf()) }
         postSideEffect(ChatSideEffect.FinishRoom)
     }
 }
