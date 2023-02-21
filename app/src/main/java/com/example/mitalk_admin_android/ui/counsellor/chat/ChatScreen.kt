@@ -105,7 +105,6 @@ fun ChatScreen(
                 fileExceptionDialogVisible = true
             }
             ChatSideEffect.FinishRoom -> {
-                state.chatSocket.close()
                 navController.popBackStack()
             }
             is ChatSideEffect.ReceiveChat -> {
@@ -124,6 +123,7 @@ fun ChatScreen(
             }
         }
     }
+
     Column(modifier = Modifier.pointerInput(Unit) {
         detectTapGestures {
             selectItemUUID = null
@@ -133,8 +133,7 @@ fun ChatScreen(
         MiHeader(
             modifier = Modifier.background(Color(0xFFF2F2F2)),
             backPressed = {
-                state.chatSocket.close()
-                navController.popBackStack()
+                vm.finishRoom()
             })
         Box(modifier = Modifier.weight(1f)) {
             ChatList(
