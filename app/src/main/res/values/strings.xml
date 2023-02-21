@@ -10,6 +10,8 @@
     <string name="yes">예</string>
     <string name="no">아니요</string>
     <string name="consulting_record">상담 기록</string>
+    <string name="question">질문</string>
+    <string name="answer">답변</string>
     <string name="find_comment_hint">찾고싶은 문구를 입력해주세요</string>
     <string name="client">고객</string>
     <string name="delete_message">삭제된 메시지</string>
@@ -51,4 +53,9 @@
     <string name="delete_fail">삭제를 실패했습니다.</string>
     <string name="real_logout">정말 로그아웃하시겠습니까?</string>
     <string name="do_not_forget_id">관리자 인증번호를 까먹지 않게 주의해주세요</string>
+    <!--admin question dialog-->
+    <string name="hint_question">질문을 적어주세요.</string>
+    <string name="hint_answer">질문의 대한 답변을 적어주세요.</string>
+    <string name="registration">등록하기</string>
+    <string name="refactor">수정하기</string>
 </resources>

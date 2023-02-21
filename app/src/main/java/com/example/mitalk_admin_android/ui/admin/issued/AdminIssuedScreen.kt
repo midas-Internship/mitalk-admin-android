@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -137,9 +138,10 @@ fun AdminIssuedScreen(
                         }
                     }
                 ) {
-                    Icon(
+                    Image(
                         painter = painterResource(id = MiTalkIcon.Add_Green_Icon.drawableId),
                         contentDescription = MiTalkIcon.Add_Green_Icon.contentDescription,
+                        modifier = Modifier.size(11.dp)
                     )
                 }
                 BasicTextField(

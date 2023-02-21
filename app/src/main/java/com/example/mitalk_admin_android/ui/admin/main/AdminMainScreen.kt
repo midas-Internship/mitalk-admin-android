@@ -135,7 +135,7 @@ private fun AdminSecondList(navController: NavController) {
                 content = stringResource(id = R.string.admin_question_content),
                 icon = painterResource(id = MiTalkIcon.Question_Icon.drawableId)
             ) {
-
+                navController.navigate(AppNavigationItem.AdminQuestion.route)
             }
             AdminListLine()
             AdminItem(

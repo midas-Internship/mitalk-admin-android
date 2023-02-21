@@ -4,6 +4,7 @@ import com.example.data.repository.AuthRepositoryImpl
 import com.example.data.repository.FileRepositoryImpl
 import com.example.data.repository.RecordRepositoryImpl
 import com.example.data.repository.admin.AdminIssuedRepositoryImpl
+import com.example.data.repository.admin.AdminQuestionRepositoryImpl
 import com.example.data.repository.admin.GetMessageRecordRepositoryImpl
 import com.example.data.repository.admin.GetUserListRepositoryImpl
 import com.example.data.sample.SampleRepositoryImpl
@@ -11,6 +12,7 @@ import com.example.domain.repository.AuthRepository
 import com.example.domain.repository.FileRepository
 import com.example.domain.repository.RecordRepository
 import com.example.domain.repository.admin.AdminIssuedRepository
+import com.example.domain.repository.admin.AdminQuestionRepository
 import com.example.domain.repository.admin.GetMessageRecordRepository
 import com.example.domain.repository.admin.GetUserListRepository
 import com.example.domain.sample.SampleRepository
@@ -57,4 +59,9 @@ abstract class RepositoryModule {
     abstract fun provideAdminIssuedRepository(
         adminIssuedRepositoryImpl: AdminIssuedRepositoryImpl
     ): AdminIssuedRepository
+
+    @Binds
+    abstract fun provideAdminQuestionRepository(
+        adminQuestionRepositoryImpl: AdminQuestionRepositoryImpl
+    ): AdminQuestionRepository
 }

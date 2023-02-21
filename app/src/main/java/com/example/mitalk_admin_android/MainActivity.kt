@@ -16,6 +16,7 @@ import com.example.mitalk_admin_android.ui.LoginScreen
 import com.example.mitalk_admin_android.ui.admin.issued.AdminIssuedScreen
 import com.example.mitalk_admin_android.ui.admin.usercare.AdminUserCareScreen
 import com.example.mitalk_admin_android.ui.admin.messagerecord.AdminMessageRecordScreen
+import com.example.mitalk_admin_android.ui.admin.question.AdminQuestionScreen
 import com.example.mitalk_admin_android.ui.chat.ChatScreen
 import com.example.mitalk_admin_android.ui.counsellor.CounsellorMainScreen
 import com.example.mitalk_admin_android.ui.record.RecordScreen
@@ -69,6 +70,9 @@ fun BaseApp(navController: NavHostController) {
         }
         composable(AppNavigationItem.AdminMessageRecord.route) {
             AdminMessageRecordScreen(navController = navController)
+        }
+        composable(AppNavigationItem.AdminQuestion.route) {
+            AdminQuestionScreen(navController = navController)
         }
         composable(
             route = AppNavigationItem.AdminMain.route
@@ -124,6 +128,8 @@ sealed class AppNavigationItem(val route: String) {
 
     object AdminUserCare : AppNavigationItem("AdminUserCare")
     object AdminMessageRecord : AppNavigationItem("AdminMessageRecord")
+
+    object AdminQuestion : AppNavigationItem("AdminQuestion")
     object Chat : AppNavigationItem("Chat")
 
     object Record : AppNavigationItem("Record")
