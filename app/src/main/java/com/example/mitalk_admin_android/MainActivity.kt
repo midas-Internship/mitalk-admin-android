@@ -16,6 +16,7 @@ import com.example.mitalk_admin_android.ui.LoginScreen
 import com.example.mitalk_admin_android.ui.admin.issued.AdminIssuedScreen
 import com.example.mitalk_admin_android.ui.admin.usercare.AdminUserCareScreen
 import com.example.mitalk_admin_android.ui.admin.messagerecord.AdminMessageRecordScreen
+import com.example.mitalk_admin_android.ui.counsellor.chat.ChatScreen
 import com.example.mitalk_admin_android.ui.admin.question.AdminQuestionScreen
 import com.example.mitalk_admin_android.ui.chat.ChatScreen
 import com.example.mitalk_admin_android.ui.counsellor.CounsellorMainScreen
@@ -127,9 +128,11 @@ sealed class AppNavigationItem(val route: String) {
     object AdminIssued : AppNavigationItem("AdminIssued")
 
     object AdminUserCare : AppNavigationItem("AdminUserCare")
+
     object AdminMessageRecord : AppNavigationItem("AdminMessageRecord")
 
     object AdminQuestion : AppNavigationItem("AdminQuestion")
+
     object Chat : AppNavigationItem("Chat")
 
     object Record : AppNavigationItem("Record")
