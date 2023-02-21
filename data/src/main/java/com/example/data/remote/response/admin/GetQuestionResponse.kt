@@ -4,7 +4,7 @@ import com.example.domain.entity.admin.GetQuestionEntity
 import com.google.gson.annotations.SerializedName
 
 data class GetQuestionResponse(
-    @SerializedName("id") val id: Int,
+    @SerializedName("id") val id: Long,
     @SerializedName("question") val question: String,
     @SerializedName("answer") val answer: String,
 )

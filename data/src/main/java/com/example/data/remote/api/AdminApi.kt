@@ -2,10 +2,12 @@ package com.example.data.remote.api
 
 import com.example.data.remote.api.AdminApi.Companion.Admin
 import com.example.data.remote.request.AddCounsellorRequest
+import com.example.data.remote.request.AddQuestionRequest
 import com.example.data.remote.response.admin.GetCounsellorResponse
 import com.example.data.remote.response.admin.GetMessageRecordResponse
 import com.example.data.remote.response.admin.GetQuestionResponse
 import com.example.data.remote.response.admin.GetUserListResponse
+import com.example.domain.param.AddQuestionParam
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -34,6 +36,10 @@ interface AdminApi {
 
     @GET("$Admin/question")
     suspend fun getQuestionList(): List<GetQuestionResponse>
+
+    @POST("$Admin/question")
+    suspend fun addQuestion(addQuestionRequest: AddQuestionRequest)
+
     private companion object {
         const val Admin = "/admin"
     }
