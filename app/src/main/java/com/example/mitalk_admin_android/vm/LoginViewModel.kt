@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.exception.BadRequestException
 import com.example.domain.exception.NotFoundException
+import com.example.domain.usecase.auth.AutoSignInUseCase
 import com.example.domain.usecase.auth.LoginUseCase
 import com.example.mitalk_admin_android.mvi.LoginSideEffect
 import com.example.mitalk_admin_android.mvi.LoginState
@@ -20,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
+    private val autoSignInUseCase: AutoSignInUseCase,
 ) : ContainerHost<LoginState, LoginSideEffect>, ViewModel() {
 
     override val container = container<LoginState, LoginSideEffect>(LoginState())
@@ -34,8 +36,8 @@ class LoginViewModel @Inject constructor(
             ).onSuccess {
                 postSideEffect(
                     LoginSideEffect.LoginSuccess(
-                        role = it,
-                        key = certificationNumber,
+                        role = it.role,
+                        key = it.id,
                     )
                 )
             }.onFailure {
@@ -45,6 +47,20 @@ class LoginViewModel @Inject constructor(
                     else -> Log.d("TAG", "fail" + it.message)
                 }
             }
+        }
+    }
+
+    fun autoSignIn() = intent {
+        viewModelScope.launch {
+            autoSignInUseCase()
+                .onSuccess {
+                    postSideEffect(
+                        LoginSideEffect.LoginSuccess(
+                            role = it.role,
+                            key = it.id,
+                        )
+                    )
+                }
         }
     }
 

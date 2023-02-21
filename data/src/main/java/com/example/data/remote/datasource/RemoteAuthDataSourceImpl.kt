@@ -17,4 +17,10 @@ class RemoteAuthDataSourceImpl @Inject constructor(
         val id = UUID.fromString(certificationNumber)
         authApi.signIn(signInRequest = SignInRequest(id = id)).toEntity()
     }
+
+    override suspend fun tokenRefresh(
+        refreshToken: String
+    ): SignInEntity = miTalkApiCall {
+        authApi.tokenRefresh(refreshToken).toEntity()
+    }
 }

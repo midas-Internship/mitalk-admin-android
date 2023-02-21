@@ -8,4 +8,5 @@ data class SignInEntity(
     val role: String,
     val access_exp: ZonedDateTime,
     val refresh_exp: ZonedDateTime,
+    val id: String
 )

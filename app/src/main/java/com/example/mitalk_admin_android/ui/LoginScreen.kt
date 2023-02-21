@@ -66,6 +66,10 @@ fun LoginScreen(
         }
     }
 
+    LaunchedEffect(vm) {
+        vm.autoSignIn()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
