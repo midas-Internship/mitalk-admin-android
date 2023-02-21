@@ -2,6 +2,7 @@ package com.example.mitalk_admin_android.ui.counsellor.chat
 
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.animateFloatAsState
@@ -81,6 +82,10 @@ fun ChatScreen(
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
     val sideEffect = container.sideEffectFlow
+
+    BackHandler {
+        vm.finishRoom()
+    }
 
     sideEffect.observeWithLifecycle { effect ->
         when (effect) {
@@ -268,7 +273,7 @@ fun ChatInput(
     sendAction: (String) -> Unit,
     fileSendAction: (Uri) -> Unit,
     isEditable: Boolean,
-    editCancelAction: () -> Unit
+    editCancelAction: () -> Unit,
 ) {
     var isExpand by remember { mutableStateOf(false) }
     var targetValue by remember { mutableStateOf(0F) }
@@ -508,7 +513,7 @@ fun ChatItem(
     item: String,
     isMe: Boolean = true,
     modifier: Modifier = Modifier,
-    findText: String = ""
+    findText: String = "",
 ) {
     val context = LocalContext.current
     if (item.contains("https://mitalk-s3.s3.ap-northeast-2.amazonaws.com/")) {
