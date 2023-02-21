@@ -81,7 +81,7 @@ fun BasicDialogBtn(
                     )
                     .miClickable { onDismissRequest() }
             ) {
-                Regular14NO(text = stringResource(id = R.string.main))
+                Regular14NO(text = stringResource(id = R.string.cancel))
             }
         }
         Box(
