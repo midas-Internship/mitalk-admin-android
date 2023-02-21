@@ -27,15 +27,15 @@ data class ChatData(
     val message: String?,
 )
 
-fun ChatData.toUseData() = com.example.mitalk_admin_android.ui.chat.ChatData(
+fun ChatData.toUseData() = com.example.mitalk_admin_android.ui.counsellor.chat.ChatData(
     id = messageId,
     text = message ?: "",
     isMe = role == "COUNSELLOR",
     time = LocalTime.now().toChatTime()
 )
 
-fun com.example.mitalk_admin_android.ui.chat.ChatData.toDeleteChatData(deleteMsg: String) =
-    com.example.mitalk_admin_android.ui.chat.ChatData(
+fun com.example.mitalk_admin_android.ui.counsellor.chat.ChatData.toDeleteChatData(deleteMsg: String) =
+    com.example.mitalk_admin_android.ui.counsellor.chat.ChatData(
         id = id,
         text = deleteMsg,
         isMe = isMe,

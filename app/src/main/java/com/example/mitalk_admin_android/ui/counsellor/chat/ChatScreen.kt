@@ -1,4 +1,4 @@
-package com.example.mitalk_admin_android.ui.chat
+package com.example.mitalk_admin_android.ui.counsellor.chat
 
 import android.content.Intent
 import android.net.Uri
@@ -12,12 +12,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -39,15 +37,15 @@ import coil.compose.AsyncImage
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.mvi.ChatSideEffect
 import com.example.mitalk_admin_android.socket.toDeleteChatData
+import com.example.mitalk_admin_android.ui.counsellor.dialog.BasicDialog
 import com.example.mitalk_admin_android.ui.util.ClientChatShape
 import com.example.mitalk_admin_android.ui.util.CounselorChatShape
+import com.example.mitalk_admin_android.ui.util.MiHeader
 import com.example.mitalk_admin_android.ui.util.TriangleShape
-import com.example.mitalk_admin_android.util.miClickable
-import com.example.mitalk_admin_android.util.observeWithLifecycle
+import com.example.mitalk_admin_android.util.*
 import com.example.mitalk_admin_android.util.theme.Bold12NO
 import com.example.mitalk_admin_android.util.theme.MiTalkColor
 import com.example.mitalk_admin_android.util.theme.MiTalkIcon
-import com.example.mitalk_admin_android.util.toFile
 import com.example.mitalk_admin_android.video.VideoPlayer
 import com.example.mitalk_admin_android.vm.ChatViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -71,12 +69,15 @@ fun ChatScreen(
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val chatListState = rememberLazyListState()
-    val chatList = remember { mutableStateListOf<ChatData>() }
     val inputFocusRequester = remember { FocusRequester() }
     var editMsgId by remember { mutableStateOf<String?>(null) }
     var selectItemUUID by remember { mutableStateOf<String?>(null) }
+    var fileExceptionDialogVisible by remember { mutableStateOf(false) }
+    var fileExceptionOnBtnPressed by remember { mutableStateOf<(() -> Unit)?>(null) }
+    var fileExceptionTitleId by remember { mutableStateOf(R.string.big_size_file) }
+    var fileExceptionContentId by remember { mutableStateOf(R.string.big_size_file_comment) }
     var text by remember { mutableStateOf("") }
-    val deleteMsg = stringResource(id = R.string.main)
+    val deleteMsg = stringResource(id = R.string.delete_message)
 
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
@@ -84,36 +85,62 @@ fun ChatScreen(
 
     sideEffect.observeWithLifecycle { effect ->
         when (effect) {
+            ChatSideEffect.FileOverException -> {
+                fileExceptionTitleId = R.string.over_size_file
+                fileExceptionContentId = R.string.over_size_file_comment
+                fileExceptionDialogVisible = true
+            }
+            ChatSideEffect.FileNotAllowedException -> {
+                fileExceptionTitleId = R.string.not_allowed_file
+                fileExceptionContentId = R.string.not_allowed_file_comment
+                fileExceptionDialogVisible = true
+            }
+            is ChatSideEffect.FileSizeException -> {
+                fileExceptionTitleId = R.string.big_size_file
+                fileExceptionContentId = R.string.big_size_file_comment
+                fileExceptionOnBtnPressed =
+                    {
+                        vm.postFile(uri = effect.uri, context = context, approve = true)
+                        fileExceptionDialogVisible = false
+                    }
+                fileExceptionDialogVisible = true
+            }
             ChatSideEffect.FinishRoom -> {
+                state.chatSocket.close()
                 navController.popBackStack()
             }
             is ChatSideEffect.ReceiveChat -> {
-                chatList.add(effect.chat)
                 MainScope().launch {
-                    chatListState.scrollToItem(chatList.size - 1)
+                    chatListState.scrollToItem(effect.chatSize)
                 }
             }
             is ChatSideEffect.ReceiveChatUpdate -> {
-                chatList.replaceAll { if (it.id == effect.chat.id) effect.chat else it }
+                vm.editChatList(effect.chat)
             }
             is ChatSideEffect.ReceiveChatDelete -> {
-                chatList.replaceAll { if (it.id == effect.chatId) it.toDeleteChatData(deleteMsg) else it }
+                vm.deleteChatList(effect.chatId, deleteMsg)
             }
             is ChatSideEffect.SuccessUpload -> {
                 state.chatSocket.send(roomId = roomId, text = effect.url)
             }
         }
     }
-
     Column(modifier = Modifier.pointerInput(Unit) {
         detectTapGestures {
             selectItemUUID = null
             focusManager.clearFocus()
         }
     }) {
+        MiHeader(
+            modifier = Modifier.background(Color(0xFFF2F2F2)),
+            backPressed = {
+                state.chatSocket.close()
+                navController.popBackStack()
+            })
         Box(modifier = Modifier.weight(1f)) {
             ChatList(
-                chatList = chatList,
+                chatList = state.chatList,
+                uploadList = state.uploadList,
                 chatListState = chatListState,
                 selectItemUUID = selectItemUUID,
                 changeSelectItemUUID = {
@@ -144,21 +171,26 @@ fun ChatScreen(
                     editMsgId = null
                 } else {
                     state.chatSocket.send(roomId = roomId, text = it)
-                    MainScope().launch {
-                        chatListState.scrollToItem(chatList.size - 1)
-                    }
                 }
             }, fileSendAction = {
-                vm.postFile(it.toFile(context))
+                vm.postFile(it, context)
             }, isEditable = (editMsgId != null)
         )
         Spacer(modifier = Modifier.height(18.dp))
+        BasicDialog(
+            visible = fileExceptionDialogVisible,
+            title = stringResource(id = fileExceptionTitleId),
+            content = stringResource(id = fileExceptionContentId),
+            onDismissRequest = { fileExceptionDialogVisible = false },
+            onBtnPressed = fileExceptionOnBtnPressed
+        )
     }
 }
 
 @Composable
 fun ChatList(
     chatList: List<ChatData>,
+    uploadList: List<Uri>,
     chatListState: LazyListState = rememberLazyListState(),
     selectItemUUID: String?,
     changeSelectItemUUID: (String?) -> Unit,
@@ -197,6 +229,25 @@ fun ChatList(
                 }
             }
         }
+        items(uploadList) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(start = 20.dp, end = 10.dp, top = 10.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Box(
+                    modifier = Modifier
+                        .width(150.dp)
+                        .height(150.dp)
+                        .background(color = MiTalkColor.White, shape = CounselorChatShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = MiTalkColor.MainBlue)
+                }
+            }
+        }
         items(1) {
             Spacer(modifier = Modifier.height(20.dp))
         }
@@ -226,7 +277,7 @@ fun ChatInput(
     Column {
         if (isEditable) {
             Text(
-                text = "문자를 수정 중 입니다.",
+                text = stringResource(id = R.string.editing_message),
                 modifier = Modifier.background(
                     color = Color(0xFFF3F3F3),
                     shape = RoundedCornerShape(5.dp)
@@ -371,7 +422,7 @@ fun CounselorChat(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "수정",
+                            text = stringResource(id = R.string.edit),
                             color = Color(0xFF4200FF),
                             modifier = Modifier
                                 .padding(end = 3.dp)
@@ -385,7 +436,7 @@ fun CounselorChat(
                                 .fillMaxHeight(0.7f)
                         )
                         Text(
-                            text = "삭제",
+                            text = stringResource(id = R.string.delete),
                             color = Color(0xFFFF0000),
                             modifier = Modifier
                                 .padding(start = 3.dp)
@@ -439,18 +490,15 @@ fun ChatItem(
 ) {
     val context = LocalContext.current
     if (item.contains("https://mitalk-s3.s3.ap-northeast-2.amazonaws.com/")) {
-        when (item.split(".").last().lowercase()) {
-            "jpg", "jpeg", "gif", "png", "bmp", "svg" -> {
-                AsyncImage(model = item, contentDescription = "Chat Image")
-            }
-            "mp4", "mov", "wmv", "avi", "mkv", "mpeg-2" -> {
-                VideoPlayer(url = item)
-            }
-            "hwp", "txt", "doc", "pdf", "csv", "xls", "ppt", "pptx" -> {
-                Bold12NO(text = "File Download", modifier = Modifier.clickable {
-                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item)))
-                })
-            }
+        val fileExt = item.split(".").last().lowercase()
+        if (ImageAllowedList.contains(fileExt)) {
+            AsyncImage(model = item, contentDescription = "Chat Image")
+        } else if (VideoAllowedList.contains(fileExt)) {
+            VideoPlayer(url = item)
+        } else if (DocumentAllowedList.contains(fileExt)) {
+            Bold12NO(text = "File Download", modifier = Modifier.clickable {
+                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item)))
+            })
         }
     } else {
         Bold12NO(

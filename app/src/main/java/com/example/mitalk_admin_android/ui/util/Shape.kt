@@ -21,6 +21,12 @@ val CounselorChatShape =
 @Stable
 val ContentShape = RoundedCornerShape(7.dp)
 
+@Stable
+val OkayShape = RoundedCornerShape(bottomEnd = 5.dp)
+
+@Stable
+val OkayEntireShape = RoundedCornerShape(bottomEnd = 5.dp, bottomStart = 5.dp)
+
 class TriangleShape : Shape {
     override fun createOutline(
         size: Size,

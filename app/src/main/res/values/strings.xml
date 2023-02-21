@@ -15,7 +15,12 @@
     <string name="find_comment_hint">찾고싶은 문구를 입력해주세요</string>
     <string name="client">고객</string>
     <string name="delete_message">삭제된 메시지</string>
+    <string name="editing_message">문자를 수정 중 입니다.</string>
     <string name="no_search_result">검색 결과가 없습니다.</string>
+    <string name="cancel">취소</string>
+    <string name="okay">확인</string>
+    <string name="edit">수정</string>
+    <string name="delete">삭제</string>
 
     <!--로그인 화면-->
     <string name="input_certification_number">인증번호를 입력해주세요.</string>
@@ -53,9 +58,18 @@
     <string name="delete_fail">삭제를 실패했습니다.</string>
     <string name="real_logout">정말 로그아웃하시겠습니까?</string>
     <string name="do_not_forget_id">관리자 인증번호를 까먹지 않게 주의해주세요</string>
+
     <!--admin question dialog-->
     <string name="hint_question">질문을 적어주세요.</string>
     <string name="hint_answer">질문의 대한 답변을 적어주세요.</string>
     <string name="registration">등록하기</string>
     <string name="refactor">수정하기</string>
+
+    <!--file_exception dialog    -->
+    <string name="not_allowed_file">지원하지 않는 파일</string>
+    <string name="not_allowed_file_comment">이 파일은 지원되지 않는 파일입니다.</string>
+    <string name="big_size_file">100MB 이상 파일</string>
+    <string name="big_size_file_comment">파일을 전송하시겠습니까?</string>
+    <string name="over_size_file">파일 용량 초과</string>
+    <string name="over_size_file_comment">파일의 용량이 너무 커서 전송할 수 없습니다.</string>
 </resources>
