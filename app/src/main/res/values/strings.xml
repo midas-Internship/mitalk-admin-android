@@ -10,17 +10,24 @@
     <string name="yes">예</string>
     <string name="no">아니요</string>
     <string name="consulting_record">상담 기록</string>
+<<<<<<< HEAD
     <string name="question">질문</string>
     <string name="answer">답변</string>
+=======
+    <string name="find_comment_hint">찾고싶은 문구를 입력해주세요</string>
+    <string name="client">고객</string>
+    <string name="delete_message">삭제된 메시지</string>
+    <string name="no_search_result">검색 결과가 없습니다.</string>
+>>>>>>> origin/develop
 
     <!--로그인 화면-->
     <string name="input_certification_number">인증번호를 입력해주세요.</string>
-    
+
     <!-- 상담사 메인 화면-->
     <string name="can_counsel">현재 상담 가능 상태입니다.</string>
     <string name="can_not_counsel">현재 상담 기능이 꺼져있습니다.</string>
     <string name="open_record">상담기록 열람</string>
-    
+
     <!--관리자 메인 화면-->
     <string name="admin">관리자</string>
     <string name="admin_option">관리자 옵션</string>

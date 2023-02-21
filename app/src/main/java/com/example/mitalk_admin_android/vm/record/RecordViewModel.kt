@@ -2,7 +2,7 @@ package com.example.mitalk_admin_android.vm.record
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.usecase.GetRecordListUseCase
+import com.example.domain.usecase.record.GetRecordListUseCase
 import com.example.mitalk_admin_android.mvi.RecordSideEffect
 import com.example.mitalk_admin_android.mvi.RecordState
 import com.example.mitalk_admin_android.mvi.toStateData

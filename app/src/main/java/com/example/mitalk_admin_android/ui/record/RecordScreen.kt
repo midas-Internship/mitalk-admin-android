@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.mitalk_admin_android.AppNavigationItem
+import com.example.mitalk_admin_android.DeepLinkKey
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.mvi.RecordState
 import com.example.mitalk_admin_android.ui.util.MiHeader
@@ -102,7 +104,11 @@ private fun RecordList(
                 counselor = it.counsellorName,
                 lastDate = returnLastDate(list, index),
             ) {
-
+                navController.navigate(
+                    route = AppNavigationItem.RecordDetail.route
+                            + DeepLinkKey.HEADER_ID + type.titleId
+                            + DeepLinkKey.RECORD_ID + it.recordId
+                )
             }
         }
     }
