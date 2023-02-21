@@ -1,27 +1,32 @@
 package com.example.data.local.auth
 
 import com.example.data.local.AuthPreference
+import com.example.domain.entity.SignInEntity
 import com.example.domain.entity.TokenEntity
 import javax.inject.Inject
 
 class LocalAuthDataSourceImpl @Inject constructor(
     private val authPreference: AuthPreference,
 ) : LocalAuthDataSource {
-    override suspend fun fetchToken(): TokenEntity =
+    override suspend fun fetchToken(): SignInEntity =
         with(authPreference) {
-            TokenEntity(
-                accessToken = fetchAccessToken(),
-                refreshToken = fetchRefreshToken(),
-                expirationAt = fetchExpirationAt()
+            SignInEntity(
+                access_token = fetchAccessToken(),
+                refresh_token = fetchRefreshToken(),
+                access_exp = fetchExpirationAt(),
+                refresh_exp = fetchExpirationAt(),
+                role = fetchRole(),
+                id = ""
             )
         }
 
 
-    override suspend fun saveToken(tokenEntity: TokenEntity) =
+    override suspend fun saveToken(signInEntity: SignInEntity) =
         with(authPreference) {
-            saveAccessToken(tokenEntity.accessToken)
-            saveRefreshToken(tokenEntity.refreshToken)
-            saveExpirationAt(tokenEntity.expirationAt)
+            saveAccessToken(signInEntity.access_token)
+            saveRefreshToken(signInEntity.refresh_token)
+            saveExpirationAt(signInEntity.refresh_exp)
+            saveRole(signInEntity.role)
         }
 
 
@@ -30,5 +35,6 @@ class LocalAuthDataSourceImpl @Inject constructor(
             clearAccessToken()
             clearRefreshToken()
             clearExpirationAt()
+            clearRole()
         }
 }
