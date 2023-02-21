@@ -28,7 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.mvi.RecordDetailSideEffect
 import com.example.mitalk_admin_android.mvi.RecordDetailState
-import com.example.mitalk_admin_android.ui.chat.ChatItem
+import com.example.mitalk_admin_android.ui.counsellor.chat.ChatItem
 import com.example.mitalk_admin_android.ui.util.ClientChatShape
 import com.example.mitalk_admin_android.ui.util.CounselorChatShape
 import com.example.mitalk_admin_android.ui.util.MiHeader
