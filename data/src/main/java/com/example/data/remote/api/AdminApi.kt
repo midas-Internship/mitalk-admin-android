@@ -1,8 +1,10 @@
 package com.example.data.remote.api
 
+import com.example.data.remote.api.AdminApi.Companion.Admin
 import com.example.data.remote.request.AddCounsellorRequest
 import com.example.data.remote.response.admin.GetCounsellorResponse
 import com.example.data.remote.response.admin.GetMessageRecordResponse
+import com.example.data.remote.response.admin.GetQuestionResponse
 import com.example.data.remote.response.admin.GetUserListResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -29,6 +31,9 @@ interface AdminApi {
     suspend fun deleteCounsellor(
         @Path("counsellor_id") id: String
     )
+
+    @GET("$Admin/question")
+    suspend fun getQuestionList(): List<GetQuestionResponse>
     private companion object {
         const val Admin = "/admin"
     }
