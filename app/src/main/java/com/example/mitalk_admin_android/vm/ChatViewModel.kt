@@ -110,6 +110,7 @@ class ChatViewModel @Inject constructor(
     }
 
     fun finishRoom() = intent {
+        state.chatSocket.close()
         postSideEffect(ChatSideEffect.FinishRoom)
     }
 }
