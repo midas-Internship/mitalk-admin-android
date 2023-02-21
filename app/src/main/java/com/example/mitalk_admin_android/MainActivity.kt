@@ -3,6 +3,7 @@ package com.example.mitalk_admin_android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -21,18 +22,30 @@ import com.example.mitalk_admin_android.ui.admin.question.AdminQuestionScreen
 import com.example.mitalk_admin_android.ui.counsellor.CounsellorMainScreen
 import com.example.mitalk_admin_android.ui.record.RecordScreen
 import com.example.mitalk_admin_android.ui.record.RecordDetailScreen
+import com.example.mitalk_admin_android.util.MiTalkExceptionHandler
 import com.example.mitalk_admin_android.util.theme.base.MitalkadminandroidTheme
 import com.example.mitalk_admin_android.vm.ChatViewModel
+import com.example.mitalk_admin_android.vm.TokenRefreshViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val tokenRefreshViewModel: TokenRefreshViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MitalkadminandroidTheme {
                 val navController = rememberNavController()
                 BaseApp(navController)
+                
+                Thread.setDefaultUncaughtExceptionHandler(
+                    MiTalkExceptionHandler(
+                        mainActivity = this,
+                        navController = navController,
+                        tokenRefreshViewModel = tokenRefreshViewModel
+                    )
+                )
             }
         }
     }

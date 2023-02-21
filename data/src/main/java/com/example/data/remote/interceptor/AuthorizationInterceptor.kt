@@ -24,6 +24,7 @@ class AuthorizationInterceptor @Inject constructor(
         val request = chain.request()
         val path = request.url.encodedPath
         val ignorePath = listOf(
+            "/auth",
             "/auth/signin"
         )
         if (ignorePath.contains(path)) return chain.proceed(request)
@@ -50,7 +51,7 @@ class AuthorizationInterceptor @Inject constructor(
                 runBlocking {
                     authPreference.saveAccessToken(token.access_token)
                     authPreference.saveRefreshToken(token.refresh_token)
-                    authPreference.saveExpirationAt(ZonedDateTime.parse(token.access_exp))
+                    authPreference.saveExpirationAt(ZonedDateTime.parse(token.refresh_exp))
                 }
             } else throw NeedLoginException()
         }
