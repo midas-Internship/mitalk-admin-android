@@ -38,6 +38,15 @@ class AuthPreferenceImpl @Inject constructor(
     override suspend fun clearExpirationAt() =
         clearPreference(EXPIRED_AT)
 
+    override suspend fun saveRole(role: String) =
+        saveStringPreference(ROLE, role)
+
+    override suspend fun fetchRole(): String =
+        fetchStringPreference(ROLE)
+
+    override suspend fun clearRole() =
+        clearPreference(ROLE)
+
     private fun fetchStringPreference(key: String): String =
         sharedPreferences.getString(key, null) ?: ""
 
@@ -64,5 +73,6 @@ class AuthPreferenceImpl @Inject constructor(
         const val ACCESS_TOKEN = "ACCESS_TOKEN"
         const val REFRESH_TOKEN = "REFRESH_TOKEN"
         const val EXPIRED_AT = "EXPIRED_AT"
+        const val ROLE = "ROLE"
     }
 }

@@ -3,6 +3,7 @@ package com.example.data.remote.response
 import com.example.domain.entity.SignInEntity
 import com.google.gson.annotations.SerializedName
 import java.time.ZonedDateTime
+import java.util.UUID
 
 data class SignInResponse(
     @SerializedName("access_token") val access_token: String,
@@ -10,6 +11,7 @@ data class SignInResponse(
     @SerializedName("role") val role: String,
     @SerializedName("access_exp") val access_exp: String,
     @SerializedName("refresh_exp") val refresh_exp: String,
+    @SerializedName("uuid") val uuid: UUID
 )
 
 internal fun SignInResponse.toEntity() = SignInEntity(
@@ -17,5 +19,6 @@ internal fun SignInResponse.toEntity() = SignInEntity(
     refresh_token = refresh_token,
     role = role,
     access_exp = ZonedDateTime.parse(access_exp),
-    refresh_exp = ZonedDateTime.parse(refresh_exp)
+    refresh_exp = ZonedDateTime.parse(refresh_exp),
+    id = uuid.toString()
 )
