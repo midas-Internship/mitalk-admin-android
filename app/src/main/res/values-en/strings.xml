@@ -22,7 +22,6 @@
     <string name="can_not_counsel">Consultation is currently disabled.</string>
     <string name="open_record">View counseling records</string>
     <string name="admin">admin</string>
-    <string name="admin_option">admin option</string>
     <string name="admin_key">admin key</string>
     <string name="admin_question_title">Frequently Asked Questions</string>
     <string name="admin_question_content">View and edit frequently asked questions</string>

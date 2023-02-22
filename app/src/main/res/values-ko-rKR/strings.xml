@@ -22,7 +22,6 @@
     <string name="can_not_counsel">현재 상담 기능이 꺼져있습니다.</string>
     <string name="open_record">상담기록 열람</string>
     <string name="admin">관리자</string>
-    <string name="admin_option">관리자 옵션</string>
     <string name="admin_key">관리자 식별키</string>
     <string name="admin_question_title">자주 묻는 질문</string>
     <string name="admin_question_content">자주 묻는 질문 조회 및 수정</string>
