@@ -55,6 +55,8 @@ fun RecordDetailScreen(
     val chatListState = rememberLazyListState()
     var text by remember { mutableStateOf("") }
     var findText by remember { mutableStateOf("") }
+    var messageId by remember { mutableStateOf("") }
+    var logDialogVisible by remember { mutableStateOf(false) }
     val noSearchMsg = stringResource(id = R.string.no_search_result)
 
     val container = vm.container
@@ -118,8 +120,18 @@ fun RecordDetailScreen(
                 chatList = state.messageRecords,
                 chatListState = chatListState,
                 findText = findText
-            )
+            ) {
+                if (role == "Admin") {
+                    logDialogVisible = true
+                    messageId = it
+                }
+            }
         }
+        RecordLogDialog(
+            visible = logDialogVisible,
+            onDismissRequest = { logDialogVisible = false },
+            itemList = state.messageRecords.first { it.messageId == messageId }.dataMap
+        )
     }
 }
 
@@ -217,6 +229,7 @@ fun ChatList(
     chatList: List<RecordDetailState.MessageRecordData>,
     chatListState: LazyListState = rememberLazyListState(),
     findText: String,
+    onClick: (String) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -238,10 +251,11 @@ fun ChatList(
                 if (item.sender == "COUNSELLOR") {
                     CounselorChat(
                         item = item,
-                        findText = findText
+                        findText = findText,
+                        onClick = onClick
                     )
                 } else {
-                    ClientChat(item = item, findText = findText)
+                    ClientChat(item = item, findText = findText, onClick = onClick)
                 }
             }
         }
@@ -255,6 +269,7 @@ fun ChatList(
 fun ClientChat(
     item: RecordDetailState.MessageRecordData,
     findText: String,
+    onClick: (String) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.Bottom
@@ -274,6 +289,7 @@ fun ClientChat(
                     item = item.dataMap.last().message,
                     isMe = item.sender == "COUNSELLOR",
                     modifier = Modifier
+                        .miClickable(rippleEnabled = false) { onClick(item.messageId) }
                         .background(
                             color = MiTalkColor.MainBlue,
                             shape = ClientChatShape
@@ -293,6 +309,7 @@ fun ClientChat(
 fun CounselorChat(
     item: RecordDetailState.MessageRecordData,
     findText: String,
+    onClick: (String) -> Unit
 ) {
     Box {
         Row(
@@ -302,6 +319,7 @@ fun CounselorChat(
             Spacer(modifier = Modifier.width(3.dp))
             Box(
                 modifier = Modifier
+                    .miClickable(rippleEnabled = false) { onClick(item.messageId) }
                     .background(
                         color = MiTalkColor.White,
                         shape = CounselorChatShape
