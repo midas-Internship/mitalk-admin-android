@@ -18,7 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,7 +36,6 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.mvi.ChatSideEffect
-import com.example.mitalk_admin_android.socket.toDeleteChatData
 import com.example.mitalk_admin_android.ui.counsellor.dialog.BasicDialog
 import com.example.mitalk_admin_android.ui.util.ClientChatShape
 import com.example.mitalk_admin_android.ui.util.CounselorChatShape
@@ -63,7 +61,6 @@ data class ChatData(
 @Composable
 fun ChatScreen(
     navController: NavController,
-    roomId: String,
     vm: ChatViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -124,7 +121,7 @@ fun ChatScreen(
                 vm.deleteChatList(effect.chatId, deleteMsg)
             }
             is ChatSideEffect.SuccessUpload -> {
-                state.chatSocket.send(roomId = roomId, text = effect.url)
+                state.chatSocket.send(text = effect.url)
             }
         }
     }
@@ -142,6 +139,7 @@ fun ChatScreen(
             })
         Box(modifier = Modifier.weight(1f)) {
             ChatList(
+                name = state.customerName,
                 chatList = state.chatList,
                 uploadList = state.uploadList,
                 chatListState = chatListState,
@@ -160,7 +158,7 @@ fun ChatScreen(
                     selectItemUUID = null
                 },
                 deleteAction = {
-                    state.chatSocket.send(roomId = roomId, messageId = it, messageType = "DELETE")
+                    state.chatSocket.send(messageId = it, messageType = "DELETE")
                     selectItemUUID = null
                 })
         }
@@ -170,14 +168,13 @@ fun ChatScreen(
             sendAction = {
                 if (editMsgId != null) {
                     state.chatSocket.send(
-                        roomId = roomId,
                         messageId = editMsgId,
                         text = it,
                         messageType = "UPDATE"
                     )
                     editMsgId = null
                 } else {
-                    state.chatSocket.send(roomId = roomId, text = it)
+                    state.chatSocket.send(text = it)
                 }
             }, fileSendAction = {
                 vm.postFile(it, context)
@@ -199,6 +196,7 @@ fun ChatScreen(
 
 @Composable
 fun ChatList(
+    name: String,
     chatList: List<ChatData>,
     uploadList: List<Uri>,
     chatListState: LazyListState = rememberLazyListState(),
@@ -236,7 +234,7 @@ fun ChatList(
                         }
                     )
                 } else {
-                    ClientChat(item = item)
+                    ClientChat(item = item, name = name)
                 }
             }
         }
@@ -392,6 +390,7 @@ fun ChatEditText(
 @Composable
 fun ClientChat(
     item: ChatData,
+    name: String
 ) {
     Row(
         verticalAlignment = Alignment.Bottom
@@ -405,7 +404,7 @@ fun ClientChat(
         )
         Spacer(modifier = Modifier.width(3.dp))
         Column {
-            Text(text = stringResource(id = R.string.main))
+            Regular10NO(text = "$name ${stringResource(id = R.string.client)}")
             ChatItem(
                 item = item.text, isMe = item.isMe, modifier = Modifier
                     .background(
