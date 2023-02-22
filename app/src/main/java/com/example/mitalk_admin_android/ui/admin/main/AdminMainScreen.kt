@@ -145,6 +145,14 @@ private fun AdminSecondList(navController: NavController) {
             ) {
                 navController.navigate(AppNavigationItem.AdminStatistics.route)
             }
+            AdminListLine()
+            AdminItem(
+                title = stringResource(id = R.string.setting),
+                content = stringResource(id = R.string.setting_content),
+                icon = painterResource(id = MiTalkIcon.Setting_Icon.drawableId)
+            ) {
+
+            }
         }
     }
 }

@@ -71,4 +71,6 @@
     <string name="not_appropriate_answer">적절하지 않은 답변</string>
     <string name="slow_answer">느린 답변시간</string>
     <string name="unkindness">불친절해요</string>
+    <string name="setting">세팅</string>
+    <string name="setting_content">언어 세팅</string>
 </resources>

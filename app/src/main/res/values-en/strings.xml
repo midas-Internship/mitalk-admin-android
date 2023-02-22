@@ -71,4 +71,6 @@
     <string name="not_appropriate_answer">not appropriate answer</string>
     <string name="slow_answer">slow answer</string>
     <string name="unkindness">unkindness</string>
+    <string name="setting">Setting</string>
+    <string name="setting_content">Setting language</string>
 </resources>

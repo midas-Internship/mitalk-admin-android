@@ -137,6 +137,12 @@ class MiTalkIcon private constructor(
         )
 
         @Stable
+        val Setting_Icon = MiTalkIcon(
+            drawableId = R.drawable.ic_setting,
+            contentDescription = "setting icon"
+        )
+
+        @Stable
         val Issued_Icon = MiTalkIcon(
             drawableId = R.drawable.icon_issued,
             contentDescription = "issued icon"
