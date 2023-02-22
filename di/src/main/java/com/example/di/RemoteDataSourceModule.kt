@@ -50,4 +50,9 @@ abstract class RemoteDataSourceModule {
     abstract fun provideAdminQuestionDataSource(
         remoteAdminQuestionDataSourceImpl: RemoteAdminQuestionDataSourceImpl
     ): RemoteAdminQuestionDataSource
+
+    @Binds
+    abstract fun provideAdminStatisticsDataSource(
+        remoteAdminAdminStatisticsDataSourceImpl: RemoteAdminStatisticsDataSourceImpl
+    ): RemoteAdminStatisticsDataSource
 }

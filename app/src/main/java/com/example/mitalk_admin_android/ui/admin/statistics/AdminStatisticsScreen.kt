@@ -42,6 +42,10 @@ fun AdminStatisticsScreen(
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
 
+    LaunchedEffect(vm) {
+        vm.getStatisticsList()
+    }
+
     val focusManager = LocalFocusManager.current
     var findOn by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
