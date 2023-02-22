@@ -36,6 +36,18 @@ class ChatViewModel @Inject constructor(
         reduce { state.copy(chatSocket = chatSocket) }
     }
 
+    fun startSocket() = intent {
+        state.chatSocket.startSocket(accessToken = state.accessToken)
+    }
+
+    fun closeSocket() = intent {
+        state.chatSocket.close()
+    }
+
+    fun changeIsOccupied() = intent {
+        reduce { state.copy(isOccupied = !state.isOccupied) }
+    }
+
     fun getAccessToken() = intent {
         viewModelScope.launch {
             getAccessTokenUseCase()

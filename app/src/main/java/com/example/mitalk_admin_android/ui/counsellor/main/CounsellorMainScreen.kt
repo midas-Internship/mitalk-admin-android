@@ -41,33 +41,27 @@ fun CounsellorMainScreen(
     vm: ChatViewModel = hiltViewModel(),
     logoutViewModel: LogoutViewModel = hiltViewModel(),
 ) {
-    var counselOnOFF by remember { mutableStateOf(false) }
-    val counselorImage =
-        if (counselOnOFF) painterResource(id = MiTalkIcon.Counsellor_On_Img.drawableId)
-        else painterResource(id = MiTalkIcon.Counsellor_Off_Img.drawableId)
-    val counselorStateText =
-        if (counselOnOFF) stringResource(id = R.string.can_counsel)
-        else stringResource(id = R.string.can_not_counsel)
 
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
     val sideEffect = container.sideEffectFlow
 
+    val counselorImage =
+        if (state.isOccupied) painterResource(id = MiTalkIcon.Counsellor_On_Img.drawableId)
+        else painterResource(id = MiTalkIcon.Counsellor_Off_Img.drawableId)
+    val counselorStateText =
+        if (state.isOccupied) stringResource(id = R.string.can_counsel)
+        else stringResource(id = R.string.can_not_counsel)
+
     var exitDialogVisible by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        vm.getAccessToken()
-        vm.setChatSocket(ChatSocket(successAction = {
-            vm.successRoom(it)
-        }, finishAction = {
-            vm.finishRoom()
-        }, receiveAction = {
-            vm.receiveChat(it)
-        }, receiveActionUpdate = {
-            vm.receiveChatUpdate(it)
-        }, receiveActionDelete = {
-            vm.receiveChatDelete(it)
-        }))
+    LaunchedEffect(state.isOccupied) {
+        if (state.isOccupied) {
+            vm.closeSocket()
+            vm.startSocket()
+        } else {
+            vm.closeSocket()
+        }
     }
 
     sideEffect.observeWithLifecycle {
@@ -124,12 +118,7 @@ fun CounsellorMainScreen(
                 .miClickable(
                     rippleEnabled = false
                 ) {
-                    counselOnOFF = !counselOnOFF
-                    if (counselOnOFF) {
-                        state.chatSocket.startSocket(state.accessToken)
-                    } else {
-                        state.chatSocket.close()
-                    }
+                    vm.changeIsOccupied()
                 }
         )
 
