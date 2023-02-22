@@ -9,7 +9,8 @@ data class ChatState(
     val chatSocket: ChatSocket = ChatSocket(),
     val accessToken: String = "",
     val chatList: List<ChatData> = mutableListOf(),
-    val uploadList: List<Uri> = mutableListOf()
+    val uploadList: List<Uri> = mutableListOf(),
+    val isOccupied: Boolean = false,
 )
 
 sealed class ChatSideEffect {

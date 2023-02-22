@@ -83,7 +83,9 @@ class ChatSocket(
     }
 
     fun close() {
-        webSocket.close(1000, "Close")
-        client.dispatcher.executorService.shutdown()
+        if (::webSocket.isInitialized && ::client.isInitialized) {
+            webSocket.close(1000, "Close")
+            client.dispatcher.executorService.shutdown()
+        }
     }
 }
