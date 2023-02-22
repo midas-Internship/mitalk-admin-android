@@ -48,6 +48,8 @@ fun RecordDetailScreen(
     headerId: Int,
     recordId: String,
     role: String,
+    counsellorName: String,
+    customerName: String,
     vm: RecordDetailViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -361,5 +363,5 @@ fun CounselorChat(
 @Preview
 fun showRecordDetailScreen() {
     val navController = rememberNavController()
-    RecordDetailScreen(navController = navController, 0, "헤더", "")
+    RecordDetailScreen(navController = navController, 0, "헤더", "", "", "")
 }
