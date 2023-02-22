@@ -1,6 +1,5 @@
 package com.example.mitalk_admin_android.vm.admin
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.admin.GetMessageRecordListUseCase
@@ -28,9 +27,5 @@ class AdminMessageRecordViewModel @Inject constructor(
                     reduce { state.copy(recordList = it)}
                 }
         }
-    }
-
-    fun openAdminMessageRecordDetail(id: String) {
-
     }
 }

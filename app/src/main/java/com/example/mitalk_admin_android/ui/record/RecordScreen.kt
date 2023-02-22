@@ -108,6 +108,7 @@ private fun RecordList(
                     route = AppNavigationItem.RecordDetail.route
                             + DeepLinkKey.HEADER_ID + type.titleId
                             + DeepLinkKey.RECORD_ID + it.recordId
+                            + DeepLinkKey.Role + "Counsellor"
                 )
             }
         }

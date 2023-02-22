@@ -47,6 +47,7 @@ fun RecordDetailScreen(
     navController: NavController,
     headerId: Int,
     recordId: String,
+    role: String,
     vm: RecordDetailViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -54,7 +55,10 @@ fun RecordDetailScreen(
     val chatListState = rememberLazyListState()
     var text by remember { mutableStateOf("") }
     var findText by remember { mutableStateOf("") }
+    var messageId by remember { mutableStateOf("") }
+    var logDialogVisible by remember { mutableStateOf(false) }
     val noSearchMsg = stringResource(id = R.string.no_search_result)
+    var chatLog by remember { mutableStateOf(listOf<RecordDetailState.MessageRecordData.MessageData>()) }
 
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
@@ -116,9 +120,20 @@ fun RecordDetailScreen(
             ChatList(
                 chatList = state.messageRecords,
                 chatListState = chatListState,
-                findText = findText
-            )
+                findText = findText,
+                role = role
+            ) { id ->
+                if (role == "Admin") {
+                    logDialogVisible = true
+                    chatLog = state.messageRecords.first { it.messageId == id }.dataMap
+                }
+            }
         }
+        RecordLogDialog(
+            visible = logDialogVisible,
+            onDismissRequest = { logDialogVisible = false },
+            itemList = chatLog
+        )
     }
 }
 
@@ -215,7 +230,9 @@ fun FindInput(
 fun ChatList(
     chatList: List<RecordDetailState.MessageRecordData>,
     chatListState: LazyListState = rememberLazyListState(),
-    findText: String
+    findText: String,
+    role: String,
+    onClick: (String) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -237,10 +254,12 @@ fun ChatList(
                 if (item.sender == "COUNSELLOR") {
                     CounselorChat(
                         item = item,
-                        findText = findText
+                        findText = findText,
+                        onClick = onClick,
+                        role = role
                     )
                 } else {
-                    ClientChat(item = item, findText = findText)
+                    ClientChat(item = item, findText = findText, onClick = onClick)
                 }
             }
         }
@@ -253,7 +272,8 @@ fun ChatList(
 @Composable
 fun ClientChat(
     item: RecordDetailState.MessageRecordData,
-    findText: String
+    findText: String,
+    onClick: (String) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.Bottom
@@ -273,6 +293,7 @@ fun ClientChat(
                     item = item.dataMap.last().message,
                     isMe = item.sender == "COUNSELLOR",
                     modifier = Modifier
+                        .miClickable(rippleEnabled = false) { onClick(item.messageId) }
                         .background(
                             color = MiTalkColor.MainBlue,
                             shape = ClientChatShape
@@ -291,7 +312,9 @@ fun ClientChat(
 @Composable
 fun CounselorChat(
     item: RecordDetailState.MessageRecordData,
-    findText: String
+    findText: String,
+    onClick: (String) -> Unit,
+    role: String
 ) {
     Box {
         Row(
@@ -299,18 +322,36 @@ fun CounselorChat(
         ) {
             Regular10NO(text = item.dataMap.last().time.toChatTime())
             Spacer(modifier = Modifier.width(3.dp))
-            Box(
-                modifier = Modifier
-                    .background(
-                        color = MiTalkColor.White,
-                        shape = CounselorChatShape
-                    )
-                    .widthIn(min = 0.dp, max = 200.dp)
-                    .padding(horizontal = 7.dp, vertical = 5.dp)
+            Column(
+                horizontalAlignment = Alignment.End
             ) {
-                if (item.isDeleted) Bold12NO(text = stringResource(id = R.string.delete_message)) else {
-                    ChatItem(item = item.dataMap.last().message, findText = findText)
+                if (role == "Admin") {
+                    Regular10NO(text = "상담사")
                 }
+                Box(
+                    modifier = Modifier
+                        .miClickable(rippleEnabled = false) { onClick(item.messageId) }
+                        .background(
+                            color = MiTalkColor.White,
+                            shape = CounselorChatShape
+                        )
+                        .widthIn(min = 0.dp, max = 200.dp)
+                        .padding(horizontal = 7.dp, vertical = 5.dp)
+                ) {
+
+                    if (item.isDeleted) Bold12NO(text = stringResource(id = R.string.delete_message)) else {
+                        ChatItem(item = item.dataMap.last().message, findText = findText)
+                    }
+                }
+            }
+            if (role == "Admin") {
+                Image(
+                    painter = painterResource(id = MiTalkIcon.Counselor.drawableId),
+                    contentDescription = MiTalkIcon.Counselor.contentDescription,
+                    modifier = Modifier
+                        .size(35.dp)
+                        .align(Alignment.Top),
+                )
             }
         }
     }
@@ -320,5 +361,5 @@ fun CounselorChat(
 @Preview
 fun showRecordDetailScreen() {
     val navController = rememberNavController()
-    RecordDetailScreen(navController = navController, 0, "헤더")
+    RecordDetailScreen(navController = navController, 0, "헤더", "")
 }

@@ -76,6 +76,7 @@ class ChatSocket(
         client = OkHttpClient()
         request = Request.Builder()
             .addHeader("Authorization", "Bearer $accessToken")
+            .addHeader("RoomId", "null")
             .url(BuildConfig.SOCKET_URL)
             .build()
         webSocket = client.newWebSocket(request, listener)
