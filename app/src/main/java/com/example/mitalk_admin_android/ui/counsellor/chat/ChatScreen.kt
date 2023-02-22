@@ -147,6 +147,7 @@ fun ChatScreen(
         }
     }) {
         MiHeader(
+            text = "${state.customerName} ${stringResource(id = R.string.client)}",
             modifier = Modifier.background(Color(0xFFF2F2F2)),
             backPressed = {
                 vm.finishRoom()
@@ -404,7 +405,7 @@ fun ChatEditText(
 @Composable
 fun ClientChat(
     item: ChatData,
-    name: String
+    name: String,
 ) {
     Row(
         verticalAlignment = Alignment.Bottom
