@@ -213,5 +213,11 @@ class MiTalkIcon private constructor(
             drawableId = R.drawable.icon_refactor,
             contentDescription = "icon refactor"
         )
+
+        @Stable
+        val Counselor = MiTalkIcon(
+            drawableId = R.drawable.ic_counselor,
+            contentDescription = "counselor"
+        )
     }
 }
