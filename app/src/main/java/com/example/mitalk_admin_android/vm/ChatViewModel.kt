@@ -22,13 +22,12 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(
     private val getAccessTokenUseCase: GetAccessTokenUseCase,
-    private val postFileUseCase: PostFileUseCase
+    private val postFileUseCase: PostFileUseCase,
 ) : ContainerHost<ChatState, ChatSideEffect>, ViewModel() {
     override val container = container<ChatState, ChatSideEffect>(ChatState())
     fun setChatSocket(
@@ -105,11 +104,14 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    fun successRoom(roomId: String) = intent {
-        postSideEffect(ChatSideEffect.SuccessRoom(roomId = roomId))
+    fun successRoom(name: String) = intent {
+        reduce { state.copy(customerName = name) }
+        postSideEffect(ChatSideEffect.SuccessRoom(name = name))
     }
 
     fun finishRoom() = intent {
+        state.chatSocket.close()
+        reduce { state.copy(chatList = listOf(), uploadList = listOf()) }
         postSideEffect(ChatSideEffect.FinishRoom)
     }
 }

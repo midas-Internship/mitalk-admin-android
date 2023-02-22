@@ -2,6 +2,7 @@ package com.example.mitalk_admin_android.ui.counsellor.chat
 
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.animateFloatAsState
@@ -17,7 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,7 +36,6 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.mvi.ChatSideEffect
-import com.example.mitalk_admin_android.socket.toDeleteChatData
 import com.example.mitalk_admin_android.ui.counsellor.dialog.BasicDialog
 import com.example.mitalk_admin_android.ui.util.ClientChatShape
 import com.example.mitalk_admin_android.ui.util.CounselorChatShape
@@ -62,7 +61,6 @@ data class ChatData(
 @Composable
 fun ChatScreen(
     navController: NavController,
-    roomId: String,
     vm: ChatViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -81,6 +79,10 @@ fun ChatScreen(
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
     val sideEffect = container.sideEffectFlow
+
+    BackHandler {
+        vm.finishRoom()
+    }
 
     sideEffect.observeWithLifecycle { effect ->
         when (effect) {
@@ -105,7 +107,6 @@ fun ChatScreen(
                 fileExceptionDialogVisible = true
             }
             ChatSideEffect.FinishRoom -> {
-                state.chatSocket.close()
                 navController.popBackStack()
             }
             is ChatSideEffect.ReceiveChat -> {
@@ -120,10 +121,11 @@ fun ChatScreen(
                 vm.deleteChatList(effect.chatId, deleteMsg)
             }
             is ChatSideEffect.SuccessUpload -> {
-                state.chatSocket.send(roomId = roomId, text = effect.url)
+                state.chatSocket.send(text = effect.url)
             }
         }
     }
+
     Column(modifier = Modifier.pointerInput(Unit) {
         detectTapGestures {
             selectItemUUID = null
@@ -133,11 +135,11 @@ fun ChatScreen(
         MiHeader(
             modifier = Modifier.background(Color(0xFFF2F2F2)),
             backPressed = {
-                state.chatSocket.close()
-                navController.popBackStack()
+                vm.finishRoom()
             })
         Box(modifier = Modifier.weight(1f)) {
             ChatList(
+                name = state.customerName,
                 chatList = state.chatList,
                 uploadList = state.uploadList,
                 chatListState = chatListState,
@@ -156,7 +158,7 @@ fun ChatScreen(
                     selectItemUUID = null
                 },
                 deleteAction = {
-                    state.chatSocket.send(roomId = roomId, messageId = it, messageType = "DELETE")
+                    state.chatSocket.send(messageId = it, messageType = "DELETE")
                     selectItemUUID = null
                 })
         }
@@ -166,14 +168,13 @@ fun ChatScreen(
             sendAction = {
                 if (editMsgId != null) {
                     state.chatSocket.send(
-                        roomId = roomId,
                         messageId = editMsgId,
                         text = it,
                         messageType = "UPDATE"
                     )
                     editMsgId = null
                 } else {
-                    state.chatSocket.send(roomId = roomId, text = it)
+                    state.chatSocket.send(text = it)
                 }
             }, fileSendAction = {
                 vm.postFile(it, context)
@@ -195,6 +196,7 @@ fun ChatScreen(
 
 @Composable
 fun ChatList(
+    name: String,
     chatList: List<ChatData>,
     uploadList: List<Uri>,
     chatListState: LazyListState = rememberLazyListState(),
@@ -232,7 +234,7 @@ fun ChatList(
                         }
                     )
                 } else {
-                    ClientChat(item = item)
+                    ClientChat(item = item, name = name)
                 }
             }
         }
@@ -269,7 +271,7 @@ fun ChatInput(
     sendAction: (String) -> Unit,
     fileSendAction: (Uri) -> Unit,
     isEditable: Boolean,
-    editCancelAction: () -> Unit
+    editCancelAction: () -> Unit,
 ) {
     var isExpand by remember { mutableStateOf(false) }
     var targetValue by remember { mutableStateOf(0F) }
@@ -388,6 +390,7 @@ fun ChatEditText(
 @Composable
 fun ClientChat(
     item: ChatData,
+    name: String
 ) {
     Row(
         verticalAlignment = Alignment.Bottom
@@ -401,7 +404,7 @@ fun ClientChat(
         )
         Spacer(modifier = Modifier.width(3.dp))
         Column {
-            Text(text = stringResource(id = R.string.main))
+            Regular10NO(text = "$name ${stringResource(id = R.string.client)}")
             ChatItem(
                 item = item.text, isMe = item.isMe, modifier = Modifier
                     .background(
@@ -509,7 +512,7 @@ fun ChatItem(
     item: String,
     isMe: Boolean = true,
     modifier: Modifier = Modifier,
-    findText: String = ""
+    findText: String = "",
 ) {
     val context = LocalContext.current
     if (item.contains("https://mitalk-s3.s3.ap-northeast-2.amazonaws.com/")) {
