@@ -11,6 +11,7 @@ data class RecordDetailState(
     val currentFindPosition: Int = 0
 ) {
     data class MessageRecordData(
+        val messageId: String,
         val sender: String,
         val isFile: Boolean,
         val isDeleted: Boolean,
@@ -25,6 +26,7 @@ data class RecordDetailState(
 }
 
 fun RecordDetailEntity.MessageRecord.toSateData() = RecordDetailState.MessageRecordData(
+    messageId = messageId,
     sender = sender,
     isFile = isFile,
     isDeleted = isDeleted,
@@ -39,5 +41,6 @@ fun RecordDetailEntity.MessageRecord.MessageData.toStateData() =
     )
 
 sealed class RecordDetailSideEffect {
-    data class ChangeCurrentFindPosition(val list: List<Int>, val scrollPosition: Int) : RecordDetailSideEffect()
+    data class ChangeCurrentFindPosition(val list: List<Int>, val scrollPosition: Int) :
+        RecordDetailSideEffect()
 }

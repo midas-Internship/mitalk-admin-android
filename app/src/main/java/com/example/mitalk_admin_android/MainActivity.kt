@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
             MitalkadminandroidTheme {
                 val navController = rememberNavController()
                 BaseApp(navController)
-                
+
                 Thread.setDefaultUncaughtExceptionHandler(
                     MiTalkExceptionHandler(
                         mainActivity = this,
@@ -106,7 +106,8 @@ fun BaseApp(navController: NavHostController) {
         composable(
             route = AppNavigationItem.RecordDetail.route
                     + DeepLinkKey.HEADER_ID + "{${DeepLinkKey.HEADER_ID}}"
-                    + DeepLinkKey.RECORD_ID + "{${DeepLinkKey.RECORD_ID}}",
+                    + DeepLinkKey.RECORD_ID + "{${DeepLinkKey.RECORD_ID}}"
+                    + DeepLinkKey.Role + "{${DeepLinkKey.Role}}",
             arguments = listOf(
                 navArgument(DeepLinkKey.HEADER_ID) {
                     type = NavType.IntType
@@ -115,16 +116,22 @@ fun BaseApp(navController: NavHostController) {
                 navArgument(DeepLinkKey.RECORD_ID) {
                     type = NavType.StringType
                     defaultValue = ""
+                },
+                navArgument(DeepLinkKey.Role) {
+                    type = NavType.StringType
+                    defaultValue = ""
                 }
             )
         ) {
             val headerId = it.arguments?.getInt(DeepLinkKey.HEADER_ID) ?: R.string.feature_question
             val recordId = it.arguments?.getString(DeepLinkKey.RECORD_ID) ?: ""
+            val role = it.arguments?.getString(DeepLinkKey.Role) ?: ""
 
             RecordDetailScreen(
                 navController = navController,
                 headerId = headerId,
-                recordId = recordId
+                recordId = recordId,
+                role = role
             )
         }
     }
@@ -157,4 +164,5 @@ object DeepLinkKey {
     const val ROOM_ID = "roomId"
     const val HEADER_ID = "headerId"
     const val RECORD_ID = "recordId"
+    const val Role = "role"
 }
