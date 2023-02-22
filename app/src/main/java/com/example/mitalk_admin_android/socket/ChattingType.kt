@@ -12,6 +12,8 @@ data class SocketType(
 data class SuccessRoom(
     @SerializedName("room_id")
     val roomId: String,
+    @SerializedName("name")
+    val name: String,
 )
 
 data class ChatData(
