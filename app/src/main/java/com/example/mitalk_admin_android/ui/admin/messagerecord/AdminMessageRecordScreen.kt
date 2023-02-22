@@ -91,7 +91,7 @@ fun AdminMessageRecordScreen(
                             route = AppNavigationItem.RecordDetail.route
                                     + DeepLinkKey.HEADER_ID + type.titleId
                                     + DeepLinkKey.RECORD_ID + it.id
-                                    + DeepLinkKey.KEY + "Admin"
+                                    + DeepLinkKey.Role + "Admin"
                         )
                     }
                 }
