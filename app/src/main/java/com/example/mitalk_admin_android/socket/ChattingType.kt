@@ -1,6 +1,5 @@
 package com.example.mitalk_admin_android.socket
 
-import com.example.mitalk_admin_android.util.toChatTime
 import com.google.gson.annotations.SerializedName
 import java.time.LocalTime
 
@@ -12,6 +11,8 @@ data class SocketType(
 data class SuccessRoom(
     @SerializedName("room_id")
     val roomId: String,
+    @SerializedName("name")
+    val name: String,
 )
 
 data class ChatData(
