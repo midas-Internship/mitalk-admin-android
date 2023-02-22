@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.mitalk_admin_android.ui.admin.main.AdminMainScreen
 import com.example.mitalk_admin_android.ui.LoginScreen
+import com.example.mitalk_admin_android.ui.SettingScreen
 import com.example.mitalk_admin_android.ui.admin.issued.AdminIssuedScreen
 import com.example.mitalk_admin_android.ui.admin.usercare.AdminUserCareScreen
 import com.example.mitalk_admin_android.ui.admin.messagerecord.AdminMessageRecordScreen
@@ -138,6 +139,9 @@ fun BaseApp(navController: NavHostController) {
                 role = role
             )
         }
+        composable(AppNavigationItem.Setting.route) {
+            SettingScreen(navController = navController)
+        }
     }
 }
 
@@ -163,6 +167,8 @@ sealed class AppNavigationItem(val route: String) {
     object Record : AppNavigationItem("Record")
 
     object RecordDetail : AppNavigationItem("RecordDetail")
+
+    object Setting : AppNavigationItem("Setting")
 }
 
 object DeepLinkKey {
