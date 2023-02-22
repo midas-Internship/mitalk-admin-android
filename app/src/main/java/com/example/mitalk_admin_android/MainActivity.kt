@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -12,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.mitalk_admin_android.socket.ChatSocket
 import com.example.mitalk_admin_android.ui.admin.main.AdminMainScreen
 import com.example.mitalk_admin_android.ui.LoginScreen
 import com.example.mitalk_admin_android.ui.SettingScreen
@@ -56,6 +58,21 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun BaseApp(navController: NavHostController) {
     val viewModel = viewModel<ChatViewModel>()
+
+    LaunchedEffect(Unit) {
+        viewModel.getAccessToken()
+        viewModel.setChatSocket(ChatSocket(successAction = {
+            viewModel.successRoom(it)
+        }, finishAction = {
+            viewModel.finishRoom()
+        }, receiveAction = {
+            viewModel.receiveChat(it)
+        }, receiveActionUpdate = {
+            viewModel.receiveChatUpdate(it)
+        }, receiveActionDelete = {
+            viewModel.receiveChatDelete(it)
+        }))
+    }
 
     NavHost(navController = navController, startDestination = AppNavigationItem.Login.route) {
         composable(AppNavigationItem.Login.route) {
