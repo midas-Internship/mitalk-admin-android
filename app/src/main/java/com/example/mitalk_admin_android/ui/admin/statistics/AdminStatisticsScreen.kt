@@ -116,6 +116,13 @@ private fun StatisticsItem(
         tween(500)
     )
 
+    var msgOpen by remember { mutableStateOf(false) }
+    var msgTargetValue by remember { mutableStateOf(-90F) }
+    val msgRotateValue: Float by animateFloatAsState(
+        targetValue = msgTargetValue,
+        tween(500)
+    )
+
     val goodReview: ArrayList<StatisticsDetailEntity.ReviewsData> = ArrayList()
     val badReview: ArrayList<StatisticsDetailEntity.ReviewsData> = ArrayList()
 
@@ -151,13 +158,14 @@ private fun StatisticsItem(
                 .miClickable(
                     rippleEnabled = false
                 ) {
-                    targetValue =
-                        if (open) {
-                            0f
-                        } else {
-                            onOpenClick(id)
-                            90F
-                        }
+                    if (open) {
+                        targetValue = 0f
+                        msgTargetValue = -90f
+                        msgOpen = false
+                    } else {
+                        onOpenClick(id)
+                        targetValue = 90F
+                    }
                     open = !open
                 },
             verticalAlignment = Alignment.CenterVertically,
@@ -236,13 +244,41 @@ private fun StatisticsItem(
                     }
                 }
             }
-            Column {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
 
+            if (messageList.isNotEmpty()) {
+                Image(
+                    painter = painterResource(id = MiTalkIcon.Navi_Arrow_Icon.drawableId),
+                    contentDescription = MiTalkIcon.Navi_Arrow_Icon.contentDescription,
+                    modifier = Modifier
+                        .padding(end = 16.75.dp)
+                        .fillMaxWidth()
+                        .wrapContentWidth(align = Alignment.CenterHorizontally)
+                        .rotate(msgRotateValue)
+                        .miClickable(
+                            rippleEnabled = false
+                        ) {
+                            msgTargetValue =
+                                if (msgOpen) {
+                                    -90F
+                                } else {
+                                    90f
+                                }
+                            msgOpen = !msgOpen
+                        },
+                )
+
+                if (msgOpen) {
+                    LazyColumn(
+                        modifier = Modifier
+                            .padding(horizontal = 15.dp)
+                            .fillMaxWidth()
+                            .height(80.dp),
+                        verticalArrangement = Arrangement.spacedBy(2.dp)
+                    ) {
+                        items(messageList) {
+                            MessageListItem(msg = it)
+                        }
+                    }
                 }
             }
         }
@@ -294,6 +330,26 @@ private fun ReviewItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentWidth(Alignment.End)
+        )
+    }
+}
+
+@Composable
+private fun MessageListItem(
+    modifier: Modifier = Modifier,
+    msg: String,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .bottomBorder(
+                strokeWidth = 1.dp,
+                color = Color(0xFFAAAAAA),
+            )
+    ) {
+        Medium12NO(
+            text = msg,
+            color = Color(0xFF2B2B2B)
         )
     }
 }
