@@ -120,7 +120,8 @@ fun RecordDetailScreen(
             ChatList(
                 chatList = state.messageRecords,
                 chatListState = chatListState,
-                findText = findText
+                findText = findText,
+                role = role
             ) { id ->
                 if (role == "Admin") {
                     logDialogVisible = true
@@ -230,6 +231,7 @@ fun ChatList(
     chatList: List<RecordDetailState.MessageRecordData>,
     chatListState: LazyListState = rememberLazyListState(),
     findText: String,
+    role: String,
     onClick: (String) -> Unit
 ) {
     LazyColumn(
@@ -253,7 +255,8 @@ fun ChatList(
                     CounselorChat(
                         item = item,
                         findText = findText,
-                        onClick = onClick
+                        onClick = onClick,
+                        role = role
                     )
                 } else {
                     ClientChat(item = item, findText = findText, onClick = onClick)
@@ -310,7 +313,8 @@ fun ClientChat(
 fun CounselorChat(
     item: RecordDetailState.MessageRecordData,
     findText: String,
-    onClick: (String) -> Unit
+    onClick: (String) -> Unit,
+    role: String
 ) {
     Box {
         Row(
@@ -318,19 +322,36 @@ fun CounselorChat(
         ) {
             Regular10NO(text = item.dataMap.last().time.toChatTime())
             Spacer(modifier = Modifier.width(3.dp))
-            Box(
-                modifier = Modifier
-                    .miClickable(rippleEnabled = false) { onClick(item.messageId) }
-                    .background(
-                        color = MiTalkColor.White,
-                        shape = CounselorChatShape
-                    )
-                    .widthIn(min = 0.dp, max = 200.dp)
-                    .padding(horizontal = 7.dp, vertical = 5.dp)
+            Column(
+                horizontalAlignment = Alignment.End
             ) {
-                if (item.isDeleted) Bold12NO(text = stringResource(id = R.string.delete_message)) else {
-                    ChatItem(item = item.dataMap.last().message, findText = findText)
+                if (role == "Admin") {
+                    Regular10NO(text = "상담사")
                 }
+                Box(
+                    modifier = Modifier
+                        .miClickable(rippleEnabled = false) { onClick(item.messageId) }
+                        .background(
+                            color = MiTalkColor.White,
+                            shape = CounselorChatShape
+                        )
+                        .widthIn(min = 0.dp, max = 200.dp)
+                        .padding(horizontal = 7.dp, vertical = 5.dp)
+                ) {
+
+                    if (item.isDeleted) Bold12NO(text = stringResource(id = R.string.delete_message)) else {
+                        ChatItem(item = item.dataMap.last().message, findText = findText)
+                    }
+                }
+            }
+            if (role == "Admin") {
+                Image(
+                    painter = painterResource(id = MiTalkIcon.Counselor.drawableId),
+                    contentDescription = MiTalkIcon.Counselor.contentDescription,
+                    modifier = Modifier
+                        .size(35.dp)
+                        .align(Alignment.Top),
+                )
             }
         }
     }
