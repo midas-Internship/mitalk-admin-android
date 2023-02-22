@@ -32,7 +32,7 @@ fun AdminDialog(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 40.dp)
+                .padding(horizontal = 28.dp)
                 .background(
                     color = MiTalkColor.White,
                     shape = RoundedCornerShape(15.dp)

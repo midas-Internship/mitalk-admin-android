@@ -71,4 +71,10 @@
     <string name="not_appropriate_answer">not appropriate answer</string>
     <string name="slow_answer">slow answer</string>
     <string name="unkindness">unkindness</string>
+    <string name="setting">Setting</string>
+    <string name="setting_content">Setting language</string>
+    <string name="english">English</string>
+    <string name="korean">Korean</string>
+    <string name="setting_language">Language</string>
+    <string name="logout_real">Are you sure you want to log out?</string>
 </resources>

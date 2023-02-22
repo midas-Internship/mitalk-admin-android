@@ -21,20 +21,25 @@ import com.example.mitalk_admin_android.AppNavigationItem
 import com.example.mitalk_admin_android.DeepLinkKey
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.mvi.ChatSideEffect
+import com.example.mitalk_admin_android.mvi.admin.AdminMainSideEffect
 import com.example.mitalk_admin_android.socket.ChatSocket
+import com.example.mitalk_admin_android.ui.counsellor.dialog.ExitChatDialog
 import com.example.mitalk_admin_android.ui.util.ContentShape
 import com.example.mitalk_admin_android.ui.util.MiHeader
 import com.example.mitalk_admin_android.util.miClickable
 import com.example.mitalk_admin_android.util.observeWithLifecycle
 import com.example.mitalk_admin_android.util.theme.*
 import com.example.mitalk_admin_android.vm.ChatViewModel
+import com.example.mitalk_admin_android.vm.LogoutViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlin.math.log
 
 @OptIn(InternalCoroutinesApi::class)
 @Composable
 fun CounsellorMainScreen(
     navController: NavController,
     vm: ChatViewModel = hiltViewModel(),
+    logoutViewModel: LogoutViewModel = hiltViewModel(),
 ) {
     var counselOnOFF by remember { mutableStateOf(false) }
     val counselorImage =
@@ -47,6 +52,8 @@ fun CounsellorMainScreen(
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
     val sideEffect = container.sideEffectFlow
+
+    var exitDialogVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         vm.getAccessToken()
@@ -67,6 +74,20 @@ fun CounsellorMainScreen(
         when (it) {
             is ChatSideEffect.SuccessRoom -> {
                 navController.navigate(AppNavigationItem.Chat.route)
+            }
+        }
+    }
+
+    val logoutContainer = logoutViewModel.container
+    val logoutSideEffect = logoutContainer.sideEffectFlow
+
+    logoutSideEffect.observeWithLifecycle {
+        when (it) {
+            AdminMainSideEffect.LogoutSuccess -> {
+                exitDialogVisible = false
+                navController.navigate(AppNavigationItem.Login.route) {
+                    popUpTo(0)
+                }
             }
         }
     }
@@ -118,11 +139,43 @@ fun CounsellorMainScreen(
 
         Spacer(modifier = Modifier.height(40.dp))
 
+        ExitChatDialog(
+            visible = exitDialogVisible,
+            title = stringResource(id = R.string.logout),
+            content = stringResource(id = R.string.logout_real),
+            onDismissRequest = { exitDialogVisible = false }
+        ) {
+            logoutViewModel.logout()
+        }
+
         MainContent(
             text = stringResource(id = R.string.open_record),
-            painter = painterResource(id = MiTalkIcon.Counsellor_Open_Record_Img.drawableId)
+            icon = painterResource(id = MiTalkIcon.Counsellor_Open_Record_Img.drawableId),
+            backgroundColor = Color(0xFFBA7D64)
         ) {
             navController.navigate(AppNavigationItem.Record.route)
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        MainContent(
+            text = stringResource(id = R.string.setting),
+            backgroundColor = Color(0xFF646464),
+            icon = painterResource(id = MiTalkIcon.Setting_Img.drawableId)
+        ) {
+            navController.navigate(
+                route = AppNavigationItem.Setting.route
+            )
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        MainContent(
+            text = stringResource(id = R.string.logout),
+            backgroundColor = Color(0xFF58EBD0),
+            icon = painterResource(id = MiTalkIcon.Logout_Img.drawableId)
+        ) {
+            exitDialogVisible = true
         }
     }
 }
@@ -130,36 +183,42 @@ fun CounsellorMainScreen(
 @Composable
 private fun MainContent(
     text: String,
-    painter: Painter,
+    backgroundColor: Color,
+    icon: Painter,
     onPressed: () -> Unit,
 ) {
     Row(
         modifier = Modifier
-            .padding(horizontal = 24.dp)
+            .padding(horizontal = 16.dp)
             .fillMaxWidth()
-            .height(180.dp)
+            .height(80.dp)
             .background(
-                color = Color(0xFFBA7D64),
-                shape = ContentShape
+                color = backgroundColor,
+                shape = ContentShape,
             )
             .clip(shape = ContentShape)
-            .miClickable { onPressed() },
-        verticalAlignment = Alignment.CenterVertically,
+            .miClickable { onPressed() }
     ) {
 
-        Spacer(modifier = Modifier.width(24.dp))
+        Spacer(modifier = Modifier.width(17.dp))
 
-        Bold20NO(
+        Bold26NO(
             text = text,
             color = MiTalkColor.White,
+            modifier = Modifier
+                .fillMaxHeight()
+                .wrapContentHeight(align = Alignment.CenterVertically)
         )
 
         Image(
-            painter = painter,
-            contentDescription = "main content img",
+            painter = icon,
+            contentDescription = "main content icon",
             modifier = Modifier
+                .padding(end = 13.dp)
                 .fillMaxSize()
                 .wrapContentWidth(align = Alignment.End)
+                .wrapContentHeight(align = Alignment.CenterVertically)
+                .size(60.dp)
         )
     }
 }

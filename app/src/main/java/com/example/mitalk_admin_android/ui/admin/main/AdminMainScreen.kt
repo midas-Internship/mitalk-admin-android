@@ -1,8 +1,6 @@
 package com.example.mitalk_admin_android.ui.admin.main
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import com.example.mitalk_admin_android.R
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,9 +25,8 @@ import com.example.mitalk_admin_android.mvi.admin.AdminMainSideEffect
 import com.example.mitalk_admin_android.ui.admin.dialog.AdminDialog
 import com.example.mitalk_admin_android.util.miClickable
 import com.example.mitalk_admin_android.util.observeWithLifecycle
-import com.example.mitalk_admin_android.util.rememberToast
 import com.example.mitalk_admin_android.util.theme.*
-import com.example.mitalk_admin_android.vm.admin.AdminMainViewModel
+import com.example.mitalk_admin_android.vm.LogoutViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @OptIn(InternalCoroutinesApi::class)
@@ -37,14 +34,14 @@ import kotlinx.coroutines.InternalCoroutinesApi
 fun AdminMainScreen(
     navController: NavController,
     key: String,
-    vm: AdminMainViewModel = hiltViewModel(),
+    vm: LogoutViewModel = hiltViewModel(),
 ) {
     var dialogVisible by remember { mutableStateOf(false) }
 
     val container = vm.container
-    val state = container.sideEffectFlow
-    
-    state.observeWithLifecycle {
+    val sideEffect = container.sideEffectFlow
+
+    sideEffect.observeWithLifecycle {
         when (it) {
             AdminMainSideEffect.LogoutSuccess -> {
                 dialogVisible = false
@@ -55,10 +52,13 @@ fun AdminMainScreen(
         }
     }
 
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MiTalkColor.Gray),
+            .background(color = MiTalkColor.Gray)
+            .verticalScroll(scrollState),
     ) {
         if (dialogVisible) {
             AdminDialog(
@@ -144,6 +144,14 @@ private fun AdminSecondList(navController: NavController) {
                 icon = painterResource(id = MiTalkIcon.Graph_Icon.drawableId)
             ) {
                 navController.navigate(AppNavigationItem.AdminStatistics.route)
+            }
+            AdminListLine()
+            AdminItem(
+                title = stringResource(id = R.string.setting),
+                content = stringResource(id = R.string.setting_content),
+                icon = painterResource(id = MiTalkIcon.Setting_Icon.drawableId)
+            ) {
+                navController.navigate(AppNavigationItem.Setting.route)
             }
         }
     }
