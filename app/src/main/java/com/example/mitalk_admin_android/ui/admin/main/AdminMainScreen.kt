@@ -25,9 +25,8 @@ import com.example.mitalk_admin_android.mvi.admin.AdminMainSideEffect
 import com.example.mitalk_admin_android.ui.admin.dialog.AdminDialog
 import com.example.mitalk_admin_android.util.miClickable
 import com.example.mitalk_admin_android.util.observeWithLifecycle
-import com.example.mitalk_admin_android.util.rememberToast
 import com.example.mitalk_admin_android.util.theme.*
-import com.example.mitalk_admin_android.vm.admin.AdminMainViewModel
+import com.example.mitalk_admin_android.vm.LogoutViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @OptIn(InternalCoroutinesApi::class)
@@ -35,14 +34,14 @@ import kotlinx.coroutines.InternalCoroutinesApi
 fun AdminMainScreen(
     navController: NavController,
     key: String,
-    vm: AdminMainViewModel = hiltViewModel(),
+    vm: LogoutViewModel = hiltViewModel(),
 ) {
     var dialogVisible by remember { mutableStateOf(false) }
 
     val container = vm.container
-    val state = container.sideEffectFlow
-    
-    state.observeWithLifecycle {
+    val sideEffect = container.sideEffectFlow
+
+    sideEffect.observeWithLifecycle {
         when (it) {
             AdminMainSideEffect.LogoutSuccess -> {
                 dialogVisible = false

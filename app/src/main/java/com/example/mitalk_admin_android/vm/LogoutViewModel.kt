@@ -1,4 +1,4 @@
-package com.example.mitalk_admin_android.vm.admin
+package com.example.mitalk_admin_android.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +13,7 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class AdminMainViewModel @Inject constructor(
+class LogoutViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
 ) : ContainerHost<Unit, AdminMainSideEffect>, ViewModel() {
 

@@ -21,20 +21,25 @@ import com.example.mitalk_admin_android.AppNavigationItem
 import com.example.mitalk_admin_android.DeepLinkKey
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.mvi.ChatSideEffect
+import com.example.mitalk_admin_android.mvi.admin.AdminMainSideEffect
 import com.example.mitalk_admin_android.socket.ChatSocket
+import com.example.mitalk_admin_android.ui.counsellor.dialog.ExitChatDialog
 import com.example.mitalk_admin_android.ui.util.ContentShape
 import com.example.mitalk_admin_android.ui.util.MiHeader
 import com.example.mitalk_admin_android.util.miClickable
 import com.example.mitalk_admin_android.util.observeWithLifecycle
 import com.example.mitalk_admin_android.util.theme.*
 import com.example.mitalk_admin_android.vm.ChatViewModel
+import com.example.mitalk_admin_android.vm.LogoutViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlin.math.log
 
 @OptIn(InternalCoroutinesApi::class)
 @Composable
 fun CounsellorMainScreen(
     navController: NavController,
     vm: ChatViewModel = hiltViewModel(),
+    logoutViewModel: LogoutViewModel = hiltViewModel(),
 ) {
     var counselOnOFF by remember { mutableStateOf(false) }
     val counselorImage =
@@ -69,6 +74,20 @@ fun CounsellorMainScreen(
         when (it) {
             is ChatSideEffect.SuccessRoom -> {
                 navController.navigate(AppNavigationItem.Chat.route)
+            }
+        }
+    }
+
+    val logoutContainer = logoutViewModel.container
+    val logoutSideEffect = logoutContainer.sideEffectFlow
+
+    logoutSideEffect.observeWithLifecycle {
+        when (it) {
+            AdminMainSideEffect.LogoutSuccess -> {
+                exitDialogVisible = false
+                navController.navigate(AppNavigationItem.Login.route) {
+                    popUpTo(0)
+                }
             }
         }
     }
@@ -119,6 +138,15 @@ fun CounsellorMainScreen(
         Regular14NO(text = counselorStateText)
 
         Spacer(modifier = Modifier.height(40.dp))
+
+        ExitChatDialog(
+            visible = exitDialogVisible,
+            title = stringResource(id = R.string.logout),
+            content = stringResource(id = R.string.logout_real),
+            onDismissRequest = { exitDialogVisible = false }
+        ) {
+            logoutViewModel.logout()
+        }
 
         MainContent(
             text = stringResource(id = R.string.open_record),

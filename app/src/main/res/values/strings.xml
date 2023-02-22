@@ -2,6 +2,7 @@
     <string name="app_name">mitalk-admin-android</string>
     <string name="main">메인</string>
     <string name="logout">로그아웃</string>
+    <string name="logout_real">정말 로그아웃 하시겠습니까?</string>
     <string name="input_name">이름을 입력하세요.</string>
     <string name="input_search_name">검색할 이름을 입력해주세요.</string>
     <string name="input_search">검색어를 입력해주세요.</string>

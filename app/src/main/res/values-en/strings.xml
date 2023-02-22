@@ -76,4 +76,5 @@
     <string name="english">English</string>
     <string name="korean">Korean</string>
     <string name="setting_language">Language</string>
+    <string name="logout_real">Are you sure you want to log out?</string>
 </resources>
