@@ -48,6 +48,8 @@ fun CounsellorMainScreen(
     val state = container.stateFlow.collectAsState().value
     val sideEffect = container.sideEffectFlow
 
+    var exitDialogVisible by remember { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
         vm.getAccessToken()
         vm.setChatSocket(ChatSocket(successAction = {
@@ -120,9 +122,32 @@ fun CounsellorMainScreen(
 
         MainContent(
             text = stringResource(id = R.string.open_record),
-            painter = painterResource(id = MiTalkIcon.Counsellor_Open_Record_Img.drawableId)
+            icon = painterResource(id = MiTalkIcon.Counsellor_Open_Record_Img.drawableId),
+            backgroundColor = Color(0xFFBA7D64)
         ) {
             navController.navigate(AppNavigationItem.Record.route)
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        MainContent(
+            text = stringResource(id = R.string.setting),
+            backgroundColor = Color(0xFF646464),
+            icon = painterResource(id = MiTalkIcon.Setting_Img.drawableId)
+        ) {
+            navController.navigate(
+                route = AppNavigationItem.Setting.route
+            )
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        MainContent(
+            text = stringResource(id = R.string.logout),
+            backgroundColor = Color(0xFF58EBD0),
+            icon = painterResource(id = MiTalkIcon.Logout_Img.drawableId)
+        ) {
+            exitDialogVisible = true
         }
     }
 }
@@ -130,36 +155,42 @@ fun CounsellorMainScreen(
 @Composable
 private fun MainContent(
     text: String,
-    painter: Painter,
+    backgroundColor: Color,
+    icon: Painter,
     onPressed: () -> Unit,
 ) {
     Row(
         modifier = Modifier
-            .padding(horizontal = 24.dp)
+            .padding(horizontal = 16.dp)
             .fillMaxWidth()
-            .height(180.dp)
+            .height(80.dp)
             .background(
-                color = Color(0xFFBA7D64),
-                shape = ContentShape
+                color = backgroundColor,
+                shape = ContentShape,
             )
             .clip(shape = ContentShape)
-            .miClickable { onPressed() },
-        verticalAlignment = Alignment.CenterVertically,
+            .miClickable { onPressed() }
     ) {
 
-        Spacer(modifier = Modifier.width(24.dp))
+        Spacer(modifier = Modifier.width(17.dp))
 
-        Bold20NO(
+        Bold26NO(
             text = text,
             color = MiTalkColor.White,
+            modifier = Modifier
+                .fillMaxHeight()
+                .wrapContentHeight(align = Alignment.CenterVertically)
         )
 
         Image(
-            painter = painter,
-            contentDescription = "main content img",
+            painter = icon,
+            contentDescription = "main content icon",
             modifier = Modifier
+                .padding(end = 13.dp)
                 .fillMaxSize()
                 .wrapContentWidth(align = Alignment.End)
+                .wrapContentHeight(align = Alignment.CenterVertically)
+                .size(60.dp)
         )
     }
 }

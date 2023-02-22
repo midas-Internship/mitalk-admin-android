@@ -243,5 +243,17 @@ class MiTalkIcon private constructor(
             drawableId = R.drawable.ic_counselor,
             contentDescription = "counselor"
         )
+
+        @Stable
+        val Setting_Img = MiTalkIcon(
+            drawableId = R.drawable.img_setting,
+            contentDescription = "setting"
+        )
+
+        @Stable
+        val Logout_Img = MiTalkIcon(
+            drawableId = R.drawable.img_logout,
+            contentDescription = "log out"
+        )
     }
 }
