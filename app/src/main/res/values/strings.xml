@@ -72,4 +72,19 @@
     <string name="big_size_file_comment">파일을 전송하시겠습니까?</string>
     <string name="over_size_file">파일 용량 초과</string>
     <string name="over_size_file_comment">파일의 용량이 너무 커서 전송할 수 없습니다.</string>
+    
+    <!--statistics-->
+    <string name="kindness">친절해요</string>
+    <string name="explanation">설명이좋아요</string>
+    <string name="useful">유용해요</string>
+    <string name="comfort">편안해요</string>
+    <string name="listen">잘 들어줘요</string>
+    <string name="fast_answer">답변이 빨라요</string>
+
+    <string name="unkindness">불친절해요</string>
+    <string name="difficult_explanation">어려운 설명이에요</string>
+    <string name="useless">유용하지 않음</string>
+    <string name="slang">비속어</string>
+    <string name="not_appropriate_answer">적절하지 않은 답변</string>
+    <string name="slow_answer">느린 답변시간</string>
 </resources>
