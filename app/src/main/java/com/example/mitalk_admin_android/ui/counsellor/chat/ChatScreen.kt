@@ -47,8 +47,11 @@ import com.example.mitalk_admin_android.video.VideoPlayer
 import com.example.mitalk_admin_android.vm.ChatViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalTime
+
+const val EmptyTime = 330
 
 data class ChatData(
     val id: String,
@@ -73,6 +76,7 @@ fun ChatScreen(
     var fileExceptionOnBtnPressed by remember { mutableStateOf<(() -> Unit)?>(null) }
     var fileExceptionTitleId by remember { mutableStateOf(R.string.big_size_file) }
     var fileExceptionContentId by remember { mutableStateOf(R.string.big_size_file_comment) }
+    var emptyTime by remember { mutableStateOf(EmptyTime) }
     var text by remember { mutableStateOf("") }
     val deleteMsg = stringResource(id = R.string.delete_message)
 
@@ -82,6 +86,15 @@ fun ChatScreen(
 
     BackHandler {
         vm.finishRoom()
+    }
+
+    LaunchedEffect(emptyTime) {
+        if (emptyTime > 0) {
+            delay(1_000L)
+            emptyTime--
+        } else {
+            vm.finishRoom()
+        }
     }
 
     sideEffect.observeWithLifecycle { effect ->
@@ -110,6 +123,7 @@ fun ChatScreen(
                 navController.popBackStack()
             }
             is ChatSideEffect.ReceiveChat -> {
+                emptyTime = EmptyTime
                 MainScope().launch {
                     chatListState.scrollToItem(effect.chatSize)
                 }
