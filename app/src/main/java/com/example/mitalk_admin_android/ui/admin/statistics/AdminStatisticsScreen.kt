@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -17,18 +18,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.domain.entity.admin.StatisticsDetailEntity
 import com.example.mitalk_admin_android.R
 import com.example.mitalk_admin_android.ui.admin.header.AdminHeader
 import com.example.mitalk_admin_android.ui.admin.header.addFocusCleaner
+import com.example.mitalk_admin_android.ui.util.bottomBorder
 import com.example.mitalk_admin_android.util.miClickable
-import com.example.mitalk_admin_android.util.theme.Medium07NO
-import com.example.mitalk_admin_android.util.theme.Medium12NO
-import com.example.mitalk_admin_android.util.theme.MiTalkColor
-import com.example.mitalk_admin_android.util.theme.MiTalkIcon
+import com.example.mitalk_admin_android.util.theme.*
 import com.example.mitalk_admin_android.vm.admin.AdminStatisticsViewModel
+import kotlin.math.floor
 import kotlin.math.round
 
 @Stable
@@ -75,13 +77,22 @@ fun AdminStatisticsScreen(
 
          LazyColumn(
              modifier = Modifier
-                 .padding(horizontal = 32.dp)
-                 .fillMaxWidth()
+                 .padding(horizontal = 16.dp)
+                 .fillMaxWidth(),
+             verticalArrangement = Arrangement.spacedBy(18.dp)
          ) {
             items(state.listStatistics) {
                 it.run {
                     if (name.contains(searchText) || id.contains(searchText)) {
-                        StatisticsItem(name = name, id = id, star = star)
+                        StatisticsItem(
+                            name = name,
+                            id = id,
+                            star = star,
+                            reviewList = state.reviewList,
+                            messageList = state.messageList,
+                        ) {
+                            vm.getStatisticsDetailList(id)
+                        }
                     }
                 }
             }
@@ -94,6 +105,9 @@ private fun StatisticsItem(
     name: String,
     id: String,
     star: Float,
+    reviewList: List<StatisticsDetailEntity.ReviewsData>,
+    messageList: List<String>,
+    onOpenClick: (String) -> Unit,
 ) {
     var open by remember { mutableStateOf(false) }
     var targetValue by remember { mutableStateOf(0F) }
@@ -102,22 +116,50 @@ private fun StatisticsItem(
         tween(500)
     )
 
+    val goodReview: ArrayList<StatisticsDetailEntity.ReviewsData> = ArrayList()
+    val badReview: ArrayList<StatisticsDetailEntity.ReviewsData> = ArrayList()
+
+    for (element in reviewList) {
+        when (element.reviewItem) {
+            "KINDNESS" -> goodReview.add(element.toChange(stringResource(id = R.string.kindness)))
+            "EXPLANATION" -> goodReview.add(element.toChange(stringResource(id = R.string.explanation)))
+            "USEFUL" -> goodReview.add(element.toChange(stringResource(id = R.string.useful)))
+            "COMFORT" -> goodReview.add(element.toChange(stringResource(id = R.string.comfort)))
+            "LISTEN" -> goodReview.add(element.toChange(stringResource(id = R.string.listen)))
+            "FAST_ANSWER" -> goodReview.add(element.toChange(stringResource(id = R.string.fast_answer)))
+
+            "UNKINDNESS" -> badReview.add(element.toChange(stringResource(id = R.string.unkindness)))
+            "DIFFICULT_EXPLANATION" -> badReview.add(element.toChange(stringResource(id = R.string.difficult_explanation)))
+            "USELESS" -> badReview.add(element.toChange(stringResource(id = R.string.useless)))
+            "SLANG" -> badReview.add(element.toChange(stringResource(id = R.string.slang)))
+            "NOT_APPROPRIATE_ANSWER" -> badReview.add(element.toChange(stringResource(id = R.string.not_appropriate_answer)))
+            "SLOW_ANSWER" -> badReview.add(element.toChange(stringResource(id = R.string.slow_answer)))
+        }
+    }
+
     Column(modifier = Modifier
         .fillMaxWidth()
         .background(color = MiTalkColor.Gray)
         .border(
             width = 1.dp,
             color = ItemMainColor,
-        )
-        .miClickable(
-            rippleEnabled = false
-        ) {
-            targetValue = if (open) 0F else 90F
-            open = !open
-        },
+        ),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .miClickable(
+                    rippleEnabled = false
+                ) {
+                    targetValue =
+                        if (open) {
+                            0f
+                        } else {
+                            onOpenClick(id)
+                            90F
+                        }
+                    open = !open
+                },
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Spacer(modifier = Modifier.width(12.dp))
@@ -150,6 +192,60 @@ private fun StatisticsItem(
                     .rotate(rotateValue),
             )
         }
+
+        if (open) {
+            Spacer(modifier = Modifier.height(19.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .bottomBorder(
+                        strokeWidth = 1.dp,
+                        color = ItemMainColor
+                    )
+            ) {
+                goodReview.sortBy { it.percentage }
+                goodReview.reverse()
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(horizontal = 15.dp)
+                        .fillMaxWidth(0.5f)
+                        .height(100.dp),
+                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                ) {
+                    items(goodReview) {
+                        ReviewItem(
+                            review = it.reviewItem,
+                            percent = it.percentage
+                        )
+                    }
+                }
+                badReview.sortBy { it.percentage }
+                goodReview.reverse()
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(horizontal = 15.dp)
+                        .fillMaxWidth()
+                        .height(100.dp),
+                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                ) {
+                    items(badReview) {
+                        ReviewItem(
+                            review = it.reviewItem,
+                            percent = it.percentage
+                        )
+                    }
+                }
+            }
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+
+                }
+            }
+        }
     }
 }
 
@@ -170,3 +266,41 @@ private fun StartList(
         }
     }
 }
+
+@Composable
+private fun ReviewItem(
+    review: String,
+    percent: Float,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .bottomBorder(
+                strokeWidth = 1.dp,
+                color = ItemMainColor
+            )
+    ) {
+        Bold12NO(
+            text = review,
+            color = ItemMainColor,
+        )
+
+        Bold12NO(
+            text = buildAnnotatedString {
+                append(floor(percent).toString())
+                append("%")
+            }.toString(),
+            color = ItemMainColor,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentWidth(Alignment.End)
+        )
+    }
+}
+
+private fun StatisticsDetailEntity.ReviewsData.toChange(
+    review: String
+) = StatisticsDetailEntity.ReviewsData(
+    reviewItem = review,
+    percentage = percentage
+)

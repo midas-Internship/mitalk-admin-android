@@ -59,4 +59,16 @@
     <string name="big_size_file_comment">Would you like to transfer the file?</string>
     <string name="over_size_file">File capacity exceeded</string>
     <string name="over_size_file_comment">The file is too large to transfer.</string>
+    <string name="explanation">good explanation</string>
+    <string name="kindness">kindness</string>
+    <string name="useful">useful</string>
+    <string name="comfort">comfort</string>
+    <string name="listen">listen well</string>
+    <string name="fast_answer">fast answer</string>
+    <string name="difficult_explanation">difficult explanation</string>
+    <string name="useless">useless</string>
+    <string name="slang">slang</string>
+    <string name="not_appropriate_answer">not appropriate answer</string>
+    <string name="slow_answer">slow answer</string>
+    <string name="unkindness">unkindness</string>
 </resources>
