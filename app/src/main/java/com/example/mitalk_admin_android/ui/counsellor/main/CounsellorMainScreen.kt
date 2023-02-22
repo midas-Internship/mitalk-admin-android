@@ -43,7 +43,6 @@ fun CounsellorMainScreen(
     val counselorStateText =
         if (counselOnOFF) stringResource(id = R.string.can_counsel)
         else stringResource(id = R.string.can_not_counsel)
-    var waitChatDialog by remember { mutableStateOf(false) }
 
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
@@ -52,7 +51,6 @@ fun CounsellorMainScreen(
     LaunchedEffect(Unit) {
         vm.getAccessToken()
         vm.setChatSocket(ChatSocket(successAction = {
-            waitChatDialog = false
             vm.successRoom(it)
         }, finishAction = {
             vm.finishRoom()
