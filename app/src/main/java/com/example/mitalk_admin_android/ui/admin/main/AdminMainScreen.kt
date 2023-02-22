@@ -151,7 +151,7 @@ private fun AdminSecondList(navController: NavController) {
                 content = stringResource(id = R.string.setting_content),
                 icon = painterResource(id = MiTalkIcon.Setting_Icon.drawableId)
             ) {
-
+                navController.navigate(AppNavigationItem.Setting.route)
             }
         }
     }

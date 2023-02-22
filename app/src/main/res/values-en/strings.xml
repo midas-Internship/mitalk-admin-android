@@ -73,4 +73,7 @@
     <string name="unkindness">unkindness</string>
     <string name="setting">Setting</string>
     <string name="setting_content">Setting language</string>
+    <string name="english">English</string>
+    <string name="korean">Korean</string>
+    <string name="setting_language">Language</string>
 </resources>
