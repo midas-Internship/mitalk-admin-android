@@ -58,6 +58,7 @@ fun RecordDetailScreen(
     var messageId by remember { mutableStateOf("") }
     var logDialogVisible by remember { mutableStateOf(false) }
     val noSearchMsg = stringResource(id = R.string.no_search_result)
+    var chatLog by remember { mutableStateOf(listOf<RecordDetailState.MessageRecordData.MessageData>()) }
 
     val container = vm.container
     val state = container.stateFlow.collectAsState().value
@@ -120,17 +121,17 @@ fun RecordDetailScreen(
                 chatList = state.messageRecords,
                 chatListState = chatListState,
                 findText = findText
-            ) {
+            ) { id ->
                 if (role == "Admin") {
                     logDialogVisible = true
-                    messageId = it
+                    chatLog = state.messageRecords.first { it.messageId == id }.dataMap
                 }
             }
         }
         RecordLogDialog(
             visible = logDialogVisible,
             onDismissRequest = { logDialogVisible = false },
-            itemList = state.messageRecords.first { it.messageId == messageId }.dataMap
+            itemList = chatLog
         )
     }
 }
