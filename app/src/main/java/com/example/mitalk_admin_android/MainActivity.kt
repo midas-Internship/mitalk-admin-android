@@ -19,7 +19,7 @@ import com.example.mitalk_admin_android.ui.admin.usercare.AdminUserCareScreen
 import com.example.mitalk_admin_android.ui.admin.messagerecord.AdminMessageRecordScreen
 import com.example.mitalk_admin_android.ui.counsellor.chat.ChatScreen
 import com.example.mitalk_admin_android.ui.admin.question.AdminQuestionScreen
-import com.example.mitalk_admin_android.ui.counsellor.CounsellorMainScreen
+import com.example.mitalk_admin_android.ui.counsellor.main.CounsellorMainScreen
 import com.example.mitalk_admin_android.ui.record.RecordScreen
 import com.example.mitalk_admin_android.ui.record.RecordDetailScreen
 import com.example.mitalk_admin_android.util.MiTalkExceptionHandler
@@ -62,18 +62,8 @@ fun BaseApp(navController: NavHostController) {
         composable(AppNavigationItem.CounsellorMain.route) {
             CounsellorMainScreen(navController = navController, vm = viewModel)
         }
-        composable(
-            route = AppNavigationItem.Chat.route
-                    + DeepLinkKey.ROOM_ID + "{${DeepLinkKey.ROOM_ID}}",
-            arguments = listOf(
-                navArgument(DeepLinkKey.ROOM_ID) {
-                    type = NavType.StringType
-                    defaultValue = ""
-                }
-            )
-        ) {
-            val roomId = it.arguments?.getString(DeepLinkKey.ROOM_ID) ?: ""
-            ChatScreen(navController = navController, roomId = roomId, vm = viewModel)
+        composable(AppNavigationItem.Chat.route) {
+            ChatScreen(navController = navController, vm = viewModel)
         }
         composable(AppNavigationItem.AdminIssued.route) {
             AdminIssuedScreen(navController = navController)
@@ -161,7 +151,6 @@ sealed class AppNavigationItem(val route: String) {
 
 object DeepLinkKey {
     const val KEY = "KEY"
-    const val ROOM_ID = "roomId"
     const val HEADER_ID = "headerId"
     const val RECORD_ID = "recordId"
     const val Role = "role"

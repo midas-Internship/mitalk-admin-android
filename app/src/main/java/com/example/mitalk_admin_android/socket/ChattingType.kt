@@ -1,6 +1,5 @@
 package com.example.mitalk_admin_android.socket
 
-import com.example.mitalk_admin_android.util.toChatTime
 import com.google.gson.annotations.SerializedName
 import java.time.LocalTime
 

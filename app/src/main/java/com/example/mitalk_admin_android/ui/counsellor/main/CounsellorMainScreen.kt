@@ -1,4 +1,4 @@
-package com.example.mitalk_admin_android.ui.counsellor
+package com.example.mitalk_admin_android.ui.counsellor.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -66,10 +66,7 @@ fun CounsellorMainScreen(
     sideEffect.observeWithLifecycle {
         when (it) {
             is ChatSideEffect.SuccessRoom -> {
-                navController.navigate(
-                    route = AppNavigationItem.Chat.route
-                            + DeepLinkKey.ROOM_ID + it.roomId
-                )
+                navController.navigate(AppNavigationItem.Chat.route)
             }
         }
     }
