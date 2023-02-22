@@ -48,6 +48,8 @@ fun RecordDetailScreen(
     headerId: Int,
     recordId: String,
     role: String,
+    counsellorName: String,
+    customerName: String,
     vm: RecordDetailViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -118,6 +120,8 @@ fun RecordDetailScreen(
             })
         Box(modifier = Modifier.weight(1f)) {
             ChatList(
+                counsellorName = counsellorName,
+                customerName = customerName,
                 chatList = state.messageRecords,
                 chatListState = chatListState,
                 findText = findText,
@@ -228,6 +232,8 @@ fun FindInput(
 
 @Composable
 fun ChatList(
+    counsellorName: String,
+    customerName: String,
     chatList: List<RecordDetailState.MessageRecordData>,
     chatListState: LazyListState = rememberLazyListState(),
     findText: String,
@@ -253,13 +259,19 @@ fun ChatList(
             ) {
                 if (item.sender == "COUNSELLOR") {
                     CounselorChat(
+                        name = counsellorName,
                         item = item,
                         findText = findText,
                         onClick = onClick,
                         role = role
                     )
                 } else {
-                    ClientChat(item = item, findText = findText, onClick = onClick)
+                    ClientChat(
+                        name = customerName,
+                        item = item,
+                        findText = findText,
+                        onClick = onClick
+                    )
                 }
             }
         }
@@ -271,6 +283,7 @@ fun ChatList(
 
 @Composable
 fun ClientChat(
+    name: String,
     item: RecordDetailState.MessageRecordData,
     findText: String,
     onClick: (String) -> Unit
@@ -287,7 +300,7 @@ fun ClientChat(
         )
         Spacer(modifier = Modifier.width(3.dp))
         Column {
-            Regular10NO(text = stringResource(id = R.string.client))
+            Regular10NO(text = "$name ${stringResource(id = R.string.client)}")
             if (item.isDeleted) Bold12NO(text = stringResource(id = R.string.delete_message)) else {
                 ChatItem(
                     item = item.dataMap.last().message,
@@ -311,6 +324,7 @@ fun ClientChat(
 
 @Composable
 fun CounselorChat(
+    name: String,
     item: RecordDetailState.MessageRecordData,
     findText: String,
     onClick: (String) -> Unit,
@@ -326,7 +340,7 @@ fun CounselorChat(
                 horizontalAlignment = Alignment.End
             ) {
                 if (role == "Admin") {
-                    Regular10NO(text = "상담사")
+                    Regular10NO(text = "$name ${stringResource(id = R.string.counsellor)}")
                 }
                 Box(
                     modifier = Modifier
@@ -361,5 +375,5 @@ fun CounselorChat(
 @Preview
 fun showRecordDetailScreen() {
     val navController = rememberNavController()
-    RecordDetailScreen(navController = navController, 0, "헤더", "")
+    RecordDetailScreen(navController = navController, 0, "헤더", "", "", "")
 }

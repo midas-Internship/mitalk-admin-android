@@ -109,6 +109,8 @@ private fun RecordList(
                             + DeepLinkKey.HEADER_ID + type.titleId
                             + DeepLinkKey.RECORD_ID + it.recordId
                             + DeepLinkKey.Role + "Counsellor"
+                            + DeepLinkKey.CounsellorName + it.counsellorName
+                            + DeepLinkKey.CustomerName + it.customerName
                 )
             }
         }

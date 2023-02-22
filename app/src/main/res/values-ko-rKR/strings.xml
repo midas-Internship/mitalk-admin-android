@@ -77,4 +77,5 @@
     <string name="korean">한국어</string>
     <string name="setting_language">언어 설정</string>
     <string name="logout_real">정말 로그아웃 하시겠습니까?</string>
+    <string name="counsellor">상담사</string>
 </resources>

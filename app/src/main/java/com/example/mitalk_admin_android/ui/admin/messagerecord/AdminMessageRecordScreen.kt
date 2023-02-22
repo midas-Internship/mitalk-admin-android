@@ -92,6 +92,8 @@ fun AdminMessageRecordScreen(
                                     + DeepLinkKey.HEADER_ID + type.titleId
                                     + DeepLinkKey.RECORD_ID + it.id
                                     + DeepLinkKey.Role + "Admin"
+                                    + DeepLinkKey.CounsellorName + it.counsellorName
+                                    + DeepLinkKey.CustomerName + it.customerName
                         )
                     }
                 }

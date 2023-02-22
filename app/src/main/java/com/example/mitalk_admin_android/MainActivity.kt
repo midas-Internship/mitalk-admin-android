@@ -102,7 +102,9 @@ fun BaseApp(navController: NavHostController) {
             route = AppNavigationItem.RecordDetail.route
                     + DeepLinkKey.HEADER_ID + "{${DeepLinkKey.HEADER_ID}}"
                     + DeepLinkKey.RECORD_ID + "{${DeepLinkKey.RECORD_ID}}"
-                    + DeepLinkKey.Role + "{${DeepLinkKey.Role}}",
+                    + DeepLinkKey.Role + "{${DeepLinkKey.Role}}"
+                    + DeepLinkKey.CounsellorName + "{${DeepLinkKey.CounsellorName}}"
+                    + DeepLinkKey.CustomerName + "{${DeepLinkKey.CustomerName}}",
             arguments = listOf(
                 navArgument(DeepLinkKey.HEADER_ID) {
                     type = NavType.IntType
@@ -115,18 +117,30 @@ fun BaseApp(navController: NavHostController) {
                 navArgument(DeepLinkKey.Role) {
                     type = NavType.StringType
                     defaultValue = ""
+                },
+                navArgument(DeepLinkKey.CounsellorName) {
+                    type = NavType.StringType
+                    defaultValue = ""
+                },
+                navArgument(DeepLinkKey.CustomerName) {
+                    type = NavType.StringType
+                    defaultValue = ""
                 }
             )
         ) {
             val headerId = it.arguments?.getInt(DeepLinkKey.HEADER_ID) ?: R.string.feature_question
             val recordId = it.arguments?.getString(DeepLinkKey.RECORD_ID) ?: ""
             val role = it.arguments?.getString(DeepLinkKey.Role) ?: ""
+            val counsellorName = it.arguments?.getString(DeepLinkKey.CounsellorName) ?: ""
+            val customerName = it.arguments?.getString(DeepLinkKey.CustomerName) ?: ""
 
             RecordDetailScreen(
                 navController = navController,
                 headerId = headerId,
                 recordId = recordId,
-                role = role
+                role = role,
+                counsellorName = counsellorName,
+                customerName = customerName
             )
         }
         composable(AppNavigationItem.Setting.route) {
@@ -166,4 +180,6 @@ object DeepLinkKey {
     const val HEADER_ID = "headerId"
     const val RECORD_ID = "recordId"
     const val Role = "role"
+    const val CounsellorName = "counsellorName"
+    const val CustomerName = "customerName"
 }
