@@ -1,8 +1,6 @@
 package com.example.mitalk_admin_android.ui.admin.main
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import com.example.mitalk_admin_android.R
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -55,10 +53,13 @@ fun AdminMainScreen(
         }
     }
 
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MiTalkColor.Gray),
+            .background(color = MiTalkColor.Gray)
+            .verticalScroll(scrollState),
     ) {
         if (dialogVisible) {
             AdminDialog(
