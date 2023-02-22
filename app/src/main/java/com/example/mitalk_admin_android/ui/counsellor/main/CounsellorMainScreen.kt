@@ -108,7 +108,7 @@ fun CounsellorMainScreen(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Bold20NO(
-                        text = "마이톡",
+                        text = "마이톡-상담원",
                         color = Color(0xFFD44CD7)
                     )
                 }
