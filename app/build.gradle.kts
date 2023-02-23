@@ -23,6 +23,11 @@ android {
             "SOCKET_URL",
             gradleLocalProperties(rootDir).getProperty("SOCKET_URL")
         )
+        buildConfigField(
+            "String",
+            "IMAGE_URL",
+            gradleLocalProperties(rootDir).getProperty("IMAGE_URL")
+        )
     }
 
     buildTypes {

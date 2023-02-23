@@ -241,7 +241,7 @@ fun ChatList(
                     CounselorChat(
                         item = item,
                         longClickAction = longClickAction,
-                        isFile = item.text.contains("https://mitalk-s3.s3.ap-northeast-2.amazonaws.com/"),
+                        isFile = item.text.isFile(),
                         itemVisible = selectItemUUID == item.id,
                         editAction = editAction,
                         deleteAction = {
@@ -530,7 +530,7 @@ fun ChatItem(
     findText: String = "",
 ) {
     val context = LocalContext.current
-    if (item.contains("https://mitalk-s3.s3.ap-northeast-2.amazonaws.com/")) {
+    if (item.isFile()) {
         val fileExt = item.split(".").last().lowercase()
         if (ImageAllowedList.contains(fileExt)) {
             AsyncImage(model = item, contentDescription = "Chat Image", modifier = modifier)
